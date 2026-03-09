@@ -1,0 +1,1824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>OffshorePro CV Builder | Professional Resume Generator</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brand:#0a2540;--accent:#2563eb;--accent2:#f59e0b;--success:#10b981;--danger:#ef4444;
+  --bg:#f0f4f9;--surface:#fff;--border:#e2e8f0;--text:#1e293b;--muted:#64748b;
+  --radius:12px;--shadow:0 4px 24px rgba(10,37,64,0.10);
+  --font-ui:'Plus Jakarta Sans',sans-serif;
+  --nav-h:64px;--bottom-h:72px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:var(--bg);font-family:var(--font-ui);color:var(--text)}
+
+/* ── SCROLLBAR ─────────────────── */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#c8d3e0;border-radius:4px}
+
+/* ── TOP NAV ───────────────────── */
+#top-nav{
+  position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:var(--brand);
+  display:flex;align-items:center;justify-content:space-between;padding:0 20px;
+  z-index:1000;box-shadow:0 2px 16px rgba(0,0,0,0.2);
+}
+#top-nav .logo{display:flex;align-items:center;gap:10px;color:#fff;font-family:'Syne',sans-serif;font-weight:800;font-size:18px;letter-spacing:-.3px}
+#top-nav .logo .dot{width:8px;height:8px;background:var(--accent2);border-radius:50%;display:inline-block}
+#top-nav .nav-pills{display:flex;gap:4px}
+#top-nav .nav-pill{
+  padding:6px 16px;border-radius:100px;font-size:13px;font-weight:600;cursor:pointer;
+  color:rgba(255,255,255,.6);transition:.2s;border:1.5px solid transparent;white-space:nowrap;
+  display:flex;align-items:center;gap:6px
+}
+#top-nav .nav-pill:hover{color:#fff;border-color:rgba(255,255,255,.2)}
+#top-nav .nav-pill.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+#top-nav .nav-pill i{font-size:13px}
+#top-nav .top-actions{display:flex;gap:8px;align-items:center}
+.btn-icon-sm{
+  background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.2);color:#fff;
+  width:36px;height:36px;border-radius:8px;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;font-size:14px;transition:.2s
+}
+.btn-icon-sm:hover{background:rgba(255,255,255,.22)}
+
+/* ── LAYOUT ────────────────────── */
+#app{display:flex;height:100vh;padding-top:var(--nav-h)}
+#sidebar{
+  width:240px;background:var(--surface);border-right:1px solid var(--border);
+  overflow-y:auto;flex-shrink:0;padding:16px 0
+}
+#editor{
+  width:400px;background:var(--surface);overflow-y:auto;padding:24px 20px 100px;
+  border-right:1px solid var(--border);flex-shrink:0
+}
+#preview-wrap{
+  flex:1;background:#525659;display:flex;flex-direction:column;
+  overflow:hidden;position:relative
+}
+.preview-actions{
+  flex-shrink:0;background:rgba(82,86,89,0.95);backdrop-filter:blur(8px);
+  padding:10px 16px;display:flex;gap:8px;justify-content:center;
+  border-bottom:1px solid rgba(255,255,255,.08);z-index:20
+}
+.preview-actions button{pointer-events:all}
+#preview-scroll-area{
+  flex:1;overflow-y:auto;overflow-x:hidden;
+  display:flex;justify-content:center;padding:30px 20px 40px;
+}
+
+/* ── SIDEBAR STEPS ─────────────── */
+.step-group{padding:8px 0}
+.step-group-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);padding:8px 20px 4px}
+.step-btn{
+  width:100%;padding:10px 20px;background:none;border:none;cursor:pointer;
+  display:flex;align-items:center;gap:12px;color:var(--muted);font-size:13.5px;
+  font-weight:500;font-family:var(--font-ui);transition:.15s;position:relative;text-align:left
+}
+.step-btn:hover{background:#f8fafc;color:var(--text)}
+.step-btn.active{background:#eff6ff;color:var(--accent);font-weight:700}
+.step-btn.active::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);border-radius:0 3px 3px 0}
+.step-btn.done .step-icon{background:var(--success)!important;color:#fff!important}
+.step-icon{width:28px;height:28px;border-radius:8px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted);flex-shrink:0}
+.step-btn.active .step-icon{background:var(--accent);color:#fff}
+
+/* ── FORMS ─────────────────────── */
+.form-section{margin-bottom:24px}
+.form-title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px;font-family:'Syne',sans-serif}
+.form-subtitle{font-size:13px;color:var(--muted);margin-bottom:20px}
+.form-group{margin-bottom:14px}
+.form-label{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.form-label i{color:var(--accent);font-size:11px}
+input[type=text],input[type=email],input[type=tel],input[type=month],input[type=url],select,textarea{
+  width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;
+  font-size:14px;font-family:var(--font-ui);color:var(--text);background:#fff;
+  transition:.2s;appearance:none;-webkit-appearance:none
+}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+input[type=month]{cursor:pointer;font-family:var(--font-ui)}
+input[type=month]::-webkit-calendar-picker-indicator{opacity:.5;cursor:pointer;filter:invert(0%)}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+textarea{resize:vertical;line-height:1.6}
+.row{display:flex;gap:10px}
+.col{flex:1}
+input[type=file]{display:none}
+.file-upload-btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;
+  border:2px dashed var(--border);border-radius:8px;cursor:pointer;color:var(--muted);
+  font-size:13px;font-weight:500;transition:.2s;font-family:var(--font-ui);background:#fafbfc
+}
+.file-upload-btn:hover{border-color:var(--accent);color:var(--accent);background:#eff6ff}
+.img-preview{width:64px;height:64px;object-fit:cover;border-radius:8px;border:2px solid var(--border)}
+.img-preview.circle{border-radius:50%}
+
+/* ── BUTTONS ───────────────────── */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:none;
+  border-radius:8px;cursor:pointer;font-weight:600;font-size:14px;
+  font-family:var(--font-ui);transition:.2s;white-space:nowrap
+}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#1d4ed8;transform:translateY(-1px);box-shadow:0 4px 16px rgba(37,99,235,.3)}
+.btn-secondary{background:#f1f5f9;color:var(--text);border:1.5px solid var(--border)}
+.btn-secondary:hover{background:#e2e8f0}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-success{background:var(--success);color:#fff}
+.btn-full{width:100%;justify-content:center}
+.btn-sm{padding:6px 12px;font-size:12px;border-radius:6px}
+.btn-outline{background:transparent;border:1.5px solid var(--accent);color:var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+
+/* ── DYNAMIC ITEMS ─────────────── */
+.dynamic-item{
+  background:#fafbfc;border:1.5px solid var(--border);border-radius:10px;
+  padding:16px;margin-bottom:12px;position:relative;transition:.2s
+}
+.dynamic-item:hover{border-color:#cbd5e1;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.item-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.item-title{font-size:13px;font-weight:600;color:var(--text)}
+.item-actions-row{display:flex;gap:4px}
+.btn-icon-tiny{
+  width:28px;height:28px;border-radius:6px;border:none;cursor:pointer;display:flex;
+  align-items:center;justify-content:center;font-size:12px;transition:.2s
+}
+.del-btn{background:#fee2e2;color:var(--danger)}
+.del-btn:hover{background:var(--danger);color:#fff}
+.logo-upload-zone{
+  display:flex;align-items:center;gap:10px;padding:8px;border:1.5px dashed var(--border);
+  border-radius:8px;cursor:pointer;transition:.2s;margin-bottom:10px
+}
+.logo-upload-zone:hover{border-color:var(--accent);background:#eff6ff}
+.logo-preview{width:40px;height:40px;border-radius:6px;object-fit:cover;border:1px solid var(--border)}
+.logo-placeholder{width:40px;height:40px;border-radius:6px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:16px;flex-shrink:0}
+.logo-upload-text{font-size:12px;color:var(--muted)}
+
+/* ── TEMPLATES GRID ─────────────── */
+.templates-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tpl-card{
+  border:2px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;
+  transition:.2s;background:#fff;position:relative
+}
+.tpl-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow)}
+.tpl-card.selected{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+.tpl-card.selected::after{content:'\f00c';font-family:'Font Awesome 6 Free';font-weight:900;position:absolute;top:8px;right:8px;width:22px;height:22px;background:var(--accent);color:#fff;border-radius:50%;font-size:10px;display:flex;align-items:center;justify-content:center}
+.tpl-thumb{height:100px;display:flex;align-items:center;justify-content:center;font-size:28px;position:relative;overflow:hidden}
+.tpl-name{padding:8px 10px 4px;font-size:12px;font-weight:700;color:var(--text)}
+.tpl-profession{padding:0 10px 8px;font-size:10px;color:var(--muted)}
+.tpl-select-btn{
+  width:100%;padding:8px;border:none;cursor:pointer;font-size:12px;font-weight:600;
+  font-family:var(--font-ui);transition:.2s
+}
+.next-step-bar{
+  background:linear-gradient(135deg,var(--accent),#1d4ed8);border-radius:10px;
+  padding:14px 18px;display:flex;align-items:center;justify-content:space-between;margin-top:16px
+}
+.next-step-bar span{color:#fff;font-size:14px;font-weight:600}
+
+/* ── SHAPE SELECTOR ─────────────── */
+.shape-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.shape-opt{
+  aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;border:2px solid var(--border);border-radius:8px;cursor:pointer;padding:10px;
+  transition:.2s;background:#fff
+}
+.shape-opt:hover{border-color:var(--accent);background:#eff6ff}
+.shape-opt.active{border-color:var(--accent);background:#eff6ff}
+.shape-preview{width:32px;height:32px;background:linear-gradient(135deg,var(--accent),#818cf8);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.shape-preview.sh-circle{border-radius:50%}
+.shape-preview.sh-square{border-radius:0}
+.shape-preview.sh-rounded{border-radius:8px}
+.shape-preview.sh-hexagon{clip-path:polygon(50% 0%,95% 25%,95% 75%,50% 100%,5% 75%,5% 25%)}
+.shape-preview.sh-diamond{clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%)}
+.shape-preview.sh-shield{clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)}
+.shape-preview.sh-rhombus{clip-path:polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)}
+.shape-preview.sh-star{clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+.shape-label{font-size:10px;font-weight:600;color:var(--muted);text-align:center}
+
+/* ── SOCIAL MEDIA ──────────────── */
+.social-grid{display:flex;flex-direction:column;gap:10px}
+.social-row{display:flex;align-items:center;gap:10px}
+.social-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;flex-shrink:0}
+.si-linkedin{background:#0077b5}
+.si-whatsapp{background:#25d366}
+.si-facebook{background:#1877f2}
+.si-instagram{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
+.si-youtube{background:#ff0000}
+.si-website{background:#6366f1}
+.si-twitter{background:#1da1f2}
+.si-github{background:#24292e}
+
+/* ── CV PAPER (shared base for all paper elements) ─── */
+#cv-paper, #cv-paper-preview, #print-cv, #tpl-modal-cv{
+  width:210mm;min-height:297mm;background:#fff;
+  position:relative;overflow:hidden;
+}
+#cv-paper{
+  box-shadow:0 8px 32px rgba(0,0,0,.3);
+  flex-shrink:0;
+}
+#cv-paper-preview{
+  box-shadow:0 8px 40px rgba(0,0,0,.5);
+  flex-shrink:0;
+  transform-origin:top center;
+}
+.cv-photo{object-fit:cover;display:block;background:#eee;flex-shrink:0}
+.cv-photo.circle{border-radius:50%}
+.cv-photo.square{border-radius:0}
+.cv-photo.rounded{border-radius:10px}
+.cv-photo.hexagon{clip-path:polygon(50% 0%,95% 25%,95% 75%,50% 100%,5% 75%,5% 25%)}
+.cv-photo.diamond{clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%)}
+.cv-photo.shield{clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)}
+.cv-photo.rhombus{clip-path:polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)}
+
+/* ── CV ICONS ──────────────────── */
+.cv-icon-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;font-size:11px;align-items:center}
+.cv-icon-item{display:flex;align-items:center;gap:4px}
+.cv-icon-item i{font-size:10px;opacity:.7}
+
+/* ──────────────────────────────── */
+/* TEMPLATE STYLES                  */
+/* ──────────────────────────────── */
+
+/* 1. EXECUTIVE */
+.t-executive{padding:44px;font-family:'Cormorant Garamond',serif;color:#1a1a1a}
+.t-executive .cv-header{display:flex;align-items:flex-start;gap:24px;border-bottom:2px solid #1a1a1a;padding-bottom:24px;margin-bottom:24px}
+.t-executive .cv-header-text h1{font-size:34px;font-weight:700;text-transform:uppercase;letter-spacing:1px;line-height:1.1;margin-bottom:6px}
+.t-executive .cv-header-text .sub{font-size:16px;color:#666;font-style:italic;margin-bottom:10px}
+.t-executive .sec-title{font-size:12px;text-transform:uppercase;letter-spacing:2px;border-bottom:1px solid #ccc;padding-bottom:4px;margin:20px 0 10px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700}
+.t-executive .job-entry{margin-bottom:18px;padding-bottom:14px;border-bottom:1px dashed #eee}
+
+/* 2. OFFSHORE BLUE */
+.t-offshore{display:grid;grid-template-columns:32% 68%;min-height:297mm;font-family:'DM Sans',sans-serif}
+.t-offshore .sidebar{background:#003366;color:#fff;padding:28px}
+.t-offshore .main{padding:32px;color:#222}
+.t-offshore .sidebar h3{color:#7dd3fc;font-size:11px;text-transform:uppercase;letter-spacing:2px;border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:6px;margin:20px 0 10px}
+.t-offshore .main h2{color:#003366;font-size:13px;text-transform:uppercase;letter-spacing:1.5px;border-bottom:2.5px solid #003366;padding-bottom:6px;margin:24px 0 12px}
+.t-offshore h1{color:#fff;font-size:26px;line-height:1.1;margin-bottom:6px;font-weight:700}
+
+/* 3. INDUSTRIAL */
+.t-industrial{font-family:'Space Grotesk',sans-serif}
+.t-industrial .header-bar{background:#2d2d2d;color:#fff;padding:30px;display:flex;align-items:center;gap:20px}
+.t-industrial h1{font-size:38px;text-transform:uppercase;letter-spacing:3px;margin:0}
+.t-industrial .content{padding:28px;columns:2;gap:32px;column-rule:1px solid #e5e7eb}
+.t-industrial h3{background:#f3f4f6;padding:6px 12px;border-left:4px solid #e67e22;font-size:14px;text-transform:uppercase;letter-spacing:1px;margin:0 0 10px;break-after:avoid}
+
+/* 4. SAFETY */
+.t-safety{font-family:'Plus Jakarta Sans',sans-serif}
+.t-safety .warning-bar{background:#ffd000;padding:8px;text-align:center;font-weight:800;font-size:10px;letter-spacing:4px;color:#000;border-bottom:4px solid #000}
+.t-safety .header{padding:28px;border-bottom:3px solid #000;display:flex;justify-content:space-between;align-items:center}
+.t-safety h1{font-size:34px;font-weight:900;text-transform:uppercase;margin:0}
+.t-safety h3{background:#000;color:#ffd000;padding:8px 14px;font-size:13px;text-transform:uppercase;margin:20px 0 10px}
+.t-safety .content{padding:28px}
+
+/* 5. CLASSIC */
+.t-classic{padding:50px;font-family:'Cormorant Garamond',serif;line-height:1.5;color:#000}
+.t-classic h1{text-align:center;font-size:30px;text-transform:uppercase;margin-bottom:4px}
+.t-classic .contact-line{text-align:center;font-size:13px;border-bottom:1.5px solid #000;padding-bottom:18px;margin-bottom:20px}
+.t-classic h3{font-size:15px;text-transform:uppercase;border-bottom:1px solid #000;padding-bottom:2px;margin:20px 0 10px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;letter-spacing:1px}
+
+/* 6. MODERN TECH */
+.t-modern{display:grid;grid-template-columns:64% 36%;min-height:297mm;font-family:'DM Sans',sans-serif}
+.t-modern .main{padding:40px}
+.t-modern .sidebar{background:#f0f9f8;padding:28px;border-left:3px solid #0d9488}
+.t-modern h1{font-size:34px;color:#0d9488;font-weight:800;margin-bottom:4px}
+.t-modern h3{color:#0d9488;text-transform:uppercase;letter-spacing:1.5px;font-size:12px;border-bottom:1px solid #d1d5db;padding-bottom:6px;margin:22px 0 10px}
+.t-modern .sidebar h3{color:#374151;border-color:#d1d5db}
+
+/* 7. GRID */
+.t-grid{padding:28px;font-family:'Space Grotesk',sans-serif}
+.t-grid .header{background:#1e293b;color:#fff;padding:22px;border-radius:10px;margin-bottom:22px;display:flex;gap:20px;align-items:center}
+.t-grid h1{font-size:30px;margin:0}
+.t-grid .grid-cont{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.t-grid .box{border:1.5px solid #e2e8f0;padding:16px;border-radius:8px}
+.t-grid .full{grid-column:span 2}
+.t-grid h3{color:#1e293b;font-size:12px;text-transform:uppercase;letter-spacing:1.5px;border-bottom:2px solid #3b82f6;padding-bottom:5px;margin:0 0 10px}
+
+/* 8. MARITIME */
+.t-marine{border:10px solid #001f3f;min-height:297mm;font-family:'Playfair Display',serif}
+.t-marine .inner{padding:40px}
+.t-marine h1{color:#001f3f;font-size:32px;text-align:center;text-transform:uppercase;margin-bottom:4px}
+.t-marine .subtitle{text-align:center;color:#85144b;font-style:italic;margin-bottom:28px}
+.t-marine h3{background:#001f3f;color:#fff;padding:8px 16px;font-size:12px;text-transform:uppercase;clip-path:polygon(0 0,95% 0,100% 100%,0 100%);width:fit-content;margin:20px 0 10px}
+
+/* 9. CREATIVE BOLD */
+.t-creative{font-family:'Syne',sans-serif;background:#fff}
+.t-creative .accent-bar{background:linear-gradient(135deg,#7c3aed,#db2777,#f59e0b);height:8px}
+.t-creative .header{padding:32px;display:flex;align-items:center;gap:24px;border-bottom:2px solid #f3f4f6}
+.t-creative h1{font-size:36px;font-weight:800;background:linear-gradient(135deg,#7c3aed,#db2777);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;margin-bottom:6px}
+.t-creative h3{color:#7c3aed;text-transform:uppercase;letter-spacing:2px;font-size:11px;margin:20px 0 10px;padding:6px 12px;background:linear-gradient(90deg,#ede9fe,transparent)}
+.t-creative .content{padding:28px}
+
+/* 10. LEGAL/ACADEMIC */
+.t-academic{font-family:'Cormorant Garamond',serif;padding:40px 50px;background:#fff;color:#1a1a2e}
+.t-academic h1{font-size:28px;text-align:center;font-weight:700;margin-bottom:4px;letter-spacing:.5px}
+.t-academic .divider{text-align:center;font-size:20px;color:#8b7355;margin:8px 0}
+.t-academic h3{font-size:14px;text-transform:uppercase;letter-spacing:2px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;margin:20px 0 6px;color:#1a1a2e}
+.t-academic .rule{height:1px;background:linear-gradient(90deg,#8b7355,transparent);margin:4px 0 12px}
+
+/* 11. MEDICAL/HEALTHCARE */
+.t-medical{font-family:'DM Sans',sans-serif}
+.t-medical .header{background:linear-gradient(135deg,#0ea5e9,#0284c7);padding:30px;color:#fff;display:flex;align-items:center;gap:20px}
+.t-medical h1{font-size:28px;font-weight:700;margin-bottom:4px}
+.t-medical h3{color:#0284c7;font-size:12px;text-transform:uppercase;letter-spacing:1.5px;border-left:3px solid #0284c7;padding-left:10px;margin:20px 0 10px}
+.t-medical .content{padding:30px}
+.t-medical .cert-badge{display:inline-flex;align-items:center;gap:6px;background:#e0f2fe;padding:4px 10px;border-radius:100px;font-size:11px;color:#0284c7;font-weight:600;margin:3px}
+
+/* 12. DARK PREMIUM */
+.t-dark{background:#0f172a;color:#e2e8f0;min-height:297mm;font-family:'Space Grotesk',sans-serif}
+.t-dark .header{padding:32px;border-bottom:1px solid rgba(255,255,255,.1)}
+.t-dark h1{font-size:32px;font-weight:700;color:#f8fafc;margin-bottom:4px}
+.t-dark .accent{color:#a78bfa}
+.t-dark h3{color:#a78bfa;font-size:11px;text-transform:uppercase;letter-spacing:2px;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:6px;margin:22px 0 12px}
+.t-dark .content{padding:28px}
+.t-dark .tag{background:rgba(167,139,250,.15);border:1px solid rgba(167,139,250,.3);color:#a78bfa;padding:3px 9px;border-radius:100px;font-size:11px;display:inline-block;margin:2px}
+.t-dark .cert-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:10px;margin-bottom:8px}
+
+/* ── BOTTOM MOBILE NAV ──────────── */
+#bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;height:var(--bottom-h);
+  background:#fff;border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-around;z-index:500;
+  box-shadow:0 -4px 16px rgba(0,0,0,.08);
+  display:none
+}
+.bnav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:8px 16px;border-radius:12px;transition:.2s;color:var(--muted);min-width:60px}
+.bnav-item:hover,.bnav-item.active{color:var(--accent)}
+.bnav-item.active{background:#eff6ff}
+.bnav-item i{font-size:20px}
+.bnav-item span{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+
+/* ── MOBILE STICKY STEP BAR ─────── */
+#mobile-step-bar{
+  display:none;
+  position:fixed;bottom:var(--bottom-h);left:0;right:0;
+  background:#fff;border-top:1.5px solid var(--border);
+  padding:10px 12px;z-index:490;
+  box-shadow:0 -2px 10px rgba(0,0,0,.06);
+}
+.step-bar-inner{display:flex;gap:8px;align-items:center}
+.step-bar-label{
+  flex:1;font-size:13px;font-weight:600;color:var(--text);text-align:center;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px
+}
+
+/* ── MOBILE TEMPLATE MODAL ─────── */
+#tpl-preview-modal{
+  position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:900;
+  display:none;align-items:flex-end;
+  backdrop-filter:blur(4px)
+}
+#tpl-preview-modal.open{display:flex}
+.tpl-modal-sheet{
+  background:#fff;width:100%;border-radius:20px 20px 0 0;
+  max-height:90vh;overflow-y:auto;padding:24px
+}
+.modal-handle{width:40px;height:4px;background:#e2e8f0;border-radius:2px;margin:0 auto 20px}
+.tpl-modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.tpl-modal-preview{border:2px solid var(--border);border-radius:10px;overflow:hidden;height:300px;overflow-y:auto;transform-origin:top center}
+.tpl-modal-actions{display:flex;gap:10px;margin-top:16px}
+
+/* ── ARCHIVE ───────────────────── */
+#archive-view{display:none;flex-direction:column;gap:16px}
+.archive-card{
+  background:#fff;border:1.5px solid var(--border);border-radius:12px;
+  padding:16px;display:flex;align-items:center;gap:14px;transition:.2s
+}
+.archive-card:hover{border-color:var(--accent);box-shadow:0 2px 10px rgba(37,99,235,.1)}
+.archive-thumb{width:48px;height:60px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#818cf8);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;flex-shrink:0}
+.archive-info{flex:1}
+.archive-name{font-weight:700;font-size:15px;color:var(--text)}
+.archive-meta{font-size:12px;color:var(--muted);margin-top:2px}
+.archive-actions{display:flex;gap:6px}
+.arc-btn{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--border);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.2s;color:var(--muted)}
+.arc-btn:hover{border-color:var(--accent);color:var(--accent)}
+.arc-btn.del:hover{border-color:var(--danger);color:var(--danger)}
+
+/* ── PREVIEW SCREEN ─────────────── */
+#preview-screen{
+  position:fixed;inset:0;background:#525659;z-index:800;display:none;
+  flex-direction:column;overflow:hidden
+}
+#preview-screen.open{display:flex}
+#preview-screen-header{
+  background:var(--brand);padding:10px 16px;display:flex;align-items:center;
+  justify-content:space-between;flex-shrink:0;z-index:10;
+  box-shadow:0 2px 12px rgba(0,0,0,.3)
+}
+#preview-screen-body{
+  flex:1;overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  display:flex;justify-content:center;
+  padding:24px 16px 24px;
+  /* Allow pinch-to-zoom on mobile */
+  touch-action:pan-x pan-y pinch-zoom
+}
+#cv-paper-preview{
+  transform-origin:top center;
+  flex-shrink:0;
+  /* pinch zoom JS will override transform */
+}
+#preview-screen-footer{
+  background:var(--brand);padding:10px 16px;display:flex;gap:10px;
+  justify-content:center;flex-shrink:0;z-index:10;
+  box-shadow:0 -2px 12px rgba(0,0,0,.3)
+}
+/* zoom controls */
+.zoom-controls{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);padding:4px 10px;border-radius:100px}
+.zoom-controls span{color:rgba(255,255,255,.7);font-size:12px;font-weight:600;min-width:36px;text-align:center}
+.zoom-btn{background:none;border:none;color:rgba(255,255,255,.7);cursor:pointer;font-size:16px;padding:2px 4px;line-height:1;transition:.2s}
+.zoom-btn:hover{color:#fff}
+
+/* ── EXPORT ANIMATION ──────────── */
+#export-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:2000;
+  display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px
+}
+#export-overlay.open{display:flex}
+.export-circle{position:relative;width:100px;height:100px}
+.export-circle svg{transform:rotate(-90deg)}
+.export-circle .track{fill:none;stroke:rgba(255,255,255,.15);stroke-width:6}
+.export-circle .fill{fill:none;stroke:var(--success);stroke-width:6;stroke-dasharray:283;stroke-dashoffset:283;stroke-linecap:round;transition:stroke-dashoffset .1s linear}
+.export-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:700}
+.export-label{color:#fff;font-size:14px;font-weight:600;opacity:.9}
+
+/* ── TOAST ─────────────────────── */
+#toast-wrap{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:3000;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none}
+.toast{
+  background:#1e293b;color:#fff;padding:12px 20px;border-radius:100px;
+  font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px;
+  box-shadow:0 8px 24px rgba(0,0,0,.3);
+  animation:slideUp .3s ease,fadeOut .4s 2.6s ease forwards;
+  white-space:nowrap
+}
+.toast.success{background:var(--success)}
+.toast.error{background:var(--danger)}
+@keyframes slideUp{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes fadeOut{to{opacity:0;transform:translateY(-8px)}}
+
+/* ── SKILL BARS ─────────────────── */
+.skill-pill{
+  display:inline-flex;align-items:center;gap:6px;background:#eff6ff;border:1.5px solid #bfdbfe;
+  color:var(--accent);padding:4px 10px;border-radius:100px;font-size:12px;font-weight:600;margin:3px
+}
+.skill-pill .remove{cursor:pointer;opacity:.5;transition:.2s;line-height:1}
+.skill-pill .remove:hover{opacity:1;color:var(--danger)}
+.skill-input-wrap{display:flex;gap:8px;margin-bottom:12px}
+
+/* ── PROGRESS DOTS ──────────────── */
+.progress-bar{
+  display:flex;align-items:center;gap:4px;padding:12px 16px 0;margin-bottom:4px
+}
+.prog-dot{width:6px;height:6px;border-radius:3px;background:var(--border);transition:.3s;cursor:pointer}
+.prog-dot.done{background:var(--success);width:14px}
+.prog-dot.current{background:var(--accent);width:18px}
+
+/* ── RESPONSIVE ─────────────────── */
+@media(min-width:1024px){
+  #sidebar{display:block}
+  #bottom-nav{display:none!important}
+  #mobile-step-bar{display:none!important}
+  #app{padding-bottom:0}
+}
+@media(max-width:1023px){
+  #sidebar{display:none}
+  #bottom-nav{display:flex!important}
+  #mobile-step-bar{display:block!important}
+  /* padding clears: mobile step bar (~55px) + bottom nav (72px) + safe gap */
+  #editor{width:100%;border:none;height:calc(100vh - var(--nav-h) - var(--bottom-h));overflow-y:auto;padding:24px 20px 150px}
+  #preview-wrap{display:none}
+  #app{height:calc(100vh - var(--nav-h))}
+  .templates-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  #top-nav .nav-pills{display:none}
+  #top-nav .logo{font-size:15px}
+  .templates-grid{grid-template-columns:1fr}
+}
+
+/* Print */
+/* ── PRINT CONTAINER (always in DOM, hidden on screen) ── */
+#print-container{
+  display:none;
+  position:fixed;top:0;left:0;width:210mm;
+}
+@media print{
+  @page{size:A4;margin:0}
+  html,body{height:auto!important;overflow:visible!important;background:#fff!important}
+  /* Hide everything on screen */
+  #top-nav,#app,#bottom-nav,#mobile-step-bar,#tpl-preview-modal,
+  #preview-screen,#export-overlay,#toast-wrap,
+  #archive-modal-wrap,#change-tpl-wrap{display:none!important}
+  /* Show only the print container */
+  #print-container{
+    display:block!important;
+    position:static!important;
+    width:210mm!important;
+    margin:0!important;
+    padding:0!important;
+  }
+  #print-cv{
+    width:210mm!important;
+    min-height:297mm!important;
+    box-shadow:none!important;
+    transform:none!important;
+    margin:0!important;
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+    color-adjust:exact!important;
+  }
+}
+
+/* ── COMPANY LOGO IN CV ─────────── */
+.cv-company-logo{width:28px;height:28px;border-radius:5px;object-fit:contain;vertical-align:middle;margin-right:6px;border:1px solid #e5e7eb}
+.cv-cert-logo{width:24px;height:24px;border-radius:4px;object-fit:contain;vertical-align:middle;margin-right:4px}
+
+/* Misc */
+.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
+.badge{display:inline-block;background:#eff6ff;color:var(--accent);padding:2px 8px;border-radius:100px;font-size:11px;font-weight:600;margin-right:4px}
+.section-divider{display:flex;align-items:center;gap:10px;margin:20px 0 16px}
+.section-divider span{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);white-space:nowrap}
+.section-divider::before,.section-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav id="top-nav">
+  <div class="logo">
+    <i class="fas fa-file-contract" style="color:var(--accent2)"></i>
+    OffshorePro
+    <span class="dot"></span>
+  </div>
+  <div class="nav-pills" id="main-nav-pills">
+    <div class="nav-pill active" id="pill-create" onclick="showScreen('create')"><i class="fas fa-plus"></i>Create</div>
+    <div class="nav-pill" id="pill-preview" onclick="showScreen('preview')"><i class="fas fa-eye"></i>Preview</div>
+    <div class="nav-pill" id="pill-archive" onclick="showScreen('archive')"><i class="fas fa-folder-open"></i>Archive</div>
+  </div>
+  <div class="top-actions">
+    <button class="btn-icon-sm" onclick="app.saveToStorage(true)" title="Save"><i class="fas fa-save"></i></button>
+    <button class="btn-icon-sm" onclick="showScreen('preview')" title="Preview"><i class="fas fa-eye"></i></button>
+  </div>
+</nav>
+
+<!-- MAIN APP LAYOUT -->
+<div id="app">
+  <!-- DESKTOP SIDEBAR -->
+  <aside id="sidebar">
+    <div style="padding:16px 20px 8px">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    <div class="step-group">
+      <div class="step-group-label">Setup</div>
+      <button class="step-btn active" data-step="templates"><span class="step-icon"><i class="fas fa-swatchbook"></i></span>Templates</button>
+      <button class="step-btn" data-step="personal"><span class="step-icon"><i class="fas fa-user"></i></span>Personal Info</button>
+      <button class="step-btn" data-step="social"><span class="step-icon"><i class="fas fa-share-alt"></i></span>Social Links</button>
+      <button class="step-btn" data-step="photo"><span class="step-icon"><i class="fas fa-camera"></i></span>Profile Photo</button>
+    </div>
+    <div class="step-group">
+      <div class="step-group-label">Content</div>
+      <button class="step-btn" data-step="work"><span class="step-icon"><i class="fas fa-briefcase"></i></span>Work Experience</button>
+      <button class="step-btn" data-step="certs"><span class="step-icon"><i class="fas fa-certificate"></i></span>Certifications</button>
+      <button class="step-btn" data-step="education"><span class="step-icon"><i class="fas fa-graduation-cap"></i></span>Education</button>
+      <button class="step-btn" data-step="references"><span class="step-icon"><i class="fas fa-users"></i></span>References</button>
+      <button class="step-btn" data-step="skills"><span class="step-icon"><i class="fas fa-tools"></i></span>Skills</button>
+      <button class="step-btn" data-step="languages"><span class="step-icon"><i class="fas fa-language"></i></span>Languages</button>
+    </div>
+    <div class="step-group">
+      <div class="step-group-label">Finish</div>
+      <button class="step-btn" data-step="review"><span class="step-icon"><i class="fas fa-check-circle"></i></span>Review & Generate</button>
+    </div>
+  </aside>
+
+  <!-- EDITOR -->
+  <section id="editor" id="editor-section">
+    <div id="editor-content"></div>
+  </section>
+
+  <!-- PREVIEW (DESKTOP) -->
+  <main id="preview-wrap">
+    <div class="preview-actions">
+      <button class="btn btn-secondary btn-sm" onclick="showScreen('preview')"><i class="fas fa-expand"></i> Full Preview</button>
+      <button class="btn btn-primary btn-sm" onclick="startExport()"><i class="fas fa-download"></i> Export PDF</button>
+    </div>
+    <div id="preview-scroll-area">
+      <div id="cv-paper" class="t-executive"></div>
+    </div>
+  </main>
+</div>
+
+<!-- MOBILE STICKY STEP NAV BAR (sits above bottom nav) -->
+<div id="mobile-step-bar">
+  <div class="step-bar-inner">
+    <button class="btn btn-secondary btn-sm" id="mb-back-btn" onclick="app.prevStep()"><i class="fas fa-arrow-left"></i> Back</button>
+    <span class="step-bar-label" id="mb-step-label">Select Template</span>
+    <button class="btn btn-primary btn-sm" id="mb-next-btn" onclick="app.nextStep()">Next <i class="fas fa-arrow-right"></i></button>
+  </div>
+</div>
+
+<!-- BOTTOM MOBILE NAV -->
+<div id="bottom-nav">
+  <div class="bnav-item active" data-screen="create" onclick="showScreen('create')">
+    <i class="fas fa-plus-circle"></i><span>Create</span>
+  </div>
+  <div class="bnav-item" data-screen="preview" onclick="showScreen('preview')">
+    <i class="fas fa-eye"></i><span>Preview</span>
+  </div>
+  <div class="bnav-item" data-screen="archive" onclick="showScreen('archive')">
+    <i class="fas fa-folder-open"></i><span>Archive</span>
+  </div>
+</div>
+
+<!-- MOBILE TEMPLATE PREVIEW MODAL -->
+<div id="tpl-preview-modal">
+  <div class="tpl-modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="tpl-modal-header">
+      <div>
+        <div style="font-size:17px;font-weight:700" id="tpl-modal-name"></div>
+        <div style="font-size:12px;color:var(--muted)" id="tpl-modal-desc"></div>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="closeTplModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="tpl-modal-preview" id="tpl-modal-preview-wrap">
+      <div id="tpl-modal-cv" style="transform:scale(0.45);transform-origin:top left;width:210mm;min-height:297mm;pointer-events:none"></div>
+    </div>
+    <div class="tpl-modal-actions">
+      <button class="btn btn-success btn-full" id="tpl-modal-select-btn"><i class="fas fa-check"></i> Select This Template</button>
+    </div>
+  </div>
+</div>
+
+<!-- FULL PREVIEW SCREEN -->
+<div id="preview-screen">
+  <div id="preview-screen-header">
+    <button class="btn btn-secondary btn-sm" onclick="closePreviewScreen()"><i class="fas fa-arrow-left"></i> Back</button>
+    <div class="zoom-controls">
+      <button class="zoom-btn" onclick="adjustZoom(-0.1)">−</button>
+      <span id="zoom-pct">100%</span>
+      <button class="zoom-btn" onclick="adjustZoom(0.1)">+</button>
+    </div>
+    <button class="btn btn-outline btn-sm" onclick="showChangeTplModal()" style="border-color:rgba(255,255,255,.4);color:#fff"><i class="fas fa-swatchbook"></i> Theme</button>
+  </div>
+  <div id="preview-screen-body">
+    <div id="cv-paper-preview" class="t-executive"></div>
+  </div>
+  <div id="preview-screen-footer">
+    <button class="btn btn-success" onclick="startExport()"><i class="fas fa-download"></i> Export PDF</button>
+    <button class="btn btn-secondary" onclick="closePreviewScreen();showScreen('create')"><i class="fas fa-edit"></i> Edit</button>
+  </div>
+</div>
+
+<!-- EXPORT OVERLAY -->
+<div id="export-overlay">
+  <div class="export-circle">
+    <svg width="100" height="100" viewBox="0 0 100 100">
+      <circle class="track" cx="50" cy="50" r="45"/>
+      <circle class="fill" id="export-fill" cx="50" cy="50" r="45"/>
+    </svg>
+    <div class="export-pct" id="export-pct">0%</div>
+  </div>
+  <div class="export-label" id="export-label">Preparing your CV...</div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div id="toast-wrap"></div>
+
+<!-- DEDICATED PRINT CONTAINER (never shown on screen, only used during window.print()) -->
+<div id="print-container">
+  <div id="print-cv" class="t-executive"></div>
+</div>
+
+<!-- ARCHIVE MODAL OVERLAY -->
+<div id="archive-modal-wrap" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:700;padding:80px 20px 20px">
+  <div style="background:#fff;border-radius:16px;max-width:700px;margin:0 auto;height:calc(100vh - 100px);overflow:hidden;display:flex;flex-direction:column">
+    <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
+      <h2 style="font-size:18px;font-weight:700"><i class="fas fa-folder-open" style="color:var(--accent);margin-right:8px"></i>CV Archive</h2>
+      <button class="btn btn-secondary btn-sm" onclick="document.getElementById('archive-modal-wrap').style.display='none'"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="archive-list" style="flex:1;overflow-y:auto;padding:16px 24px"></div>
+  </div>
+</div>
+
+<!-- CHANGE TEMPLATE MODAL -->
+<div id="change-tpl-wrap" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:850;padding:80px 20px 20px">
+  <div style="background:#fff;border-radius:16px;max-width:700px;margin:0 auto;height:calc(100vh - 100px);overflow:hidden;display:flex;flex-direction:column">
+    <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
+      <h2 style="font-size:18px;font-weight:700"><i class="fas fa-swatchbook" style="color:var(--accent);margin-right:8px"></i>Change Template</h2>
+      <button class="btn btn-secondary btn-sm" onclick="document.getElementById('change-tpl-wrap').style.display='none'"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="change-tpl-list" style="flex:1;overflow-y:auto;padding:20px 24px"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// TEMPLATE DEFINITIONS
+// ═══════════════════════════════════════════════════
+const TEMPLATES = [
+  {id:'t-executive', name:'Executive Minimal', profession:'Management / Director', icon:'👔', color:'#1a1a1a', thumb:'#f8f8f8', desc:'Serif elegance, high readability for senior roles'},
+  {id:'t-offshore', name:'Offshore Blue', profession:'Drilling / Rig Operations', icon:'⚓', color:'#003366', thumb:'#e6f0ff', desc:'Split layout, professional navy blue'},
+  {id:'t-industrial', name:'Industrial Steel', profession:'Mechanical / Engineering', icon:'⚙️', color:'#2d2d2d', thumb:'#f3f4f6', desc:'Bold condensed, two-column layout'},
+  {id:'t-safety', name:'Safety First', profession:'HSE / Safety Officer', icon:'⚠️', color:'#ffd000', thumb:'#fff9e6', desc:'High-contrast yellow/black, HSE focused'},
+  {id:'t-classic', name:'Classic O&G', profession:'Oil & Gas / Traditional', icon:'🛢️', color:'#000', thumb:'#fffff8', desc:'Times New Roman, professional and clean'},
+  {id:'t-modern', name:'Modern Tech', profession:'ROV / Tech / Automation', icon:'🤖', color:'#0d9488', thumb:'#f0f9f8', desc:'Teal accents, sidebar layout'},
+  {id:'t-grid', name:'Technical Grid', profession:'Surveyor / Inspector', icon:'📊', color:'#1e293b', thumb:'#f8fafc', desc:'Box grid layout, great for credentials'},
+  {id:'t-marine', name:'Maritime', profession:'Marine / Captain / Sailor', icon:'🚢', color:'#001f3f', thumb:'#e8edf4', desc:'Nautical border, Playfair serif'},
+  {id:'t-creative', name:'Creative Bold', profession:'Designer / Marketing / Media', icon:'🎨', color:'#7c3aed', thumb:'#fdf4ff', desc:'Gradient accents, modern typographic'},
+  {id:'t-academic', name:'Academic / Legal', profession:'Researcher / Lawyer / Finance', icon:'📜', color:'#1a1a2e', thumb:'#fffff0', desc:'Formal serif, traditional structure'},
+  {id:'t-medical', name:'Healthcare Pro', profession:'Doctor / Nurse / Medical', icon:'⚕️', color:'#0284c7', thumb:'#f0f9ff', desc:'Clinical blue, badge-style certifications'},
+  {id:'t-dark', name:'Dark Premium', profession:'IT / Cybersecurity / Dev', icon:'💻', color:'#a78bfa', thumb:'#0f172a', desc:'Dark background, purple accents'},
+];
+
+const STEPS = ['templates','personal','social','photo','work','certs','education','references','skills','languages','review'];
+const STEP_NAMES = {
+  templates:'Choose Template',personal:'Personal Info',social:'Social Links',photo:'Profile Photo',
+  work:'Work Experience',certs:'Certifications',education:'Education',references:'References',
+  skills:'Skills',languages:'Languages',review:'Review & Generate'
+};
+
+// ═══════════════════════════════════════════════════
+// APP STATE
+// ═══════════════════════════════════════════════════
+const app = {
+  state: {
+    step: 'templates',
+    template: 't-executive',
+    screen: 'create',
+    cv: {
+      id: Date.now(),
+      personal: {
+        name:'Alex Driller',title:'Senior Toolpusher / Drilling Supervisor',
+        summary:'Results-oriented Offshore Professional with 12+ years of deepwater and jack-up rig operations. BOSIET/IWCF Level 4 certified. Proven HSE leadership and crew management expertise.',
+        email:'alex.driller@email.com',phone:'+44 7700 900123',address:'Aberdeen, Scotland',
+        nationality:'British'
+      },
+      social:{linkedin:'',whatsapp:'',facebook:'',instagram:'',youtube:'',website:'',twitter:'',github:''},
+      photo:{url:'',shape:'circle'},
+      work:[
+        {title:'Senior Toolpusher',company:'Transocean Ltd',companyLogo:'',start:'2019-03',end:'',duties:'Lead drilling operations on deepwater semi-submersible. Manage 120-person crew across three shifts. Maintained zero LTI record for 18 months.',location:'Gulf of Mexico'},
+        {title:'Toolpusher',company:'Nabors Industries',companyLogo:'',start:'2015-06',end:'2019-02',duties:'Supervised well operations on multiple jack-up rigs. Coordinated with client company men and service providers.',location:'North Sea'}
+      ],
+      certs:[
+        {name:'BOSIET (Opito)',issuer:'Falck Safety Services',issuerLogo:'',date:'2023-01',expiry:'2027-01'},
+        {name:'IWCF Level 4',issuer:'IWCF',issuerLogo:'',date:'2022-06',expiry:'2026-06'},
+        {name:'MIST',issuer:'Opito',issuerLogo:'',date:'2021-02',expiry:''}
+      ],
+      education:[],
+      references:[],
+      skills:['Directional Drilling','HPHT Operations','Well Control','HSE Management','Crew Supervision','Cyber Chair','BOP Systems'],
+      languages:[{name:'English',level:'Native'},{name:'French',level:'Intermediate'}],
+      hobbies:[]
+    }
+  },
+
+  init(){
+    this.loadFromStorage();
+    this.renderStepNav();
+    this.renderEditor();
+    this.renderPreview('cv-paper');
+    setInterval(()=>this.saveToStorage(),30000);
+  },
+
+  applyPreviewScale(){
+    // Desktop preview uses natural layout + scroll — no transform needed
+  },
+
+  // ─── NAVIGATION ───────────────────
+  setStep(step){
+    this.state.step = step;
+    document.querySelectorAll('.step-btn').forEach(b=>{
+      b.classList.toggle('active', b.dataset.step===step);
+    });
+    this.renderEditor();
+    this.renderProgressBar();
+    if(window.innerWidth<1024) document.getElementById('editor').scrollTop=0;
+    // Sync mobile step bar
+    const idx = STEPS.indexOf(step);
+    const lbl = document.getElementById('mb-step-label');
+    const backBtn = document.getElementById('mb-back-btn');
+    const nextBtn = document.getElementById('mb-next-btn');
+    if(lbl) lbl.textContent = STEP_NAMES[step]||step;
+    if(backBtn) backBtn.style.visibility = idx===0 ? 'hidden' : 'visible';
+    if(nextBtn){
+      if(step==='review'){
+        nextBtn.innerHTML = '<i class="fas fa-eye"></i> Preview';
+        nextBtn.onclick = ()=>app.reviewAndGenerate();
+      } else {
+        nextBtn.innerHTML = 'Next <i class="fas fa-arrow-right"></i>';
+        nextBtn.onclick = ()=>app.nextStep();
+        nextBtn.style.visibility = idx===STEPS.length-1 ? 'hidden' : 'visible';
+      }
+    }
+  },
+
+  nextStep(){
+    const idx = STEPS.indexOf(this.state.step);
+    if(idx<STEPS.length-1) this.setStep(STEPS[idx+1]);
+  },
+  prevStep(){
+    const idx = STEPS.indexOf(this.state.step);
+    if(idx>0) this.setStep(STEPS[idx-1]);
+  },
+
+  renderStepNav(){
+    document.querySelectorAll('.step-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>this.setStep(btn.dataset.step));
+    });
+  },
+
+  renderProgressBar(){
+    const bar = document.getElementById('progress-bar');
+    if(!bar) return;
+    const cur = STEPS.indexOf(this.state.step);
+    bar.innerHTML = STEPS.map((s,i)=>`<div class="prog-dot ${i<cur?'done':i===cur?'current':''}" onclick="app.setStep('${s}')" title="${STEP_NAMES[s]}"></div>`).join('');
+  },
+
+  // ─── EDITOR RENDERING ────────────
+  renderEditor(){
+    const c = document.getElementById('editor-content');
+    if(!c) return;
+    const step = this.state.step;
+    const navBtns = (showNext=true, showBack=true)=>{
+      const idx = STEPS.indexOf(step);
+      return `<div style="display:flex;gap:10px;margin-top:20px">
+        ${showBack&&idx>0?`<button class="btn btn-secondary" onclick="app.prevStep()"><i class="fas fa-arrow-left"></i> Back</button>`:''}
+        ${showNext&&idx<STEPS.length-1?`<button class="btn btn-primary" style="flex:1;justify-content:center" onclick="app.nextStep()">Next: ${STEP_NAMES[STEPS[idx+1]]} <i class="fas fa-arrow-right"></i></button>`:''}
+      </div>`;
+    };
+
+    let html = '';
+    const cv = this.state.cv;
+
+    switch(step){
+      // ── TEMPLATES ───────────────
+      case 'templates':
+        html = `<div class="form-title"><i class="fas fa-swatchbook" style="color:var(--accent);margin-right:8px"></i>Choose a Template</div>
+        <div class="form-subtitle">Tap to preview. Select to use.</div>
+        <div class="templates-grid" id="tpl-grid">`;
+        TEMPLATES.forEach(t=>{
+          const sel = this.state.template===t.id;
+          html+=`<div class="tpl-card ${sel?'selected':''}" onclick="app.handleTplTap('${t.id}')">
+            <div class="tpl-thumb" style="background:${t.thumb}">
+              <span style="font-size:32px">${t.icon}</span>
+              <div style="position:absolute;bottom:0;left:0;right:0;height:4px;background:${t.color}"></div>
+            </div>
+            <div class="tpl-name">${t.name}</div>
+            <div class="tpl-profession">${t.profession}</div>
+            <div style="height:1px;background:var(--border)"></div>
+            <button class="tpl-select-btn" style="background:${sel?'var(--accent)':'#f8fafc'};color:${sel?'#fff':'var(--text)'}">${sel?'✓ Selected':'Select'}</button>
+          </div>`;
+        });
+        html+=`</div>`;
+        if(this.state.template){
+          html+=`<div class="next-step-bar" style="margin-top:16px">
+            <span><i class="fas fa-check-circle" style="color:var(--accent2)"></i> Template selected</span>
+            <button class="btn btn-primary" onclick="app.nextStep()">Next: Personal Info <i class="fas fa-arrow-right"></i></button>
+          </div>`;
+        }
+        break;
+
+      // ── PERSONAL ────────────────
+      case 'personal':
+        html=`<div class="form-title"><i class="fas fa-user" style="color:var(--accent);margin-right:8px"></i>Personal Info</div>
+        <div class="form-subtitle">Your core professional details</div>
+        <div class="form-group"><label class="form-label"><i class="fas fa-signature"></i>Full Name</label><input type="text" value="${cv.personal.name}" oninput="app.up('personal','name',this.value)" placeholder="John Smith"></div>
+        <div class="form-group"><label class="form-label"><i class="fas fa-briefcase"></i>Job Title / Position</label><input type="text" value="${cv.personal.title}" oninput="app.up('personal','title',this.value)" placeholder="Senior Drilling Engineer"></div>
+        <div class="form-group"><label class="form-label"><i class="fas fa-align-left"></i>Professional Summary</label><textarea rows="5" oninput="app.up('personal','summary',this.value)" placeholder="Brief professional overview...">${cv.personal.summary}</textarea></div>
+        <div class="row">
+          <div class="col form-group"><label class="form-label"><i class="fas fa-envelope"></i>Email</label><input type="email" value="${cv.personal.email}" oninput="app.up('personal','email',this.value)"></div>
+          <div class="col form-group"><label class="form-label"><i class="fas fa-phone"></i>Phone</label><input type="tel" value="${cv.personal.phone}" oninput="app.up('personal','phone',this.value)"></div>
+        </div>
+        <div class="row">
+          <div class="col form-group"><label class="form-label"><i class="fas fa-map-marker-alt"></i>Location</label><input type="text" value="${cv.personal.address}" oninput="app.up('personal','address',this.value)"></div>
+          <div class="col form-group"><label class="form-label"><i class="fas fa-flag"></i>Nationality</label><input type="text" value="${cv.personal.nationality}" oninput="app.up('personal','nationality',this.value)"></div>
+        </div>
+        ${navBtns()}`;
+        break;
+
+      // ── SOCIAL ───────────────────
+      case 'social':
+        const soc = cv.social;
+        const socFields = [
+          {key:'linkedin',icon:'fab fa-linkedin',cls:'si-linkedin',label:'LinkedIn URL'},
+          {key:'whatsapp',icon:'fab fa-whatsapp',cls:'si-whatsapp',label:'WhatsApp Number'},
+          {key:'facebook',icon:'fab fa-facebook',cls:'si-facebook',label:'Facebook URL'},
+          {key:'instagram',icon:'fab fa-instagram',cls:'si-instagram',label:'Instagram URL'},
+          {key:'youtube',icon:'fab fa-youtube',cls:'si-youtube',label:'YouTube Channel'},
+          {key:'website',icon:'fas fa-globe',cls:'si-website',label:'Personal Website'},
+          {key:'twitter',icon:'fab fa-twitter',cls:'si-twitter',label:'Twitter / X'},
+          {key:'github',icon:'fab fa-github',cls:'si-github',label:'GitHub'},
+        ];
+        html=`<div class="form-title"><i class="fas fa-share-alt" style="color:var(--accent);margin-right:8px"></i>Social & Contact Links</div>
+        <div class="form-subtitle">Add links to display on your CV with icons</div>
+        <div class="social-grid">`;
+        socFields.forEach(f=>{
+          html+=`<div class="social-row">
+            <div class="social-icon ${f.cls}"><i class="${f.icon}"></i></div>
+            <input type="url" placeholder="${f.label}" value="${soc[f.key]||''}" oninput="app.up('social','${f.key}',this.value)" style="flex:1">
+          </div>`;
+        });
+        html+=`</div>${navBtns()}`;
+        break;
+
+      // ── PHOTO ─────────────────────
+      case 'photo':
+        html=`<div class="form-title"><i class="fas fa-camera" style="color:var(--accent);margin-right:8px"></i>Profile Photo</div>
+        <div class="form-subtitle">Upload your professional photo</div>
+        <div class="form-group">
+          <label class="file-upload-btn" for="photo-upload"><i class="fas fa-cloud-upload-alt"></i> Click to Upload Photo</label>
+          <input type="file" id="photo-upload" accept="image/*" onchange="app.handlePhoto(this)">
+        </div>
+        ${cv.photo.url?`<div style="display:flex;align-items:center;gap:16px;background:#f8fafc;padding:16px;border-radius:10px;margin-bottom:16px">
+          <img src="${cv.photo.url}" class="cv-photo ${cv.photo.shape}" style="width:80px;height:80px">
+          <div>
+            <div style="font-weight:700;font-size:14px">Photo uploaded</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">Shape: ${cv.photo.shape}</div>
+            <button class="btn btn-danger btn-sm" style="margin-top:8px" onclick="app.up('photo','url','');app.renderEditor()"><i class="fas fa-trash"></i> Remove</button>
+          </div>
+        </div>`:''}
+        <label class="form-label" style="margin-bottom:10px"><i class="fas fa-shapes"></i>Photo Shape</label>
+        <div class="shape-grid">
+          ${[
+            {k:'circle',label:'Circle',sh:'sh-circle'},
+            {k:'rounded',label:'Rounded',sh:'sh-rounded'},
+            {k:'square',label:'Square',sh:'sh-square'},
+            {k:'hexagon',label:'Hexagon',sh:'sh-hexagon'},
+            {k:'diamond',label:'Diamond',sh:'sh-diamond'},
+            {k:'shield',label:'Shield',sh:'sh-shield'},
+            {k:'rhombus',label:'Octagon',sh:'sh-rhombus'},
+          ].map(s=>`<div class="shape-opt ${cv.photo.shape===s.k?'active':''}" onclick="app.up('photo','shape','${s.k}');app.renderEditor()">
+            <div class="shape-preview ${s.sh}" style="width:32px;height:32px">${cv.photo.url?`<img src="${cv.photo.url}" style="width:100%;height:100%;object-fit:cover">`:''}</div>
+            <span class="shape-label">${s.label}</span>
+          </div>`).join('')}
+        </div>
+        ${navBtns()}`;
+        break;
+
+      // ── WORK ──────────────────────
+      case 'work':
+        html=`<div class="form-title"><i class="fas fa-briefcase" style="color:var(--accent);margin-right:8px"></i>Work Experience</div>
+        <div class="form-subtitle">Add positions from most recent first</div>
+        <button class="btn btn-primary btn-full" style="margin-bottom:16px" onclick="app.addWork()"><i class="fas fa-plus"></i> Add Position</button>`;
+        cv.work.forEach((job,i)=>{
+          html+=`<div class="dynamic-item" id="work-${i}">
+            <div class="item-header">
+              <span class="item-title"><i class="fas fa-briefcase" style="color:var(--accent);margin-right:6px"></i>${job.title||'New Position'}</span>
+              <div class="item-actions-row">
+                <button class="btn-icon-tiny del-btn" onclick="app.del('work',${i})"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
+            <label class="logo-upload-zone" for="work-logo-${i}">
+              ${job.companyLogo?`<img src="${job.companyLogo}" class="logo-preview">`:`<div class="logo-placeholder"><i class="fas fa-building"></i></div>`}
+              <div class="logo-upload-text"><strong>Company Logo</strong><br>Click to upload</div>
+            </label>
+            <input type="file" id="work-logo-${i}" accept="image/*" onchange="app.handleLogo('work',${i},'companyLogo',this)">
+            <div class="form-group"><label class="form-label"><i class="fas fa-user-tie"></i>Job Title</label><input type="text" value="${job.title}" oninput="app.upItem('work',${i},'title',this.value)" placeholder="e.g. Senior Drilling Engineer"></div>
+            <div class="form-group"><label class="form-label"><i class="fas fa-building"></i>Company Name</label><input type="text" value="${job.company}" oninput="app.upItem('work',${i},'company',this.value)" placeholder="e.g. Transocean Ltd"></div>
+            <div class="form-group"><label class="form-label"><i class="fas fa-map-pin"></i>Location</label><input type="text" value="${job.location||''}" oninput="app.upItem('work',${i},'location',this.value)" placeholder="e.g. North Sea, UK"></div>
+            <div class="row">
+              <div class="col form-group"><label class="form-label"><i class="fas fa-calendar-alt"></i>From</label><input type="month" value="${job.start}" onchange="app.upItem('work',${i},'start',this.value)"></div>
+              <div class="col form-group"><label class="form-label"><i class="fas fa-calendar-alt"></i>To</label><input type="month" value="${job.end}" onchange="app.upItem('work',${i},'end',this.value)" placeholder="Leave blank if current"></div>
+            </div>
+            <div class="form-group"><label class="form-label"><i class="fas fa-list-ul"></i>Duties & Achievements</label><textarea rows="4" oninput="app.upItem('work',${i},'duties',this.value)" placeholder="Describe key responsibilities and achievements...">${job.duties}</textarea></div>
+          </div>`;
+        });
+        html+=navBtns();
+        break;
+
+      // ── CERTS ─────────────────────
+      case 'certs':
+        html=`<div class="form-title"><i class="fas fa-certificate" style="color:var(--accent);margin-right:8px"></i>Certifications</div>
+        <div class="form-subtitle">Add professional certificates and licenses</div>
+        <button class="btn btn-primary btn-full" style="margin-bottom:16px" onclick="app.addCert()"><i class="fas fa-plus"></i> Add Certification</button>`;
+        cv.certs.forEach((cert,i)=>{
+          html+=`<div class="dynamic-item">
+            <div class="item-header">
+              <span class="item-title"><i class="fas fa-certificate" style="color:var(--accent2);margin-right:6px"></i>${cert.name||'New Certificate'}</span>
+              <button class="btn-icon-tiny del-btn" onclick="app.del('certs',${i})"><i class="fas fa-trash"></i></button>
+            </div>
+            <label class="logo-upload-zone" for="cert-logo-${i}">
+              ${cert.issuerLogo?`<img src="${cert.issuerLogo}" class="logo-preview">`:`<div class="logo-placeholder"><i class="fas fa-university"></i></div>`}
+              <div class="logo-upload-text"><strong>Issuer Logo</strong><br>Click to upload</div>
+            </label>
+            <input type="file" id="cert-logo-${i}" accept="image/*" onchange="app.handleLogo('certs',${i},'issuerLogo',this)">
+            <div class="form-group"><label class="form-label"><i class="fas fa-file-certificate"></i>Certificate Name</label><input type="text" value="${cert.name}" oninput="app.upItem('certs',${i},'name',this.value)"></div>
+            <div class="form-group"><label class="form-label"><i class="fas fa-university"></i>Issuing Organisation</label><input type="text" value="${cert.issuer}" oninput="app.upItem('certs',${i},'issuer',this.value)"></div>
+            <div class="row">
+              <div class="col form-group"><label class="form-label"><i class="fas fa-calendar-check"></i>Issue Date</label><input type="month" value="${cert.date}" onchange="app.upItem('certs',${i},'date',this.value)"></div>
+              <div class="col form-group"><label class="form-label"><i class="fas fa-calendar-times"></i>Expiry Date</label><input type="month" value="${cert.expiry}" onchange="app.upItem('certs',${i},'expiry',this.value)"></div>
+            </div>
+          </div>`;
+        });
+        html+=navBtns();
+        break;
+
+      // ── EDUCATION ──────────────────
+      case 'education':
+        html=`<div class="form-title"><i class="fas fa-graduation-cap" style="color:var(--accent);margin-right:8px"></i>Education</div>
+        <div class="form-subtitle">Academic qualifications and training</div>
+        <button class="btn btn-primary btn-full" style="margin-bottom:16px" onclick="app.addEdu()"><i class="fas fa-plus"></i> Add Education</button>`;
+        (cv.education||[]).forEach((edu,i)=>{
+          html+=`<div class="dynamic-item">
+            <div class="item-header">
+              <span class="item-title"><i class="fas fa-graduation-cap" style="color:var(--accent);margin-right:6px"></i>${edu.degree||'New Qualification'}</span>
+              <button class="btn-icon-tiny del-btn" onclick="app.del('education',${i})"><i class="fas fa-trash"></i></button>
+            </div>
+            <label class="logo-upload-zone" for="edu-logo-${i}">
+              ${edu.institutionLogo?`<img src="${edu.institutionLogo}" class="logo-preview">`:`<div class="logo-placeholder"><i class="fas fa-school"></i></div>`}
+              <div class="logo-upload-text"><strong>Institution Logo</strong><br>Click to upload</div>
+            </label>
+            <input type="file" id="edu-logo-${i}" accept="image/*" onchange="app.handleLogo('education',${i},'institutionLogo',this)">
+            <div class="form-group"><label class="form-label"><i class="fas fa-scroll"></i>Degree / Qualification</label><input type="text" value="${edu.degree||''}" oninput="app.upItem('education',${i},'degree',this.value)"></div>
+            <div class="form-group"><label class="form-label"><i class="fas fa-university"></i>Institution</label><input type="text" value="${edu.institution||''}" oninput="app.upItem('education',${i},'institution',this.value)"></div>
+            <div class="row">
+              <div class="col form-group"><label class="form-label"><i class="fas fa-calendar"></i>From</label><input type="month" value="${edu.start||''}" onchange="app.upItem('education',${i},'start',this.value)"></div>
+              <div class="col form-group"><label class="form-label"><i class="fas fa-calendar-check"></i>To</label><input type="month" value="${edu.end||''}" onchange="app.upItem('education',${i},'end',this.value)"></div>
+            </div>
+            <div class="form-group"><label class="form-label"><i class="fas fa-info-circle"></i>Details / Grade</label><textarea rows="2" oninput="app.upItem('education',${i},'details',this.value)" placeholder="Grade, honours, key subjects...">${edu.details||''}</textarea></div>
+          </div>`;
+        });
+        html+=navBtns();
+        break;
+
+      // ── REFERENCES ─────────────────
+      case 'references':
+        html=`<div class="form-title"><i class="fas fa-users" style="color:var(--accent);margin-right:8px"></i>References</div>
+        <div class="form-subtitle">Professional referees</div>
+        <button class="btn btn-primary btn-full" style="margin-bottom:16px" onclick="app.addRef()"><i class="fas fa-plus"></i> Add Reference</button>`;
+        (cv.references||[]).forEach((ref,i)=>{
+          html+=`<div class="dynamic-item">
+            <div class="item-header">
+              <span class="item-title"><i class="fas fa-user" style="color:var(--accent);margin-right:6px"></i>${ref.name||'New Reference'}</span>
+              <button class="btn-icon-tiny del-btn" onclick="app.del('references',${i})"><i class="fas fa-trash"></i></button>
+            </div>
+            <label class="logo-upload-zone" for="ref-logo-${i}">
+              ${ref.companyLogo?`<img src="${ref.companyLogo}" class="logo-preview">`:`<div class="logo-placeholder"><i class="fas fa-building"></i></div>`}
+              <div class="logo-upload-text"><strong>Company Logo</strong><br>Click to upload</div>
+            </label>
+            <input type="file" id="ref-logo-${i}" accept="image/*" onchange="app.handleLogo('references',${i},'companyLogo',this)">
+            <div class="row">
+              <div class="col form-group"><label class="form-label"><i class="fas fa-user"></i>Name</label><input type="text" value="${ref.name||''}" oninput="app.upItem('references',${i},'name',this.value)"></div>
+              <div class="col form-group"><label class="form-label"><i class="fas fa-briefcase"></i>Position</label><input type="text" value="${ref.position||''}" oninput="app.upItem('references',${i},'position',this.value)"></div>
+            </div>
+            <div class="form-group"><label class="form-label"><i class="fas fa-building"></i>Company</label><input type="text" value="${ref.company||''}" oninput="app.upItem('references',${i},'company',this.value)"></div>
+            <div class="row">
+              <div class="col form-group"><label class="form-label"><i class="fas fa-phone"></i>Phone</label><input type="tel" value="${ref.phone||''}" oninput="app.upItem('references',${i},'phone',this.value)"></div>
+              <div class="col form-group"><label class="form-label"><i class="fas fa-envelope"></i>Email</label><input type="email" value="${ref.email||''}" oninput="app.upItem('references',${i},'email',this.value)"></div>
+            </div>
+          </div>`;
+        });
+        html+=navBtns();
+        break;
+
+      // ── SKILLS ────────────────────
+      case 'skills':
+        const skills = cv.skills;
+        html=`<div class="form-title"><i class="fas fa-tools" style="color:var(--accent);margin-right:8px"></i>Skills</div>
+        <div class="form-subtitle">Add your professional skills</div>
+        <div class="skill-input-wrap">
+          <input type="text" id="skill-input" placeholder="Type a skill and press Enter or Add" onkeydown="if(event.key==='Enter'){app.addSkill();event.preventDefault()}">
+          <button class="btn btn-primary" onclick="app.addSkill()"><i class="fas fa-plus"></i></button>
+        </div>
+        <div id="skills-display" style="margin-bottom:16px">
+          ${skills.map((s,i)=>`<span class="skill-pill">${s}<span class="remove" onclick="app.removeSkill(${i})">✕</span></span>`).join('')}
+          ${skills.length===0?'<span style="color:var(--muted);font-size:13px">No skills added yet</span>':''}
+        </div>
+        ${navBtns()}`;
+        break;
+
+      // ── LANGUAGES ─────────────────
+      case 'languages':
+        html=`<div class="form-title"><i class="fas fa-language" style="color:var(--accent);margin-right:8px"></i>Languages</div>
+        <div class="form-subtitle">List languages you speak</div>
+        <button class="btn btn-primary btn-full" style="margin-bottom:16px" onclick="app.addLang()"><i class="fas fa-plus"></i> Add Language</button>`;
+        cv.languages.forEach((lang,i)=>{
+          html+=`<div class="dynamic-item">
+            <div class="item-header">
+              <span class="item-title"><i class="fas fa-globe" style="color:var(--accent);margin-right:6px"></i>${lang.name||'Language'}</span>
+              <button class="btn-icon-tiny del-btn" onclick="app.del('languages',${i})"><i class="fas fa-trash"></i></button>
+            </div>
+            <div class="row">
+              <div class="col form-group"><label class="form-label"><i class="fas fa-language"></i>Language</label><input type="text" value="${lang.name}" oninput="app.upItem('languages',${i},'name',this.value)"></div>
+              <div class="col form-group"><label class="form-label"><i class="fas fa-signal"></i>Proficiency</label>
+                <select onchange="app.upItem('languages',${i},'level',this.value)">
+                  ${['Native','Fluent','Advanced','Intermediate','Basic'].map(l=>`<option ${lang.level===l?'selected':''}>${l}</option>`).join('')}
+                </select>
+              </div>
+            </div>
+          </div>`;
+        });
+        html+=navBtns();
+        break;
+
+      // ── REVIEW ────────────────────
+      case 'review':
+        const wc = cv.work.length, cc = cv.certs.length, ec = (cv.education||[]).length, rc = (cv.references||[]).length;
+        html=`<div class="form-title"><i class="fas fa-check-circle" style="color:var(--success);margin-right:8px"></i>Review & Generate</div>
+        <div class="form-subtitle">Check everything looks good, then generate your CV</div>
+        <div style="background:#f8fafc;border:1.5px solid var(--border);border-radius:12px;padding:18px;margin-bottom:20px">
+          <div style="font-weight:700;font-size:15px;margin-bottom:14px;display:flex;align-items:center;gap:8px"><i class="fas fa-id-card" style="color:var(--accent)"></i>CV Summary</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px">
+            <div class="review-row"><i class="fas fa-user" style="color:var(--accent)"></i> ${cv.personal.name||'Not set'}</div>
+            <div class="review-row"><i class="fas fa-briefcase" style="color:var(--accent)"></i> ${cv.personal.title||'Not set'}</div>
+            <div class="review-row"><i class="fas fa-swatchbook" style="color:var(--accent)"></i> ${TEMPLATES.find(t=>t.id===this.state.template)?.name}</div>
+            <div class="review-row"><i class="fas fa-camera" style="color:var(--accent)"></i> ${cv.photo.url?'Photo added':'No photo'}</div>
+            <div class="review-row"><i class="fas fa-building" style="color:var(--accent)"></i> ${wc} position${wc!==1?'s':''}</div>
+            <div class="review-row"><i class="fas fa-certificate" style="color:var(--accent)"></i> ${cc} cert${cc!==1?'s':''}</div>
+            <div class="review-row"><i class="fas fa-graduation-cap" style="color:var(--accent)"></i> ${ec} edu. record${ec!==1?'s':''}</div>
+            <div class="review-row"><i class="fas fa-users" style="color:var(--accent)"></i> ${rc} reference${rc!==1?'s':''}</div>
+          </div>
+        </div>
+        <button class="btn btn-success btn-full" style="padding:16px;font-size:16px" onclick="app.reviewAndGenerate()">
+          <i class="fas fa-eye"></i> Review & Generate CV
+        </button>
+        <button class="btn btn-secondary btn-full" style="margin-top:10px" onclick="app.prevStep()">
+          <i class="fas fa-arrow-left"></i> Back to Languages
+        </button>`;
+        break;
+    }
+
+    c.innerHTML = html;
+  },
+
+  // ─── DATA HELPERS ─────────────────
+  up(section, field, value){
+    this.state.cv[section][field] = value;
+    this.renderPreview('cv-paper');
+  },
+  upItem(section, index, field, value){
+    this.state.cv[section][index][field] = value;
+    this.renderPreview('cv-paper');
+  },
+  del(section, index){
+    this.state.cv[section].splice(index, 1);
+    this.renderEditor();
+    this.renderPreview('cv-paper');
+  },
+  addWork(){this.state.cv.work.push({title:'',company:'',companyLogo:'',start:'',end:'',duties:'',location:''});this.renderEditor()},
+  addCert(){this.state.cv.certs.push({name:'',issuer:'',issuerLogo:'',date:'',expiry:''});this.renderEditor()},
+  addEdu(){if(!this.state.cv.education)this.state.cv.education=[];this.state.cv.education.push({degree:'',institution:'',institutionLogo:'',start:'',end:'',details:''});this.renderEditor()},
+  addRef(){if(!this.state.cv.references)this.state.cv.references=[];this.state.cv.references.push({name:'',position:'',company:'',companyLogo:'',phone:'',email:''});this.renderEditor()},
+  addLang(){this.state.cv.languages.push({name:'',level:'Intermediate'});this.renderEditor()},
+  addSkill(){
+    const inp = document.getElementById('skill-input');
+    const val = inp.value.trim();
+    if(val&&!this.state.cv.skills.includes(val)){
+      this.state.cv.skills.push(val);
+      inp.value='';
+      this.renderEditor();
+      this.renderPreview('cv-paper');
+    }
+  },
+  removeSkill(i){this.state.cv.skills.splice(i,1);this.renderEditor();this.renderPreview('cv-paper')},
+
+  handlePhoto(input){
+    if(!input.files||!input.files[0]) return;
+    const r=new FileReader();
+    r.onload=(e)=>{this.state.cv.photo.url=e.target.result;this.renderPreview('cv-paper');this.renderEditor()};
+    r.readAsDataURL(input.files[0]);
+  },
+  handleLogo(section, index, field, input){
+    if(!input.files||!input.files[0]) return;
+    const r=new FileReader();
+    r.onload=(e)=>{this.state.cv[section][index][field]=e.target.result;this.renderEditor();this.renderPreview('cv-paper')};
+    r.readAsDataURL(input.files[0]);
+  },
+
+  handleTplTap(id){
+    const isMobile = window.innerWidth < 1024;
+    if(isMobile){
+      openTplModal(id);
+    } else {
+      this.selectTemplate(id);
+    }
+  },
+
+  selectTemplate(id){
+    this.state.template = id;
+    document.getElementById('cv-paper').className = id;
+    this.renderPreview('cv-paper');
+    this.renderEditor();
+    if(document.getElementById('cv-paper-preview'))
+      document.getElementById('cv-paper-preview').className = id;
+    showToast('Template selected: '+TEMPLATES.find(t=>t.id===id)?.name,'success');
+  },
+
+  reviewAndGenerate(){
+    this.saveToStorage();
+    showScreen('preview');
+    this.renderPreview('cv-paper-preview');
+    document.getElementById('preview-screen').classList.add('open');
+  },
+
+  // ─── PREVIEW RENDERING ────────────
+  renderPreview(containerId = 'cv-paper'){
+    const cv = this.state.cv;
+    const c = document.getElementById(containerId);
+    if(!c) return;
+    c.className = this.state.template;
+    const theme = this.state.template;
+    const fd = (d)=>d ? new Date(d+'-01').toLocaleDateString('en-GB',{month:'short',year:'numeric'}) : 'Present';
+
+    // Social links builder
+    const socialIcons = ()=>{
+      const soc = cv.social||{};
+      const map = [
+        {k:'email',icon:'fas fa-envelope',val:cv.personal.email,label:cv.personal.email},
+        {k:'phone',icon:'fas fa-phone',val:cv.personal.phone,label:cv.personal.phone},
+        {k:'linkedin',icon:'fab fa-linkedin',val:soc.linkedin},
+        {k:'whatsapp',icon:'fab fa-whatsapp',val:soc.whatsapp},
+        {k:'facebook',icon:'fab fa-facebook',val:soc.facebook},
+        {k:'instagram',icon:'fab fa-instagram',val:soc.instagram},
+        {k:'youtube',icon:'fab fa-youtube',val:soc.youtube},
+        {k:'website',icon:'fas fa-globe',val:soc.website},
+        {k:'twitter',icon:'fab fa-twitter',val:soc.twitter},
+        {k:'github',icon:'fab fa-github',val:soc.github},
+      ];
+      return map.filter(m=>m.val).map(m=>`<span class="cv-icon-item"><i class="${m.icon}"></i>${m.label||m.val}</span>`).join('');
+    };
+
+    const photoHtml = (size=90, extraStyle='')=>{
+      if(!cv.photo.url) return '';
+      return `<img src="${cv.photo.url}" class="cv-photo ${cv.photo.shape}" style="width:${size}px;height:${size}px;${extraStyle}">`;
+    };
+
+    const companyLogoHtml = (logo)=> logo ? `<img src="${logo}" class="cv-company-logo">` : '';
+    const certLogoHtml = (logo)=> logo ? `<img src="${logo}" class="cv-cert-logo">` : '';
+
+    let h = '';
+
+    if(theme==='t-executive'){
+      h=`<div class="cv-header">
+        ${photoHtml(90,'border-radius:50%;border:3px solid #1a1a1a;flex-shrink:0')}
+        <div class="cv-header-text">
+          <h1>${cv.personal.name}</h1>
+          <div class="sub">${cv.personal.title}</div>
+          <div class="cv-icon-row">${socialIcons()}</div>
+        </div>
+      </div>
+      ${cv.personal.summary?`<div class="cv-section"><div class="sec-title">Professional Summary</div><p style="font-size:13px;line-height:1.6">${cv.personal.summary}</p></div>`:''}
+      <div class="cv-section"><div class="sec-title">Work Experience</div>
+        ${cv.work.map(j=>`<div class="job-entry"><div style="display:flex;align-items:center;justify-content:space-between"><div>${companyLogoHtml(j.companyLogo)}<strong style="font-size:14px">${j.title}</strong></div><span style="font-size:11px;color:#666">${fd(j.start)} – ${fd(j.end)}</span></div><div style="font-style:italic;color:#555;font-size:12px;margin:3px 0">${j.company}${j.location?` · ${j.location}`:''}</div><div style="font-size:12px;line-height:1.5;white-space:pre-line">${j.duties}</div></div>`).join('')}
+      </div>
+      <div class="cv-section"><div class="sec-title">Certifications</div>
+        ${cv.certs.map(c=>`<div style="font-size:12px;margin-bottom:6px;display:flex;align-items:center;gap:4px">${certLogoHtml(c.issuerLogo)}<strong>${c.name}</strong> — ${c.issuer}${c.expiry?` · Exp: ${fd(c.expiry)}`:''}</div>`).join('')}
+      </div>
+      ${(cv.education||[]).length?`<div class="cv-section"><div class="sec-title">Education</div>${cv.education.map(e=>`<div style="font-size:12px;margin-bottom:6px">${companyLogoHtml(e.institutionLogo)}<strong>${e.degree}</strong> — ${e.institution}${e.end?` · ${fd(e.end)}`:''}</div>`).join('')}</div>`:''}
+      ${cv.skills.length?`<div class="cv-section"><div class="sec-title">Skills</div><div style="display:flex;flex-wrap:wrap;gap:6px">${cv.skills.map(s=>`<span style="background:#f1f1f1;padding:3px 8px;font-size:11px;font-family:'Plus Jakarta Sans',sans-serif">${s}</span>`).join('')}</div></div>`:''}
+      ${(cv.references||[]).length?`<div class="cv-section"><div class="sec-title">References</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">${cv.references.map(r=>`<div style="font-size:11px;border:1px solid #eee;padding:8px">${companyLogoHtml(r.companyLogo)}<strong>${r.name}</strong><br>${r.position}, ${r.company}<br>${r.phone}</div>`).join('')}</div></div>`:''}`;
+    }
+    else if(theme==='t-offshore'){
+      h=`<div class="sidebar">
+        ${photoHtml(120,'display:block;margin:0 auto 16px;border:3px solid rgba(255,255,255,.3);')}
+        <h1>${cv.personal.name}</h1>
+        <div style="font-size:13px;opacity:.8;margin-bottom:16px">${cv.personal.title}</div>
+        <h3><i class="fas fa-address-card" style="margin-right:6px"></i>Contact</h3>
+        <div class="cv-icon-row" style="flex-direction:column;font-size:11px;gap:5px">${socialIcons()}</div>
+        <h3><i class="fas fa-tools" style="margin-right:6px"></i>Skills</h3>
+        ${cv.skills.map(s=>`<div style="font-size:11px;padding:3px 0;opacity:.9">▹ ${s}</div>`).join('')}
+        ${cv.languages.length?`<h3><i class="fas fa-language" style="margin-right:6px"></i>Languages</h3>${cv.languages.map(l=>`<div style="font-size:11px;opacity:.9">${l.name} — ${l.level}</div>`).join('')}`:''}
+      </div>
+      <div class="main">
+        <h2><i class="fas fa-user" style="margin-right:6px"></i>Profile</h2><p style="font-size:13px;line-height:1.6">${cv.personal.summary}</p>
+        <h2><i class="fas fa-briefcase" style="margin-right:6px"></i>Experience</h2>
+        ${cv.work.map(j=>`<div style="margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid #f0f0f0"><div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">${companyLogoHtml(j.companyLogo)}<strong style="font-size:14px">${j.title}</strong></div><div style="color:#003366;font-size:12px;font-weight:600">${j.company}${j.location?` · ${j.location}`:''}</div><div style="color:#888;font-size:11px;margin-bottom:5px">${fd(j.start)} – ${fd(j.end)}</div><div style="font-size:12px;line-height:1.5;white-space:pre-line">${j.duties}</div></div>`).join('')}
+        <h2><i class="fas fa-certificate" style="margin-right:6px"></i>Certifications</h2>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">${cv.certs.map(c=>`<span style="background:#e8f0fb;color:#003366;padding:4px 8px;font-size:11px;border-radius:4px;display:flex;align-items:center;gap:4px">${certLogoHtml(c.issuerLogo)}${c.name}</span>`).join('')}</div>
+        ${(cv.education||[]).length?`<h2><i class="fas fa-graduation-cap" style="margin-right:6px"></i>Education</h2>${cv.education.map(e=>`<div style="font-size:12px;margin-bottom:6px">${companyLogoHtml(e.institutionLogo)}<strong>${e.degree}</strong> — ${e.institution}</div>`).join('')}`:''}
+        ${(cv.references||[]).length?`<h2><i class="fas fa-users" style="margin-right:6px"></i>References</h2><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${cv.references.map(r=>`<div style="font-size:11px;background:#f8fafc;padding:8px;border-radius:4px">${companyLogoHtml(r.companyLogo)}<strong>${r.name}</strong><br>${r.position}<br>${r.company}</div>`).join('')}</div>`:''}
+      </div>`;
+    }
+    else if(theme==='t-industrial'){
+      h=`<div class="header-bar">
+        ${photoHtml(72,'border:2px solid #e67e22;flex-shrink:0')}
+        <div>
+          <h1>${cv.personal.name}</h1>
+          <div style="color:#bdc3c7;font-size:16px;margin-top:4px">${cv.personal.title}</div>
+          <div style="color:#bdc3c7;font-size:11px;margin-top:6px">${cv.personal.email} · ${cv.personal.phone} · ${cv.personal.address}</div>
+        </div>
+      </div>
+      <div class="content">
+        <div><h3><i class="fas fa-user" style="margin-right:6px"></i>Summary</h3><p style="font-size:12px;line-height:1.5">${cv.personal.summary}</p></div>
+        <div><h3><i class="fas fa-briefcase" style="margin-right:6px"></i>Experience</h3>
+          ${cv.work.map(j=>`<div style="margin-bottom:14px;break-inside:avoid">${companyLogoHtml(j.companyLogo)}<strong>${j.title}</strong><div style="color:#e67e22;font-size:11px">${j.company} · ${fd(j.start)}–${fd(j.end)}</div><div style="font-size:11px;margin-top:3px;line-height:1.4">${j.duties}</div></div>`).join('')}
+        </div>
+        <div><h3><i class="fas fa-certificate" style="margin-right:6px"></i>Certifications</h3>
+          ${cv.certs.map(c=>`<div style="font-size:11px;margin-bottom:4px">${certLogoHtml(c.issuerLogo)}${c.name} (${c.issuer})</div>`).join('')}
+        </div>
+        <div><h3><i class="fas fa-tools" style="margin-right:6px"></i>Skills</h3><div style="font-size:12px">${cv.skills.join(' · ')}</div></div>
+        ${cv.languages.length?`<div><h3><i class="fas fa-language" style="margin-right:6px"></i>Languages</h3>${cv.languages.map(l=>`<div style="font-size:11px">${l.name}: ${l.level}</div>`).join('')}</div>`:''}
+      </div>`;
+    }
+    else if(theme==='t-safety'){
+      h=`<div class="warning-bar">⚠ SAFETY FIRST · ZERO HARM · FULL COMPLIANCE ⚠</div>
+      <div class="header">
+        <div>
+          <h1>${cv.personal.name}</h1>
+          <div style="font-size:16px;margin-top:4px">${cv.personal.title}</div>
+          <div class="cv-icon-row" style="margin-top:8px;font-size:11px">${socialIcons()}</div>
+        </div>
+        ${photoHtml(100,'border:3px solid #000')}
+      </div>
+      <div class="content">
+        <h3><i class="fas fa-user" style="margin-right:6px"></i>Professional Summary</h3>
+        <p style="font-size:13px;line-height:1.6">${cv.personal.summary}</p>
+        <h3><i class="fas fa-briefcase" style="margin-right:6px"></i>Employment History</h3>
+        ${cv.work.map(j=>`<div style="margin-bottom:16px"><div style="font-weight:700;font-size:14px;display:flex;align-items:center;gap:6px">${companyLogoHtml(j.companyLogo)}${j.title} @ ${j.company}</div><small style="color:#555">${fd(j.start)} – ${fd(j.end)}</small><div style="font-size:12px;margin-top:4px;line-height:1.5">${j.duties}</div></div>`).join('')}
+        <h3><i class="fas fa-certificate" style="margin-right:6px"></i>HSE Certifications</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">${cv.certs.map(c=>`<div style="background:#ffd000;padding:6px 10px;font-size:11px;font-weight:700;border:1px solid #000;display:flex;align-items:center;gap:4px">${certLogoHtml(c.issuerLogo)}${c.name}</div>`).join('')}</div>
+        <h3><i class="fas fa-tools" style="margin-right:6px"></i>Competencies</h3>
+        <div style="font-size:12px;line-height:2">${cv.skills.map(s=>`<span style="margin-right:10px">⬛ ${s}</span>`).join('')}</div>
+      </div>`;
+    }
+    else if(theme==='t-classic'){
+      h=`<h1>${cv.personal.name}</h1>
+      <div class="contact-line">
+        <div class="cv-icon-row" style="justify-content:center">${socialIcons()}</div>
+      </div>
+      ${cv.photo.url?`<div style="text-align:center;margin-bottom:20px">${photoHtml(80,'display:inline-block')}</div>`:''}
+      <h3><i class="fas fa-user" style="margin-right:6px"></i>Professional Profile</h3>
+      <p style="font-size:13px;line-height:1.6">${cv.personal.summary}</p>
+      <h3><i class="fas fa-briefcase" style="margin-right:6px"></i>Work Experience</h3>
+      ${cv.work.map(j=>`<div style="margin-bottom:16px"><div style="font-weight:700;font-size:14px;display:flex;align-items:center;gap:6px">${companyLogoHtml(j.companyLogo)}${j.company} — ${j.title}</div><div style="font-style:italic;font-size:12px;margin:3px 0">${fd(j.start)} to ${fd(j.end)}</div><div style="font-size:13px;line-height:1.5;white-space:pre-line">${j.duties}</div></div>`).join('')}
+      <h3><i class="fas fa-certificate" style="margin-right:6px"></i>Certifications & Licenses</h3>
+      ${cv.certs.map(c=>`<div style="font-size:13px;margin-bottom:5px;display:flex;align-items:center;gap:4px">${certLogoHtml(c.issuerLogo)}<strong>${c.name}</strong> — ${c.issuer}${c.expiry?` (Exp: ${fd(c.expiry)})`:''}</div>`).join('')}
+      ${cv.skills.length?`<h3><i class="fas fa-tools" style="margin-right:6px"></i>Technical Skills</h3><p style="font-size:13px">${cv.skills.join(' · ')}</p>`:''}
+      ${cv.languages.length?`<h3><i class="fas fa-language" style="margin-right:6px"></i>Languages</h3>${cv.languages.map(l=>`<span style="font-size:13px;margin-right:16px">${l.name} (${l.level})</span>`).join('')}`:''}`;
+    }
+    else if(theme==='t-modern'){
+      h=`<div class="main">
+        <h1>${cv.personal.name}</h1>
+        <div style="font-size:17px;color:#0d9488;font-weight:600;margin-bottom:8px">${cv.personal.title}</div>
+        <h3><i class="fas fa-align-left" style="margin-right:6px"></i>About</h3>
+        <p style="font-size:13px;line-height:1.6">${cv.personal.summary}</p>
+        <h3><i class="fas fa-briefcase" style="margin-right:6px"></i>Experience</h3>
+        ${cv.work.map(j=>`<div style="margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid #e5e7eb"><div style="display:flex;align-items:center;gap:6px">${companyLogoHtml(j.companyLogo)}<strong style="font-size:14px">${j.title}</strong></div><div style="color:#0d9488;font-size:12px;font-weight:600">${j.company}${j.location?` · ${j.location}`:''}</div><div style="color:#9ca3af;font-size:11px;margin:2px 0 6px">${fd(j.start)} – ${fd(j.end)}</div><div style="font-size:12px;line-height:1.5;white-space:pre-line">${j.duties}</div></div>`).join('')}
+        ${(cv.education||[]).length?`<h3><i class="fas fa-graduation-cap" style="margin-right:6px"></i>Education</h3>${cv.education.map(e=>`<div style="font-size:12px;margin-bottom:8px">${companyLogoHtml(e.institutionLogo)}<strong>${e.degree}</strong><div style="color:#0d9488;font-size:11px">${e.institution}</div></div>`).join('')}`:''}
+      </div>
+      <div class="sidebar">
+        ${photoHtml(120,'display:block;margin:0 auto 20px;width:120px;height:120px')}
+        <h3><i class="fas fa-address-card" style="margin-right:6px"></i>Contact</h3>
+        <div class="cv-icon-row" style="flex-direction:column;font-size:11px;gap:6px">${socialIcons()}</div>
+        <h3><i class="fas fa-certificate" style="margin-right:6px"></i>Certifications</h3>
+        ${cv.certs.map(c=>`<div style="font-size:11px;margin-bottom:8px;background:#fff;padding:6px;border-radius:6px;display:flex;align-items:center;gap:4px">${certLogoHtml(c.issuerLogo)}<div><strong>${c.name}</strong><div style="color:#9ca3af">${c.issuer}</div></div></div>`).join('')}
+        <h3><i class="fas fa-tools" style="margin-right:6px"></i>Skills</h3>
+        ${cv.skills.map(s=>`<div style="background:#0d9488;color:#fff;padding:3px 8px;font-size:10px;border-radius:4px;display:inline-block;margin:2px">${s}</div>`).join('')}
+        ${cv.languages.length?`<h3><i class="fas fa-language" style="margin-right:6px"></i>Languages</h3>${cv.languages.map(l=>`<div style="font-size:11px;margin-bottom:4px"><strong>${l.name}</strong> — ${l.level}</div>`).join('')}`:''}
+        ${(cv.references||[]).length?`<h3><i class="fas fa-users" style="margin-right:6px"></i>References</h3>${cv.references.map(r=>`<div style="font-size:10px;margin-bottom:8px">${companyLogoHtml(r.companyLogo)}<strong>${r.name}</strong><br>${r.position}</div>`).join('')}`:''}
+      </div>`;
+    }
+    else if(theme==='t-grid'){
+      h=`<div class="header">
+        ${photoHtml(70,'flex-shrink:0;border:2px solid rgba(255,255,255,.3)')}
+        <div><h1>${cv.personal.name}</h1><div style="color:#94a3b8;font-size:14px;margin-top:4px">${cv.personal.title}</div><div class="cv-icon-row" style="margin-top:6px;font-size:11px">${socialIcons()}</div></div>
+      </div>
+      <div class="grid-cont">
+        <div class="box full"><h3><i class="fas fa-align-left" style="margin-right:6px"></i>Summary</h3><p style="font-size:12px;line-height:1.5">${cv.personal.summary}</p></div>
+        <div class="box"><h3><i class="fas fa-briefcase" style="margin-right:6px"></i>Experience</h3>
+          ${cv.work.map(j=>`<div style="margin-bottom:10px;font-size:11px"><div style="display:flex;align-items:center;gap:4px">${companyLogoHtml(j.companyLogo)}<strong>${j.title}</strong></div><div style="color:#3b82f6">${j.company}</div><div style="color:#9ca3af">${fd(j.start)}–${fd(j.end)}</div></div>`).join('')}
+        </div>
+        <div class="box"><h3><i class="fas fa-certificate" style="margin-right:6px"></i>Certifications</h3>
+          ${cv.certs.map(c=>`<div style="font-size:11px;margin-bottom:6px;display:flex;align-items:center;gap:4px">${certLogoHtml(c.issuerLogo)}${c.name}</div>`).join('')}
+          ${cv.skills.length?`<h3 style="margin-top:12px"><i class="fas fa-tools" style="margin-right:6px"></i>Skills</h3><div style="font-size:11px">${cv.skills.join(' · ')}</div>`:''}
+        </div>
+        ${(cv.education||[]).length?`<div class="box"><h3><i class="fas fa-graduation-cap" style="margin-right:6px"></i>Education</h3>${cv.education.map(e=>`<div style="font-size:11px;margin-bottom:6px">${companyLogoHtml(e.institutionLogo)}<strong>${e.degree}</strong><br>${e.institution}</div>`).join('')}</div>`:''}
+        ${(cv.references||[]).length?`<div class="box"><h3><i class="fas fa-users" style="margin-right:6px"></i>References</h3>${cv.references.map(r=>`<div style="font-size:11px;margin-bottom:6px">${companyLogoHtml(r.companyLogo)}<strong>${r.name}</strong><br>${r.position}, ${r.company}</div>`).join('')}</div>`:''}
+      </div>`;
+    }
+    else if(theme==='t-marine'){
+      h=`<div class="inner">
+        ${photoHtml(90,'display:block;margin:0 auto 12px')}
+        <h1>${cv.personal.name}</h1>
+        <div class="subtitle">${cv.personal.title} // ${cv.personal.nationality||''}</div>
+        <div class="cv-icon-row" style="justify-content:center;font-size:11px;margin-bottom:20px">${socialIcons()}</div>
+        <h3><i class="fas fa-compass" style="margin-right:6px"></i>Executive Summary</h3>
+        <p style="font-size:13px;line-height:1.6">${cv.personal.summary}</p>
+        <h3><i class="fas fa-anchor" style="margin-right:6px"></i>Sea Service / Experience</h3>
+        ${cv.work.map(j=>`<div style="margin-bottom:14px;border-left:2px solid #001f3f;padding-left:12px"><div style="display:flex;align-items:center;gap:6px">${companyLogoHtml(j.companyLogo)}<strong>${j.title}</strong> – ${j.company}</div><small style="color:#666">${fd(j.start)} to ${fd(j.end)}${j.location?' · '+j.location:''}</small><p style="font-size:12px;margin:5px 0 0;line-height:1.5">${j.duties}</p></div>`).join('')}
+        <h3><i class="fas fa-medal" style="margin-right:6px"></i>Credentials</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px">${cv.certs.map(c=>`<div style="border:1px solid #001f3f;padding:5px 8px;font-size:11px;display:flex;align-items:center;gap:4px">${certLogoHtml(c.issuerLogo)}${c.name}</div>`).join('')}</div>
+        ${cv.skills.length?`<h3><i class="fas fa-tools" style="margin-right:6px"></i>Technical Skills</h3><p style="font-size:12px">${cv.skills.join(' · ')}</p>`:''}
+      </div>`;
+    }
+    else if(theme==='t-creative'){
+      h=`<div class="accent-bar"></div>
+      <div class="header">
+        ${photoHtml(88,'flex-shrink:0;border:4px solid #7c3aed')}
+        <div>
+          <h1>${cv.personal.name}</h1>
+          <div style="font-size:16px;color:#6b7280;font-weight:500;margin-bottom:8px">${cv.personal.title}</div>
+          <div class="cv-icon-row" style="font-size:11px">${socialIcons()}</div>
+        </div>
+      </div>
+      <div class="content">
+        <h3><i class="fas fa-sparkles" style="margin-right:6px"></i>About Me</h3>
+        <p style="font-size:13px;line-height:1.6">${cv.personal.summary}</p>
+        <h3><i class="fas fa-briefcase" style="margin-right:6px"></i>Experience</h3>
+        ${cv.work.map(j=>`<div style="margin-bottom:16px"><div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">${companyLogoHtml(j.companyLogo)}<strong style="font-size:14px">${j.title}</strong></div><div style="color:#db2777;font-size:12px;font-weight:600">${j.company}${j.location?' · '+j.location:''}</div><div style="color:#9ca3af;font-size:11px;margin:2px 0 4px">${fd(j.start)} – ${fd(j.end)}</div><div style="font-size:12px;line-height:1.5">${j.duties}</div></div>`).join('')}
+        <h3><i class="fas fa-tools" style="margin-right:6px"></i>Skills</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px">${cv.skills.map(s=>`<span style="background:linear-gradient(135deg,#7c3aed,#db2777);color:#fff;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600">${s}</span>`).join('')}</div>
+        <h3><i class="fas fa-certificate" style="margin-right:6px"></i>Certifications</h3>
+        ${cv.certs.map(c=>`<div style="font-size:12px;margin-bottom:5px;display:flex;align-items:center;gap:4px">${certLogoHtml(c.issuerLogo)}<strong>${c.name}</strong> — ${c.issuer}</div>`).join('')}
+      </div>`;
+    }
+    else if(theme==='t-academic'){
+      h=`<h1>${cv.personal.name}</h1>
+      <div class="divider">✦ &nbsp; ${cv.personal.title} &nbsp; ✦</div>
+      <div style="text-align:center;font-size:12px;margin-bottom:8px" class="cv-icon-row" style="justify-content:center">${socialIcons()}</div>
+      <hr style="border:none;border-top:1px solid #8b7355;margin:16px 0">
+      ${cv.personal.summary?`<h3>Professional Statement</h3><div class="rule"></div><p style="font-size:13px;line-height:1.7;font-style:italic">${cv.personal.summary}</p>`:''}
+      <h3>Professional Experience</h3><div class="rule"></div>
+      ${cv.work.map(j=>`<div style="margin-bottom:16px"><div style="display:flex;justify-content:space-between"><div style="display:flex;align-items:center;gap:6px">${companyLogoHtml(j.companyLogo)}<strong>${j.title}, ${j.company}</strong></div><span style="font-size:11px;color:#666">${fd(j.start)} – ${fd(j.end)}</span></div><div style="font-size:13px;margin-top:4px;line-height:1.5">${j.duties}</div></div>`).join('')}
+      ${(cv.education||[]).length?`<h3>Education</h3><div class="rule"></div>${cv.education.map(e=>`<div style="margin-bottom:10px"><div style="display:flex;align-items:center;gap:6px">${companyLogoHtml(e.institutionLogo)}<strong>${e.degree}</strong></div><div style="font-style:italic;font-size:12px;color:#555">${e.institution}${e.end?' · '+fd(e.end):''}</div></div>`).join('')}`:''}
+      <h3>Certifications &amp; Qualifications</h3><div class="rule"></div>
+      ${cv.certs.map(c=>`<div style="font-size:12px;margin-bottom:5px;display:flex;align-items:center;gap:4px">${certLogoHtml(c.issuerLogo)}<span>${c.name} — ${c.issuer}</span></div>`).join('')}`;
+    }
+    else if(theme==='t-medical'){
+      h=`<div class="header">
+        ${photoHtml(88,'flex-shrink:0;border:3px solid rgba(255,255,255,.5)')}
+        <div>
+          <h1>${cv.personal.name}</h1>
+          <div style="font-size:14px;opacity:.9;margin-bottom:8px">${cv.personal.title}</div>
+          <div class="cv-icon-row" style="font-size:11px">${socialIcons()}</div>
+        </div>
+      </div>
+      <div class="content">
+        <h3><i class="fas fa-user-md" style="margin-right:6px"></i>Professional Summary</h3>
+        <p style="font-size:13px;line-height:1.6">${cv.personal.summary}</p>
+        <h3><i class="fas fa-hospital" style="margin-right:6px"></i>Experience</h3>
+        ${cv.work.map(j=>`<div style="margin-bottom:16px"><div style="display:flex;align-items:center;gap:6px">${companyLogoHtml(j.companyLogo)}<strong style="font-size:14px">${j.title}</strong></div><div style="color:#0284c7;font-size:12px">${j.company}${j.location?' · '+j.location:''}</div><div style="color:#9ca3af;font-size:11px;margin:2px 0 4px">${fd(j.start)} – ${fd(j.end)}</div><div style="font-size:12px;line-height:1.5">${j.duties}</div></div>`).join('')}
+        <h3><i class="fas fa-notes-medical" style="margin-right:6px"></i>Certifications &amp; Licences</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px">${cv.certs.map(c=>`<span class="cert-badge">${certLogoHtml(c.issuerLogo)}${c.name}</span>`).join('')}</div>
+        ${cv.skills.length?`<h3><i class="fas fa-stethoscope" style="margin-right:6px"></i>Clinical Skills</h3><div style="font-size:12px;line-height:2">${cv.skills.map(s=>`<span style="background:#e0f2fe;color:#0284c7;padding:2px 8px;border-radius:4px;margin:2px;display:inline-block;font-size:11px">${s}</span>`).join('')}</div>`:''}
+        ${(cv.references||[]).length?`<h3><i class="fas fa-users" style="margin-right:6px"></i>References</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${cv.references.map(r=>`<div style="font-size:11px;border:1px solid #e0f2fe;padding:8px;border-radius:6px">${companyLogoHtml(r.companyLogo)}<strong>${r.name}</strong><br>${r.position}<br><span style="color:#0284c7">${r.phone}</span></div>`).join('')}</div>`:''}
+      </div>`;
+    }
+    else if(theme==='t-dark'){
+      h=`<div class="header">
+        <div style="display:flex;align-items:center;gap:24px">
+          ${photoHtml(84,'flex-shrink:0;border:2px solid rgba(167,139,250,.4)')}
+          <div>
+            <h1>${cv.personal.name}</h1>
+            <div class="accent" style="font-size:14px;margin-bottom:8px">${cv.personal.title}</div>
+            <div class="cv-icon-row" style="font-size:11px;color:#94a3b8">${socialIcons()}</div>
+          </div>
+        </div>
+      </div>
+      <div class="content">
+        <h3><i class="fas fa-terminal" style="margin-right:6px"></i>About</h3>
+        <p style="font-size:13px;line-height:1.6;color:#94a3b8">${cv.personal.summary}</p>
+        <h3><i class="fas fa-briefcase" style="margin-right:6px"></i>Experience</h3>
+        ${cv.work.map(j=>`<div style="margin-bottom:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);padding:12px;border-radius:8px"><div style="display:flex;align-items:center;gap:6px">${companyLogoHtml(j.companyLogo)}<strong>${j.title}</strong></div><div class="accent" style="font-size:11px;margin:2px 0">${j.company}${j.location?' · '+j.location:''}</div><div style="color:#64748b;font-size:10px;margin-bottom:6px">${fd(j.start)} – ${fd(j.end)}</div><div style="font-size:11px;color:#94a3b8;line-height:1.5">${j.duties}</div></div>`).join('')}
+        <h3><i class="fas fa-tools" style="margin-right:6px"></i>Skills</h3>
+        <div style="margin-bottom:16px">${cv.skills.map(s=>`<span class="tag">${s}</span>`).join('')}</div>
+        <h3><i class="fas fa-certificate" style="margin-right:6px"></i>Certifications</h3>
+        ${cv.certs.map(c=>`<div class="cert-item" style="display:flex;align-items:center;gap:6px">${certLogoHtml(c.issuerLogo)}<div><div style="font-size:12px;font-weight:600">${c.name}</div><div style="font-size:10px;color:#64748b">${c.issuer}</div></div></div>`).join('')}
+        ${(cv.references||[]).length?`<h3><i class="fas fa-users" style="margin-right:6px"></i>References</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${cv.references.map(r=>`<div style="font-size:11px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);padding:10px;border-radius:8px">${companyLogoHtml(r.companyLogo)}<strong>${r.name}</strong><br><span style="color:#64748b">${r.position}</span></div>`).join('')}</div>`:''}
+      </div>`;
+    }
+
+    c.innerHTML = h;
+  },
+
+  // ─── STORAGE ──────────────────────
+  saveToStorage(notify=false){
+    try{
+      const saved = JSON.parse(localStorage.getItem('cvbuilder_archive')||'[]');
+      const idx = saved.findIndex(x=>x.id===this.state.cv.id);
+      const entry = {...this.state.cv, _template: this.state.template};
+      if(idx>-1) saved[idx]=entry; else saved.push(entry);
+      localStorage.setItem('cvbuilder_archive', JSON.stringify(saved));
+      localStorage.setItem('cvbuilder_current', JSON.stringify({cv:this.state.cv,template:this.state.template}));
+      if(notify) showToast('CV saved to archive','success');
+    }catch(e){console.error(e)}
+  },
+  loadFromStorage(){
+    try{
+      const cur = localStorage.getItem('cvbuilder_current');
+      if(cur){
+        const d = JSON.parse(cur);
+        if(d.cv) this.state.cv = d.cv;
+        if(d.template) this.state.template = d.template;
+      }
+      // ensure new fields
+      if(!this.state.cv.social) this.state.cv.social={};
+      if(!this.state.cv.education) this.state.cv.education=[];
+      if(!this.state.cv.references) this.state.cv.references=[];
+    }catch(e){console.error(e)}
+  },
+  deleteCV(id){
+    if(!confirm('Delete this CV?')) return;
+    const saved = JSON.parse(localStorage.getItem('cvbuilder_archive')||'[]');
+    const filtered = saved.filter(x=>x.id!==id);
+    localStorage.setItem('cvbuilder_archive', JSON.stringify(filtered));
+    showArchiveModal();
+    showToast('CV deleted','error');
+  },
+  loadCV(id){
+    const saved = JSON.parse(localStorage.getItem('cvbuilder_archive')||'[]');
+    const entry = saved.find(x=>x.id===id);
+    if(!entry) return;
+    this.state.cv = entry;
+    this.state.template = entry._template || 't-executive';
+    if(!this.state.cv.social) this.state.cv.social={};
+    if(!this.state.cv.education) this.state.cv.education=[];
+    if(!this.state.cv.references) this.state.cv.references=[];
+    document.getElementById('archive-modal-wrap').style.display='none';
+    this.setStep('personal');
+    this.renderPreview('cv-paper');
+    showToast('CV loaded successfully','success');
+    showScreen('create');
+  }
+};
+
+// ═══════════════════════════════════════════════════
+// SCREEN MANAGEMENT
+// ═══════════════════════════════════════════════════
+function showScreen(screen){
+  // Update bottom nav
+  document.querySelectorAll('.bnav-item').forEach(b=>{
+    b.classList.toggle('active', b.dataset.screen===screen);
+  });
+  // Update top pills
+  document.querySelectorAll('.nav-pill').forEach(p=>{
+    p.classList.toggle('active', p.id===`pill-${screen}`);
+  });
+
+  if(screen==='create'){
+    document.getElementById('editor').style.display='';
+    document.getElementById('preview-screen').classList.remove('open');
+    document.getElementById('archive-modal-wrap').style.display='none';
+  } else if(screen==='preview'){
+    document.getElementById('preview-screen').classList.add('open');
+    app.renderPreview('cv-paper-preview');
+    document.getElementById('cv-paper-preview').className = app.state.template;
+    // slight delay so element has layout
+    setTimeout(()=>{
+      scalePreviewScreen();
+      initPinchZoom();
+    }, 60);
+    window.addEventListener('resize', scalePreviewScreen);
+  } else if(screen==='archive'){
+    showArchiveModal();
+    document.getElementById('preview-screen').classList.remove('open');
+  }
+}
+
+// ── preview zoom state ────────────
+let _previewZoom = 1.0;
+
+function adjustZoom(delta){
+  _previewZoom = Math.min(2.0, Math.max(0.3, _previewZoom + delta));
+  applyPreviewZoom();
+}
+
+function applyPreviewZoom(){
+  const p = document.getElementById('cv-paper-preview');
+  if(!p) return;
+  p.style.transform = `scale(${_previewZoom})`;
+  p.style.transformOrigin = 'top center';
+  // adjust bottom margin so container knows the scaled height
+  const naturalH = p.scrollHeight;
+  const scaledH = naturalH * _previewZoom;
+  const diff = scaledH - naturalH;
+  p.style.marginBottom = diff > 0 ? diff+'px' : '0';
+  const pctEl = document.getElementById('zoom-pct');
+  if(pctEl) pctEl.textContent = Math.round(_previewZoom*100)+'%';
+}
+
+function scalePreviewScreen(){
+  const wrap = document.getElementById('preview-screen-body');
+  if(!wrap) return;
+  const w = wrap.clientWidth - 32;
+  const pw = 794; // 210mm in px
+  // Set initial zoom so CV fits the screen width
+  _previewZoom = w < pw ? parseFloat((w/pw).toFixed(2)) : 1.0;
+  applyPreviewZoom();
+}
+
+function applyPreviewScale(){
+  // Desktop inline preview — cv-paper is natural size inside scroll area
+  // No transform needed; the scroll area handles overflow
+}
+
+// Pinch-to-zoom on the preview body
+function initPinchZoom(){
+  const body = document.getElementById('preview-screen-body');
+  if(!body) return;
+  let startDist = 0;
+  let startZoom = 1;
+  body.addEventListener('touchstart', e=>{
+    if(e.touches.length===2){
+      startDist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      startZoom = _previewZoom;
+    }
+  },{passive:true});
+  body.addEventListener('touchmove', e=>{
+    if(e.touches.length===2){
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      _previewZoom = Math.min(2.5, Math.max(0.25, startZoom * (dist/startDist)));
+      applyPreviewZoom();
+    }
+  },{passive:true});
+}
+
+function closePreviewScreen(){
+  document.getElementById('preview-screen').classList.remove('open');
+  document.querySelectorAll('.nav-pill').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pill-create').classList.add('active');
+  document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.bnav-item[data-screen="create"]')?.classList.add('active');
+}
+
+// ═══════════════════════════════════════════════════
+// TEMPLATE MODAL (MOBILE)
+// ═══════════════════════════════════════════════════
+let _tplModalId = null;
+function openTplModal(id){
+  _tplModalId = id;
+  const tpl = TEMPLATES.find(t=>t.id===id);
+  document.getElementById('tpl-modal-name').textContent = tpl.name;
+  document.getElementById('tpl-modal-desc').textContent = tpl.desc;
+  const mc = document.getElementById('tpl-modal-cv');
+  mc.className = id;
+  app.state.template = id;
+  app.renderPreview('tpl-modal-cv');
+  document.getElementById('tpl-modal-select-btn').onclick = ()=>{
+    app.selectTemplate(id);
+    closeTplModal();
+    app.nextStep();
+  };
+  document.getElementById('tpl-preview-modal').classList.add('open');
+}
+function closeTplModal(){
+  document.getElementById('tpl-preview-modal').classList.remove('open');
+}
+
+// ═══════════════════════════════════════════════════
+// ARCHIVE
+// ═══════════════════════════════════════════════════
+function showArchiveModal(){
+  const wrap = document.getElementById('archive-modal-wrap');
+  const list = document.getElementById('archive-list');
+  wrap.style.display='block';
+  const saved = JSON.parse(localStorage.getItem('cvbuilder_archive')||'[]');
+  if(saved.length===0){
+    list.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted)"><i class="fas fa-folder-open" style="font-size:48px;opacity:.3;margin-bottom:16px;display:block"></i><p style="font-size:14px">No saved CVs yet.<br>Create your first CV to see it here.</p></div>';
+    return;
+  }
+  list.innerHTML = saved.map(cv=>{
+    const tpl = TEMPLATES.find(t=>t.id===cv._template)||TEMPLATES[0];
+    return `<div class="archive-card" onclick="previewArchiveCV(${cv.id})" style="cursor:pointer">
+      <div class="archive-thumb" style="background:${tpl.color};font-size:22px">${tpl.icon}</div>
+      <div class="archive-info" style="pointer-events:none">
+        <div class="archive-name">${cv.personal?.name||'Unnamed CV'}</div>
+        <div class="archive-meta">${cv.personal?.title||''} · ${tpl.name} · ${new Date(cv.id).toLocaleDateString()}</div>
+        <div style="font-size:11px;color:var(--accent);margin-top:3px">Tap to preview</div>
+      </div>
+      <div class="archive-actions" onclick="event.stopPropagation()">
+        <button class="arc-btn" title="Edit" onclick="app.loadCV(${cv.id})"><i class="fas fa-edit"></i></button>
+        <button class="arc-btn" title="Share" onclick="shareCV(${cv.id})"><i class="fas fa-share-alt"></i></button>
+        <button class="arc-btn del" title="Delete" onclick="app.deleteCV(${cv.id})"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function shareCV(id){
+  showToast('Share feature – export first, then share the PDF','success');
+}
+
+function previewArchiveCV(id){
+  const saved = JSON.parse(localStorage.getItem('cvbuilder_archive')||'[]');
+  const entry = saved.find(x=>x.id===id);
+  if(!entry) return;
+  // Load into state temporarily for preview
+  const prevCV = app.state.cv;
+  const prevTpl = app.state.template;
+  app.state.cv = entry;
+  app.state.template = entry._template || 't-executive';
+  if(!app.state.cv.social) app.state.cv.social={};
+  if(!app.state.cv.education) app.state.cv.education=[];
+  if(!app.state.cv.references) app.state.cv.references=[];
+  document.getElementById('archive-modal-wrap').style.display='none';
+  showScreen('preview');
+}
+
+// ═══════════════════════════════════════════════════
+// CHANGE TEMPLATE FROM PREVIEW
+// ═══════════════════════════════════════════════════
+function showChangeTplModal(){
+  const wrap = document.getElementById('change-tpl-wrap');
+  const list = document.getElementById('change-tpl-list');
+  list.innerHTML = `<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+    ${TEMPLATES.map(t=>`<div onclick="changeTemplate('${t.id}')" style="border:2px solid ${app.state.template===t.id?'var(--accent)':'var(--border)'};border-radius:10px;overflow:hidden;cursor:pointer;transition:.2s">
+      <div style="height:70px;background:${t.thumb};display:flex;align-items:center;justify-content:center;font-size:26px;position:relative">
+        ${t.icon}
+        <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:${t.color}"></div>
+      </div>
+      <div style="padding:6px 8px;font-size:11px;font-weight:700">${t.name}</div>
+      <div style="padding:0 8px 8px;font-size:10px;color:var(--muted)">${t.profession}</div>
+    </div>`).join('')}
+  </div>`;
+  wrap.style.display='block';
+}
+
+function changeTemplate(id){
+  app.selectTemplate(id);
+  app.renderPreview('cv-paper-preview');
+  document.getElementById('change-tpl-wrap').style.display='none';
+}
+
+// ═══════════════════════════════════════════════════
+// EXPORT
+// ═══════════════════════════════════════════════════
+function startExport(){
+  const overlay = document.getElementById('export-overlay');
+  const fill = document.getElementById('export-fill');
+  const pct = document.getElementById('export-pct');
+  const label = document.getElementById('export-label');
+  const circumference = 283;
+  overlay.classList.add('open');
+  let progress = 0;
+  const steps = [
+    {p:15,t:'Generating layout...'},
+    {p:35,t:'Embedding photos...'},
+    {p:60,t:'Applying styles...'},
+    {p:80,t:'Optimising for print...'},
+    {p:95,t:'Almost there...'},
+    {p:100,t:'Done! Opening PDF dialog...'}
+  ];
+  let si = 0;
+  const run = ()=>{
+    if(si>=steps.length){
+      setTimeout(()=>{
+        // Step 1: render the CV into the dedicated print container
+        const printCV = document.getElementById('print-cv');
+        printCV.className = app.state.template;
+        app.renderPreview('print-cv');
+
+        // Step 2: hide overlay before print dialog opens
+        overlay.classList.remove('open');
+
+        // Step 3: small delay so browser paints the print container, then print
+        setTimeout(()=>{
+          window.print();
+          app.saveToStorage();
+          showToast('CV exported successfully! 🎉','success');
+          setTimeout(()=>showScreen('archive'),1200);
+        }, 80);
+      },400);
+      return;
+    }
+    const s = steps[si++];
+    const duration = si===steps.length ? 300 : 400+Math.random()*200;
+    const startP = progress;
+    const endP = s.p;
+    label.textContent = s.t;
+    const frames = 20;
+    let f=0;
+    const anim = setInterval(()=>{
+      f++;
+      progress = startP + (endP-startP)*(f/frames);
+      const offset = circumference*(1-progress/100);
+      fill.style.strokeDashoffset = offset;
+      pct.textContent = Math.round(progress)+'%';
+      if(f>=frames){clearInterval(anim);setTimeout(run,duration)}
+    },16);
+  };
+  run();
+}
+
+// ═══════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════
+function showToast(msg, type=''){
+  const wrap = document.getElementById('toast-wrap');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.innerHTML = `${type==='success'?'<i class="fas fa-check-circle"></i>':type==='error'?'<i class="fas fa-times-circle"></i>':'<i class="fas fa-info-circle"></i>'} ${msg}`;
+  wrap.appendChild(t);
+  setTimeout(()=>t.remove(), 3200);
+}
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+app.init();
+document.getElementById('pill-create').addEventListener('click',()=>showScreen('create'));
+document.getElementById('pill-preview').addEventListener('click',()=>showScreen('preview'));
+document.getElementById('pill-archive').addEventListener('click',()=>showScreen('archive'));
+</script>
+</body>
+</html>
