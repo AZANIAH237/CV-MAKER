@@ -2,7 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<meta name="theme-color" content="#0a2540">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CV Builder">
+<meta name="description" content="OffshorePro CV Builder – Create professional resumes for any industry">
+<link rel="manifest" id="pwa-manifest">
 <title>OffshorePro CV Builder | Professional Resume Generator</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -68,8 +74,10 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:var(--fon
 }
 .preview-actions button{pointer-events:all}
 #preview-scroll-area{
-  flex:1;overflow-y:auto;overflow-x:hidden;
-  display:flex;justify-content:center;padding:30px 20px 40px;
+  flex:1;overflow-y:auto;overflow-x:auto;
+  display:flex;justify-content:center;
+  align-items:flex-start;
+  padding:30px 20px 60px;
 }
 
 /* ── SIDEBAR STEPS ─────────────── */
@@ -215,7 +223,7 @@ input[type=file]{display:none}
 /* ── CV PAPER (shared base for all paper elements) ─── */
 #cv-paper, #cv-paper-preview, #print-cv, #tpl-modal-cv{
   width:210mm;min-height:297mm;background:#fff;
-  position:relative;overflow:hidden;
+  position:relative;overflow:visible;
 }
 #cv-paper{
   box-shadow:0 8px 32px rgba(0,0,0,.3);
@@ -254,7 +262,9 @@ input[type=file]{display:none}
 
 /* 2. OFFSHORE BLUE */
 .t-offshore{display:grid;grid-template-columns:32% 68%;min-height:297mm;font-family:'DM Sans',sans-serif}
-.t-offshore .sidebar{background:#003366;color:#fff;padding:28px}
+.t-offshore .sidebar{background:#003366;color:#fff;padding:28px;position:relative;overflow:hidden}
+.t-offshore .sidebar::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 20% 80%, rgba(125,211,252,.12) 0%, transparent 50%),radial-gradient(circle at 80% 20%, rgba(255,255,255,.06) 0%, transparent 40%),radial-gradient(circle at 50% 50%, rgba(59,130,246,.08) 0%, transparent 60%);pointer-events:none;z-index:0}
+.t-offshore .sidebar > *{position:relative;z-index:1}
 .t-offshore .main{padding:32px;color:#222}
 .t-offshore .sidebar h3{color:#7dd3fc;font-size:11px;text-transform:uppercase;letter-spacing:2px;border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:6px;margin:20px 0 10px}
 .t-offshore .main h2{color:#003366;font-size:13px;text-transform:uppercase;letter-spacing:1.5px;border-bottom:2.5px solid #003366;padding-bottom:6px;margin:24px 0 12px}
@@ -284,7 +294,9 @@ input[type=file]{display:none}
 /* 6. MODERN TECH */
 .t-modern{display:grid;grid-template-columns:64% 36%;min-height:297mm;font-family:'DM Sans',sans-serif}
 .t-modern .main{padding:40px}
-.t-modern .sidebar{background:#f0f9f8;padding:28px;border-left:3px solid #0d9488}
+.t-modern .sidebar{background:#f0f9f8;padding:28px;border-left:3px solid #0d9488;position:relative;overflow:hidden}
+.t-modern .sidebar::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 10% 90%, rgba(13,148,136,.12) 0%, transparent 45%),radial-gradient(circle at 90% 10%, rgba(20,184,166,.08) 0%, transparent 40%),radial-gradient(circle at 50% 50%, rgba(167,243,208,.1) 0%, transparent 55%);pointer-events:none;z-index:0}
+.t-modern .sidebar > *{position:relative;z-index:1}
 .t-modern h1{font-size:34px;color:#0d9488;font-weight:800;margin-bottom:4px}
 .t-modern h3{color:#0d9488;text-transform:uppercase;letter-spacing:1.5px;font-size:12px;border-bottom:1px solid #d1d5db;padding-bottom:6px;margin:22px 0 10px}
 .t-modern .sidebar h3{color:#374151;border-color:#d1d5db}
@@ -338,6 +350,173 @@ input[type=file]{display:none}
 .t-dark .tag{background:rgba(167,139,250,.15);border:1px solid rgba(167,139,250,.3);color:#a78bfa;padding:3px 9px;border-radius:100px;font-size:11px;display:inline-block;margin:2px}
 .t-dark .cert-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:10px;margin-bottom:8px}
 
+/* 13. CORPORATE SLATE */
+.t-slate{font-family:'DM Sans',sans-serif;background:#fff;min-height:297mm}
+.t-slate .header-stripe{background:#334155;padding:36px 40px;display:flex;align-items:center;gap:28px}
+.t-slate .header-stripe h1{color:#fff;font-size:30px;font-weight:700;letter-spacing:-.5px;margin-bottom:4px}
+.t-slate .header-stripe .title{color:#94a3b8;font-size:14px;font-weight:500}
+.t-slate .header-stripe .contact-strip{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px}
+.t-slate .header-stripe .ci{display:flex;align-items:center;gap:6px;color:#cbd5e1;font-size:11px}
+.t-slate .body{display:grid;grid-template-columns:62% 38%}
+.t-slate .main{padding:30px 28px;border-right:1px solid #e2e8f0}
+.t-slate .aside{padding:28px 24px;background:#f8fafc;position:relative;overflow:hidden}
+.t-slate .aside::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 80% 90%, rgba(51,65,85,.07) 0%, transparent 50%),radial-gradient(circle at 20% 20%, rgba(100,116,139,.05) 0%, transparent 45%);pointer-events:none;z-index:0}
+.t-slate .aside > *{position:relative;z-index:1}
+.t-slate h2{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:#334155;font-weight:800;border-bottom:2px solid #334155;padding-bottom:5px;margin:22px 0 12px}
+.t-slate h2:first-child{margin-top:0}
+.t-slate .aside h2{border-color:#64748b;color:#64748b}
+.t-slate .job-block{margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid #f1f5f9}
+.t-slate .job-block:last-child{border:none}
+
+/* 14. MINIMALIST EDGE */
+.t-edge{font-family:'Cormorant Garamond',serif;padding:52px 56px;background:#fff;min-height:297mm;color:#18181b}
+.t-edge .name-block{border-bottom:1.5px solid #18181b;padding-bottom:18px;margin-bottom:18px}
+.t-edge h1{font-size:42px;font-weight:400;letter-spacing:-1px;line-height:1;margin-bottom:6px}
+.t-edge .tagline{font-size:15px;font-style:italic;color:#71717a;letter-spacing:.3px}
+.t-edge .meta-row{display:flex;flex-wrap:wrap;gap:16px;font-size:11px;color:#52525b;margin-top:8px;font-family:'DM Sans',sans-serif}
+.t-edge .meta-item{display:flex;align-items:center;gap:5px}
+.t-edge h3{font-family:'DM Sans',sans-serif;font-size:9px;text-transform:uppercase;letter-spacing:3px;color:#a1a1aa;font-weight:700;margin:24px 0 8px}
+.t-edge .entry{margin-bottom:16px;display:grid;grid-template-columns:90px 1fr;gap:12px}
+.t-edge .entry-date{font-size:11px;color:#a1a1aa;padding-top:1px;font-family:'DM Sans',sans-serif}
+.t-edge .entry-content strong{font-size:14px;font-weight:600;letter-spacing:-.2px}
+.t-edge .entry-content .sub{font-size:12px;font-style:italic;color:#71717a;margin:1px 0}
+.t-edge .entry-content .body{font-size:12px;line-height:1.6;margin-top:4px;color:#3f3f46}
+.t-edge .skills-wrap{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.t-edge .sk{font-size:11px;border:1px solid #d4d4d8;padding:2px 8px;border-radius:2px;color:#52525b;font-family:'DM Sans',sans-serif}
+
+/* 15. FINANCE PRO */
+.t-finance{font-family:'Cormorant Garamond',serif;background:#fff;min-height:297mm}
+.t-finance .header{background:linear-gradient(135deg,#1e3a5f,#2d5282);padding:38px 40px;display:flex;align-items:center;gap:24px}
+.t-finance h1{color:#fff;font-size:32px;font-weight:600;letter-spacing:.5px;margin-bottom:4px}
+.t-finance .title-tag{color:#f0c040;font-size:14px;font-style:italic}
+.t-finance .gold-bar{height:3px;background:linear-gradient(90deg,#c9922a,#f0c040,#c9922a);margin:0}
+.t-finance .body{display:grid;grid-template-columns:58% 42%}
+.t-finance .main{padding:32px 28px}
+.t-finance .aside{background:#f7f3ed;padding:28px 24px;border-left:3px solid #c9922a;position:relative;overflow:hidden}
+.t-finance .aside::before{content:'';position:absolute;inset:0;background-image:radial-gradient(ellipse at 20% 100%, rgba(201,146,42,.12) 0%, transparent 50%),radial-gradient(ellipse at 90% 10%, rgba(240,192,64,.08) 0%, transparent 45%),radial-gradient(circle at 50% 60%, rgba(201,146,42,.05) 0%, transparent 55%);pointer-events:none;z-index:0}
+.t-finance .aside > *{position:relative;z-index:1}
+.t-finance h2{font-size:14px;font-weight:700;color:#1e3a5f;letter-spacing:.5px;text-transform:uppercase;font-family:'Plus Jakarta Sans',sans-serif;border-bottom:1px solid #c9922a;padding-bottom:6px;margin:22px 0 12px}
+.t-finance h2:first-child{margin-top:0}
+.t-finance .aside h2{color:#8b6914}
+.t-finance .job-entry{margin-bottom:18px;padding-bottom:14px;border-bottom:1px dashed #e5d9c6}
+.t-finance .cert-gold{display:inline-flex;align-items:center;gap:5px;background:#fef9ee;border:1px solid #f0c040;padding:4px 10px;border-radius:4px;font-size:11px;color:#8b6914;font-weight:600;margin:3px;font-family:'Plus Jakarta Sans',sans-serif}
+
+/* 16. SAGE – Wellness / Coaching / Counselling */
+.t-sage{font-family:'DM Sans',sans-serif;background:#f9faf7;min-height:297mm}
+.t-sage .header{background:#e8ede0;padding:40px;display:flex;align-items:center;gap:28px}
+.t-sage h1{font-size:28px;font-weight:700;color:#2d4a22;letter-spacing:-.3px;margin-bottom:4px}
+.t-sage .title{color:#5a7a4a;font-size:14px;font-weight:500;margin-bottom:8px}
+.t-sage .contact-row{display:flex;flex-wrap:wrap;gap:12px;font-size:11px;color:#6b8a5a}
+.t-sage .contact-row span{display:flex;align-items:center;gap:5px}
+.t-sage .body{padding:32px 40px}
+.t-sage h2{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:3px;color:#5a7a4a;margin:24px 0 10px;display:flex;align-items:center;gap:8px}
+.t-sage h2::after{content:'';flex:1;height:1px;background:rgba(90,122,74,.2)}
+.t-sage .job-item{margin-bottom:18px;padding-left:16px;border-left:2px solid #c5d9b0}
+.t-sage .skill-leaf{display:inline-block;background:#e8ede0;color:#2d4a22;padding:3px 10px;border-radius:100px;font-size:11px;margin:2px}
+
+/* 17. ROSE GOLD – Luxury / Fashion / Hospitality */
+.t-rose{font-family:'Cormorant Garamond',serif;background:#fff;min-height:297mm}
+.t-rose .header{background:linear-gradient(160deg,#2c1810,#4a2020);padding:44px;text-align:center;position:relative;overflow:hidden}
+.t-rose .header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1' fill='rgba(255,255,255,0.04)'/%3E%3C/svg%3E")}
+.t-rose h1{color:#fff;font-size:36px;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;position:relative}
+.t-rose .title{color:#d4a574;font-size:14px;font-style:italic;margin-bottom:14px;position:relative}
+.t-rose .divider{width:60px;height:1px;background:#d4a574;margin:12px auto;position:relative}
+.t-rose .contact-row{display:flex;justify-content:center;flex-wrap:wrap;gap:16px;font-size:11px;color:rgba(255,255,255,.65);position:relative}
+.t-rose .body{display:grid;grid-template-columns:65% 35%}
+.t-rose .main{padding:32px 28px;border-right:1px solid #f3e8e0}
+.t-rose .aside{padding:28px 24px;background:#fdf7f5;position:relative;overflow:hidden}
+.t-rose .aside::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 20% 80%, rgba(212,165,116,.15) 0%, transparent 50%),radial-gradient(circle at 85% 15%, rgba(139,80,32,.07) 0%, transparent 40%);pointer-events:none;z-index:0}
+.t-rose .aside > *{position:relative;z-index:1}
+.t-rose h2{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;font-family:'Plus Jakarta Sans',sans-serif;color:#2c1810;border-bottom:1px solid #d4a574;padding-bottom:5px;margin:22px 0 12px}
+.t-rose h2:first-child{margin-top:0}
+.t-rose .job-entry{margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid #f3e8e0}
+.t-rose .cert-pill{display:inline-flex;align-items:center;gap:5px;background:#fdf7f5;border:1px solid #d4a574;color:#8b5020;padding:3px 10px;border-radius:2px;font-size:11px;margin:3px;font-family:'Plus Jakarta Sans',sans-serif}
+
+/* 18. SLATE MIST – Consultant / Strategy / PM */
+.t-mist{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;min-height:297mm}
+.t-mist .accent-col{position:absolute;left:0;top:0;bottom:0;width:6px;background:linear-gradient(180deg,#4f7a9e,#8eb4c8,#c8dce8)}
+.t-mist .wrap{padding:44px 44px 44px 58px;position:relative}
+.t-mist .name-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;padding-bottom:18px;border-bottom:1px solid #e8eef3}
+.t-mist h1{font-size:30px;font-weight:800;color:#1a2e3d;letter-spacing:-.5px;line-height:1.1}
+.t-mist .title-tag{font-size:13px;color:#4f7a9e;font-weight:600;margin-top:4px}
+.t-mist .contact-block{text-align:right;font-size:11px;color:#64748b;display:flex;flex-direction:column;gap:4px}
+.t-mist h3{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:#4f7a9e;margin:22px 0 10px}
+.t-mist .content-grid{display:grid;grid-template-columns:1fr 280px;gap:36px}
+.t-mist .job-row{margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #f1f5f8}
+.t-mist .skill-dot{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#4f7a9e;margin:3px 6px 3px 0}
+
+/* 19. TERRACOTTA – Art / Ceramics / Culture / NGO */
+.t-terra{font-family:'Syne',sans-serif;background:#fff;min-height:297mm}
+.t-terra .header{background:#c4714a;padding:36px 40px;display:flex;align-items:center;gap:24px}
+.t-terra h1{color:#fff;font-size:32px;font-weight:800;letter-spacing:-1px;line-height:1.1;margin-bottom:4px}
+.t-terra .title{color:rgba(255,255,255,.8);font-size:14px;font-weight:400}
+.t-terra .body{display:grid;grid-template-columns:64% 36%}
+.t-terra .main{padding:32px 28px}
+.t-terra .aside{background:#fdf5f0;padding:28px 22px;border-left:3px solid #c4714a;position:relative;overflow:hidden}
+.t-terra .aside::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 15% 85%, rgba(196,113,74,.14) 0%, transparent 50%),radial-gradient(circle at 80% 20%, rgba(196,113,74,.08) 0%, transparent 40%),radial-gradient(circle at 50% 50%, rgba(253,245,240,.5) 0%, transparent 60%);pointer-events:none;z-index:0}
+.t-terra .aside > *{position:relative;z-index:1}
+.t-terra h2{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;color:#c4714a;margin:22px 0 10px}
+.t-terra h2:first-child{margin-top:0}
+.t-terra .job-bar{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.t-terra .job-dot{width:8px;height:8px;background:#c4714a;border-radius:50%;flex-shrink:0}
+.t-terra .skill-chip{display:inline-block;background:#fff;border:1.5px solid #c4714a;color:#c4714a;padding:2px 8px;border-radius:2px;font-size:10px;margin:2px;font-weight:700}
+
+/* 20. ARCTIC – Logistics / Supply Chain / Aviation */
+.t-arctic{font-family:'Space Grotesk',sans-serif;background:#fff;min-height:297mm}
+.t-arctic .top-bar{background:#0c4a6e;height:8px}
+.t-arctic .header{padding:32px 36px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #e0f2fe}
+.t-arctic h1{font-size:26px;font-weight:700;color:#0c4a6e;letter-spacing:-.3px;margin-bottom:2px}
+.t-arctic .title{font-size:13px;color:#0369a1;font-weight:500}
+.t-arctic .contact-col{text-align:right;font-size:11px;color:#475569;display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.t-arctic .body{display:grid;grid-template-columns:66% 34%}
+.t-arctic .main{padding:28px 32px;border-right:1px solid #e0f2fe}
+.t-arctic .aside{padding:24px 22px;background:#f0f9ff;position:relative;overflow:hidden}
+.t-arctic .aside::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 10% 90%, rgba(3,105,161,.1) 0%, transparent 50%),radial-gradient(circle at 90% 10%, rgba(125,211,252,.12) 0%, transparent 45%),radial-gradient(circle at 50% 50%, rgba(224,242,254,.6) 0%, transparent 60%);pointer-events:none;z-index:0}
+.t-arctic .aside > *{position:relative;z-index:1}
+.t-arctic h2{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;color:#0c4a6e;border-left:3px solid #0369a1;padding-left:8px;margin:20px 0 10px;line-height:1}
+.t-arctic h2:first-child{margin-top:0}
+.t-arctic .job-block{margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #e0f2fe}
+.t-arctic .cert-chip{display:inline-flex;align-items:center;gap:5px;background:#e0f2fe;color:#0c4a6e;padding:3px 8px;border-radius:3px;font-size:10px;font-weight:700;margin:2px}
+
+/* 21. PARCHMENT – Legal / Notary / Academic / Church */
+.t-parch{font-family:'Cormorant Garamond',serif;background:#faf8f3;min-height:297mm;padding:48px 52px;border:8px double #c9b99a;margin:0}
+.t-parch h1{font-size:30px;text-align:center;font-weight:700;color:#2c1f0e;letter-spacing:1px;margin-bottom:6px}
+.t-parch .title-line{text-align:center;font-size:14px;color:#7a6240;font-style:italic;margin-bottom:4px}
+.t-parch .rule-ornament{text-align:center;color:#c9b99a;font-size:20px;margin:12px 0}
+.t-parch .contact-row{text-align:center;font-size:12px;color:#5a4a32;margin-bottom:18px;border-bottom:1px solid #c9b99a;padding-bottom:14px}
+.t-parch h3{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:2px;font-family:'Plus Jakarta Sans',sans-serif;color:#2c1f0e;margin:18px 0 8px;display:flex;align-items:center;gap:8px}
+.t-parch h3::after{content:'';flex:1;height:1px;background:#c9b99a}
+.t-parch .job-item{margin-bottom:16px}
+.t-parch .cert-item{display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:6px}
+
+/* 22. OBSIDIAN – Cybersecurity / Blockchain / Deep Tech */
+.t-obsidian{background:#080c10;color:#c8d8e8;min-height:297mm;font-family:'JetBrains Mono',monospace}
+.t-obsidian .header{padding:36px;border-bottom:1px solid #1e3a4a}
+.t-obsidian .prompt{color:#00d4aa;font-size:12px;margin-bottom:6px;opacity:.7}
+.t-obsidian h1{font-size:26px;font-weight:600;color:#e8f4ff;letter-spacing:-1px;margin-bottom:3px}
+.t-obsidian .title{color:#00d4aa;font-size:12px;margin-bottom:10px}
+.t-obsidian .meta{display:flex;flex-wrap:wrap;gap:12px;font-size:10px;color:#5a7a8a}
+.t-obsidian .body{padding:28px 36px}
+.t-obsidian h2{font-size:10px;color:#00d4aa;text-transform:uppercase;letter-spacing:3px;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+.t-obsidian h2::before{content:'//';opacity:.5}
+.t-obsidian .job-card{background:#0d1820;border:1px solid #1e3a4a;border-left:2px solid #00d4aa;padding:12px;border-radius:4px;margin-bottom:10px}
+.t-obsidian .tag{background:rgba(0,212,170,.1);border:1px solid rgba(0,212,170,.3);color:#00d4aa;padding:2px 8px;border-radius:2px;font-size:9px;display:inline-block;margin:2px}
+
+/* 23. LINEN – Freelance / Copywriter / UX / Journalist */
+.t-linen{font-family:'Cormorant Garamond',serif;background:#fffdf8;min-height:297mm}
+.t-linen .header{padding:48px 52px 28px;border-bottom:2px solid #2d2d2d}
+.t-linen h1{font-size:44px;font-weight:300;color:#1a1a1a;letter-spacing:-2px;line-height:1;margin-bottom:6px}
+.t-linen .title{font-size:16px;color:#666;font-weight:400;letter-spacing:1px;font-family:'Plus Jakarta Sans',sans-serif;text-transform:uppercase;font-size:11px}
+.t-linen .meta-row{display:flex;gap:20px;font-size:11px;color:#888;margin-top:10px;font-family:'Plus Jakarta Sans',sans-serif}
+.t-linen .body{display:grid;grid-template-columns:70% 30%}
+.t-linen .main{padding:28px 36px 36px 52px}
+.t-linen .aside{padding:28px 36px 36px 24px;border-left:1px solid #e8e8e8;background:#fdfaf4;position:relative;overflow:hidden}
+.t-linen .aside::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 20% 85%, rgba(180,160,100,.08) 0%, transparent 50%),radial-gradient(circle at 80% 15%, rgba(180,160,100,.05) 0%, transparent 45%);pointer-events:none;z-index:0}
+.t-linen .aside > *{position:relative;z-index:1}
+.t-linen h3{font-size:9px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:4px;color:#999;margin:24px 0 10px}
+.t-linen .job-item{margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #f0ede8}
+.t-linen .skill-line{font-size:12px;color:#444;padding:4px 0;border-bottom:1px dotted #ddd}
+
 /* ── BOTTOM MOBILE NAV ──────────── */
 #bottom-nav{
   position:fixed;bottom:0;left:0;right:0;height:var(--bottom-h);
@@ -389,7 +568,7 @@ input[type=file]{display:none}
   padding:16px;display:flex;align-items:center;gap:14px;transition:.2s
 }
 .archive-card:hover{border-color:var(--accent);box-shadow:0 2px 10px rgba(37,99,235,.1)}
-.archive-thumb{width:48px;height:60px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#818cf8);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;flex-shrink:0}
+.archive-thumb{width:48px;height:60px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#818cf8);display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;flex-shrink:0}
 .archive-info{flex:1}
 .archive-name{font-weight:700;font-size:15px;color:var(--text)}
 .archive-meta{font-size:12px;color:var(--muted);margin-top:2px}
@@ -400,7 +579,7 @@ input[type=file]{display:none}
 
 /* ── PREVIEW SCREEN ─────────────── */
 #preview-screen{
-  position:fixed;inset:0;background:#525659;z-index:800;display:none;
+  position:fixed;inset:0;background:#2a2d30;z-index:800;display:none;
   flex-direction:column;overflow:hidden
 }
 #preview-screen.open{display:flex}
@@ -409,19 +588,45 @@ input[type=file]{display:none}
   justify-content:space-between;flex-shrink:0;z-index:10;
   box-shadow:0 2px 12px rgba(0,0,0,.3)
 }
+/* Mobile view toggle pills */
+.view-toggle{display:flex;gap:4px;background:rgba(0,0,0,.3);padding:3px;border-radius:8px}
+.view-pill{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;color:rgba(255,255,255,.55);cursor:pointer;transition:.2s;border:none;background:none}
+.view-pill.active{background:var(--accent);color:#fff}
+
+/* ── MOBILE CV VIEWER MODES ──── */
+/* Mode: scaled (PDF-like, full width auto-scaled) */
 #preview-screen-body{
   flex:1;overflow-y:auto;overflow-x:hidden;
   -webkit-overflow-scrolling:touch;
   display:flex;justify-content:center;
-  padding:24px 16px 24px;
-  /* Allow pinch-to-zoom on mobile */
-  touch-action:pan-x pan-y pinch-zoom
+  padding:20px 12px 20px;
+  touch-action:pan-y;
+  background:#2a2d30;
 }
+#preview-screen-body.mode-fit{
+  padding:12px;
+}
+#preview-screen-body.mode-scroll{
+  overflow-x:auto;
+  overflow-y:auto;
+  touch-action:pan-x pan-y;
+  padding:16px;
+  justify-content:flex-start;
+  align-items:flex-start;
+}
+
 #cv-paper-preview{
   transform-origin:top center;
   flex-shrink:0;
-  /* pinch zoom JS will override transform */
+  box-shadow:0 8px 40px rgba(0,0,0,.6);
 }
+
+/* in scroll mode, CV is full natural size, scroll horizontally */
+.mode-scroll #cv-paper-preview{
+  transform:none !important;
+  width:210mm !important;
+}
+
 #preview-screen-footer{
   background:var(--brand);padding:10px 16px;display:flex;gap:10px;
   justify-content:center;flex-shrink:0;z-index:10;
@@ -560,6 +765,7 @@ input[type=file]{display:none}
     <div class="nav-pill" id="pill-archive" onclick="showScreen('archive')"><i class="fas fa-folder-open"></i>Archive</div>
   </div>
   <div class="top-actions">
+    <button id="pwa-install-btn" onclick="installPWA()" title="Install App as PWA" style="display:none;align-items:center;gap:5px;background:var(--accent2);border:none;color:#000;padding:5px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;height:32px"><i class="fas fa-download"></i> Install</button>
     <button class="btn-icon-sm" onclick="app.saveToStorage(true)" title="Save"><i class="fas fa-save"></i></button>
     <button class="btn-icon-sm" onclick="showScreen('preview')" title="Preview"><i class="fas fa-eye"></i></button>
   </div>
@@ -582,6 +788,7 @@ input[type=file]{display:none}
     <div class="step-group">
       <div class="step-group-label">Content</div>
       <button class="step-btn" data-step="work"><span class="step-icon"><i class="fas fa-briefcase"></i></span>Work Experience</button>
+      <button class="step-btn" data-step="projects"><span class="step-icon"><i class="fas fa-diagram-project"></i></span>Projects</button>
       <button class="step-btn" data-step="certs"><span class="step-icon"><i class="fas fa-certificate"></i></span>Certifications</button>
       <button class="step-btn" data-step="education"><span class="step-icon"><i class="fas fa-graduation-cap"></i></span>Education</button>
       <button class="step-btn" data-step="references"><span class="step-icon"><i class="fas fa-users"></i></span>References</button>
@@ -657,12 +864,18 @@ input[type=file]{display:none}
 <div id="preview-screen">
   <div id="preview-screen-header">
     <button class="btn btn-secondary btn-sm" onclick="closePreviewScreen()"><i class="fas fa-arrow-left"></i> Back</button>
-    <div class="zoom-controls">
-      <button class="zoom-btn" onclick="adjustZoom(-0.1)">−</button>
-      <span id="zoom-pct">100%</span>
-      <button class="zoom-btn" onclick="adjustZoom(0.1)">+</button>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="view-toggle" id="view-toggle">
+        <button class="view-pill active" onclick="setViewMode('fit')" id="vpill-fit"><i class="fas fa-compress-alt"></i> Fit</button>
+        <button class="view-pill" onclick="setViewMode('scroll')" id="vpill-scroll"><i class="fas fa-arrows-left-right"></i> Scroll</button>
+      </div>
+      <div class="zoom-controls" id="zoom-row">
+        <button class="zoom-btn" onclick="adjustZoom(-0.1)">−</button>
+        <span id="zoom-pct">100%</span>
+        <button class="zoom-btn" onclick="adjustZoom(0.1)">+</button>
+      </div>
     </div>
-    <button class="btn btn-outline btn-sm" onclick="showChangeTplModal()" style="border-color:rgba(255,255,255,.4);color:#fff"><i class="fas fa-swatchbook"></i> Theme</button>
+    <button class="btn btn-outline btn-sm" onclick="showChangeTplModal()" style="border-color:rgba(255,255,255,.4);color:#fff"><i class="fas fa-swatchbook"></i></button>
   </div>
   <div id="preview-screen-body">
     <div id="cv-paper-preview" class="t-executive"></div>
@@ -715,29 +928,55 @@ input[type=file]{display:none}
   </div>
 </div>
 
+<!-- PWA INSTALL BANNER -->
+<div id="pwa-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#0a2540,#1a4060);padding:14px 20px;z-index:2000;display:none;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 -4px 20px rgba(0,0,0,.3)">
+  <div style="display:flex;align-items:center;gap:12px">
+    <i class="fas fa-mobile-screen-button" style="color:var(--accent2);font-size:24px"></i>
+    <div>
+      <div style="color:#fff;font-weight:700;font-size:13px">Install CV Builder</div>
+      <div style="color:rgba(255,255,255,.6);font-size:11px">Add to home screen for offline use</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button onclick="installPWA()" style="background:var(--accent);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer">Install</button>
+    <button onclick="document.getElementById('pwa-banner').style.display='none'" style="background:rgba(255,255,255,.1);color:#fff;border:none;padding:8px 12px;border-radius:8px;cursor:pointer"><i class="fas fa-times"></i></button>
+  </div>
+</div>
+
 <script>
 // ═══════════════════════════════════════════════════
 // TEMPLATE DEFINITIONS
 // ═══════════════════════════════════════════════════
 const TEMPLATES = [
-  {id:'t-executive', name:'Executive Minimal', profession:'Management / Director', icon:'👔', color:'#1a1a1a', thumb:'#f8f8f8', desc:'Serif elegance, high readability for senior roles'},
-  {id:'t-offshore', name:'Offshore Blue', profession:'Drilling / Rig Operations', icon:'⚓', color:'#003366', thumb:'#e6f0ff', desc:'Split layout, professional navy blue'},
-  {id:'t-industrial', name:'Industrial Steel', profession:'Mechanical / Engineering', icon:'⚙️', color:'#2d2d2d', thumb:'#f3f4f6', desc:'Bold condensed, two-column layout'},
-  {id:'t-safety', name:'Safety First', profession:'HSE / Safety Officer', icon:'⚠️', color:'#ffd000', thumb:'#fff9e6', desc:'High-contrast yellow/black, HSE focused'},
-  {id:'t-classic', name:'Classic O&G', profession:'Oil & Gas / Traditional', icon:'🛢️', color:'#000', thumb:'#fffff8', desc:'Times New Roman, professional and clean'},
-  {id:'t-modern', name:'Modern Tech', profession:'ROV / Tech / Automation', icon:'🤖', color:'#0d9488', thumb:'#f0f9f8', desc:'Teal accents, sidebar layout'},
-  {id:'t-grid', name:'Technical Grid', profession:'Surveyor / Inspector', icon:'📊', color:'#1e293b', thumb:'#f8fafc', desc:'Box grid layout, great for credentials'},
-  {id:'t-marine', name:'Maritime', profession:'Marine / Captain / Sailor', icon:'🚢', color:'#001f3f', thumb:'#e8edf4', desc:'Nautical border, Playfair serif'},
-  {id:'t-creative', name:'Creative Bold', profession:'Designer / Marketing / Media', icon:'🎨', color:'#7c3aed', thumb:'#fdf4ff', desc:'Gradient accents, modern typographic'},
-  {id:'t-academic', name:'Academic / Legal', profession:'Researcher / Lawyer / Finance', icon:'📜', color:'#1a1a2e', thumb:'#fffff0', desc:'Formal serif, traditional structure'},
-  {id:'t-medical', name:'Healthcare Pro', profession:'Doctor / Nurse / Medical', icon:'⚕️', color:'#0284c7', thumb:'#f0f9ff', desc:'Clinical blue, badge-style certifications'},
-  {id:'t-dark', name:'Dark Premium', profession:'IT / Cybersecurity / Dev', icon:'💻', color:'#a78bfa', thumb:'#0f172a', desc:'Dark background, purple accents'},
+  {id:'t-executive', name:'Executive Minimal', profession:'Management / Director', icon:'<i class="fas fa-user-tie" style="color:#1a1a1a;font-size:28px"></i>', color:'#1a1a1a', thumb:'#f8f8f8', desc:'Serif elegance, high readability for senior roles'},
+  {id:'t-offshore', name:'Offshore Blue', profession:'Drilling / Rig Operations', icon:'<i class="fas fa-anchor" style="color:#003366;font-size:28px"></i>', color:'#003366', thumb:'#e6f0ff', desc:'Split layout, professional navy blue'},
+  {id:'t-industrial', name:'Industrial Steel', profession:'Mechanical / Engineering', icon:'<i class="fas fa-industry" style="color:#2d2d2d;font-size:28px"></i>', color:'#2d2d2d', thumb:'#f3f4f6', desc:'Bold condensed, two-column layout'},
+  {id:'t-safety', name:'Safety First', profession:'HSE / Safety Officer', icon:'<i class="fas fa-hard-hat" style="color:#c8960c;font-size:28px"></i>', color:'#ffd000', thumb:'#fff9e6', desc:'High-contrast yellow/black, HSE focused'},
+  {id:'t-classic', name:'Classic O&G', profession:'Oil & Gas / Traditional', icon:'<i class="fas fa-oil-can" style="color:#333;font-size:28px"></i>', color:'#000', thumb:'#fffff8', desc:'Times New Roman, professional and clean'},
+  {id:'t-modern', name:'Modern Tech', profession:'ROV / Tech / Automation', icon:'<i class="fas fa-microchip" style="color:#0d9488;font-size:28px"></i>', color:'#0d9488', thumb:'#f0f9f8', desc:'Teal accents, sidebar layout'},
+  {id:'t-grid', name:'Technical Grid', profession:'Surveyor / Inspector', icon:'<i class="fas fa-table-cells-large" style="color:#1e293b;font-size:28px"></i>', color:'#1e293b', thumb:'#f8fafc', desc:'Box grid layout, great for credentials'},
+  {id:'t-marine', name:'Maritime', profession:'Marine / Captain / Sailor', icon:'<i class="fas fa-ship" style="color:#001f3f;font-size:28px"></i>', color:'#001f3f', thumb:'#e8edf4', desc:'Nautical border, Playfair serif'},
+  {id:'t-creative', name:'Creative Bold', profession:'Designer / Marketing / Media', icon:'<i class="fas fa-palette" style="color:#7c3aed;font-size:28px"></i>', color:'#7c3aed', thumb:'#fdf4ff', desc:'Gradient accents, modern typographic'},
+  {id:'t-academic', name:'Academic / Legal', profession:'Researcher / Lawyer / Finance', icon:'<i class="fas fa-scale-balanced" style="color:#1a1a2e;font-size:28px"></i>', color:'#1a1a2e', thumb:'#fffff0', desc:'Formal serif, traditional structure'},
+  {id:'t-medical', name:'Healthcare Pro', profession:'Doctor / Nurse / Medical', icon:'<i class="fas fa-stethoscope" style="color:#0284c7;font-size:28px"></i>', color:'#0284c7', thumb:'#f0f9ff', desc:'Clinical blue, badge-style certifications'},
+  {id:'t-dark', name:'Dark Premium', profession:'IT / Cybersecurity / Dev', icon:'<i class="fas fa-code" style="color:#a78bfa;font-size:28px"></i>', color:'#a78bfa', thumb:'#0f172a', desc:'Dark background, purple accents'},
+  {id:'t-slate', name:'Corporate Slate', profession:'Finance / Consulting / Banking', icon:'<i class="fas fa-chart-line" style="color:#334155;font-size:28px"></i>', color:'#334155', thumb:'#f1f5f9', desc:'Sharp slate palette, commanding executive presence'},
+  {id:'t-edge', name:'Minimalist Edge', profession:'Architecture / Design / Creative', icon:'<i class="fas fa-drafting-compass" style="color:#18181b;font-size:28px"></i>', color:'#18181b', thumb:'#fafafa', desc:'Ultra-clean typographic layout, refined whitespace'},
+  {id:'t-finance', name:'Finance Pro', profession:'Investment / Accounting / CFO', icon:'<i class="fas fa-landmark" style="color:#1e3a5f;font-size:28px"></i>', color:'#1e3a5f', thumb:'#eef2f7', desc:'Gold accents, prestigious two-column layout'},
+  {id:'t-sage', name:'Sage & Calm', profession:'Wellness / Coaching / Counselling', icon:'<i class="fas fa-leaf" style="color:#2d4a22;font-size:28px"></i>', color:'#5a7a4a', thumb:'#f0f5ea', desc:'Soft green palette, natural and approachable'},
+  {id:'t-rose', name:'Rose Gold Luxe', profession:'Fashion / Hospitality / Luxury', icon:'<i class="fas fa-gem" style="color:#8b5020;font-size:28px"></i>', color:'#2c1810', thumb:'#fdf7f5', desc:'Warm deep tones, editorial elegance'},
+  {id:'t-mist', name:'Slate Mist', profession:'Consulting / Strategy / PM', icon:'<i class="fas fa-cloud" style="color:#4f7a9e;font-size:28px"></i>', color:'#4f7a9e', thumb:'#f0f5f9', desc:'Airy left-accent column, executive two-column'},
+  {id:'t-terra', name:'Terracotta', profession:'NGO / Culture / Arts / Social', icon:'<i class="fas fa-earth-africa" style="color:#c4714a;font-size:28px"></i>', color:'#c4714a', thumb:'#fdf5f0', desc:'Warm earthy tones, bold typographic headers'},
+  {id:'t-arctic', name:'Arctic Blue', profession:'Logistics / Aviation / Supply Chain', icon:'<i class="fas fa-plane" style="color:#0c4a6e;font-size:28px"></i>', color:'#0c4a6e', thumb:'#f0f9ff', desc:'Clean sky-blue precision, operational clarity'},
+  {id:'t-parch', name:'Parchment', profession:'Legal / Notary / Academic / Church', icon:'<i class="fas fa-scroll" style="color:#2c1f0e;font-size:28px"></i>', color:'#7a6240', thumb:'#faf8f3', desc:'Vintage parchment feel, ornamental borders'},
+  {id:'t-obsidian', name:'Obsidian', profession:'Cybersecurity / Blockchain / Dev', icon:'<i class="fas fa-terminal" style="color:#00d4aa;font-size:28px"></i>', color:'#00d4aa', thumb:'#080c10', desc:'Dark hacker aesthetic, monospace precision'},
+  {id:'t-linen', name:'Linen & Light', profession:'Freelance / Copywriter / UX / Media', icon:'<i class="fas fa-feather" style="color:#444;font-size:28px"></i>', color:'#2d2d2d', thumb:'#fffdf8', desc:'Literary editorial layout, graceful whitespace'},
 ];
 
-const STEPS = ['templates','personal','social','photo','work','certs','education','references','skills','languages','review'];
+const STEPS = ['templates','personal','social','photo','work','projects','certs','education','references','skills','languages','review'];
 const STEP_NAMES = {
   templates:'Choose Template',personal:'Personal Info',social:'Social Links',photo:'Profile Photo',
-  work:'Work Experience',certs:'Certifications',education:'Education',references:'References',
+  work:'Work Experience',projects:'Projects',certs:'Certifications',education:'Education',references:'References',
   skills:'Skills',languages:'Languages',review:'Review & Generate'
 };
 
@@ -772,7 +1011,8 @@ const app = {
       references:[],
       skills:['Directional Drilling','HPHT Operations','Well Control','HSE Management','Crew Supervision','Cyber Chair','BOP Systems'],
       languages:[{name:'English',level:'Native'},{name:'French',level:'Intermediate'}],
-      hobbies:[]
+      hobbies:[],
+      projects:[]
     }
   },
 
@@ -864,7 +1104,7 @@ const app = {
           const sel = this.state.template===t.id;
           html+=`<div class="tpl-card ${sel?'selected':''}" onclick="app.handleTplTap('${t.id}')">
             <div class="tpl-thumb" style="background:${t.thumb}">
-              <span style="font-size:32px">${t.icon}</span>
+              <div style="font-size:32px">${t.icon}</div>
               <div style="position:absolute;bottom:0;left:0;right:0;height:4px;background:${t.color}"></div>
             </div>
             <div class="tpl-name">${t.name}</div>
@@ -985,6 +1225,33 @@ const app = {
               <div class="col form-group"><label class="form-label"><i class="fas fa-calendar-alt"></i>To</label><input type="month" value="${job.end}" onchange="app.upItem('work',${i},'end',this.value)" placeholder="Leave blank if current"></div>
             </div>
             <div class="form-group"><label class="form-label"><i class="fas fa-list-ul"></i>Duties & Achievements</label><textarea rows="4" oninput="app.upItem('work',${i},'duties',this.value)" placeholder="Describe key responsibilities and achievements...">${job.duties}</textarea></div>
+          </div>`;
+        });
+        html+=navBtns();
+        break;
+
+      // ── PROJECTS ──────────────────
+      case 'projects':
+        html=`<div class="form-title"><i class="fas fa-diagram-project" style="color:var(--accent);margin-right:8px"></i>Projects</div>
+        <div class="form-subtitle">Highlight key projects, portfolio work, or notable achievements</div>
+        <button class="btn btn-primary btn-full" style="margin-bottom:16px" onclick="app.addProject()"><i class="fas fa-plus"></i> Add Project</button>`;
+        (cv.projects||[]).forEach((proj,i)=>{
+          html+=`<div class="dynamic-item" id="project-${i}">
+            <div class="item-header">
+              <span class="item-title"><i class="fas fa-folder-open" style="color:var(--accent);margin-right:6px"></i>${proj.title||'New Project'}</span>
+              <div class="item-actions-row">
+                <button class="btn-icon-tiny del-btn" onclick="app.del('projects',${i})"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
+            <div class="form-group"><label class="form-label"><i class="fas fa-folder"></i>Project Title</label><input type="text" value="${proj.title||''}" oninput="app.upItem('projects',${i},'title',this.value)" placeholder="e.g. Deepwater Well Monitoring System"></div>
+            <div class="form-group"><label class="form-label"><i class="fas fa-user-gear"></i>Your Role</label><input type="text" value="${proj.role||''}" oninput="app.upItem('projects',${i},'role',this.value)" placeholder="e.g. Lead Engineer"></div>
+            <div class="form-group"><label class="form-label"><i class="fas fa-link"></i>Project URL <span style="font-weight:400;color:var(--muted)">(optional)</span></label><input type="url" value="${proj.url||''}" oninput="app.upItem('projects',${i},'url',this.value)" placeholder="https://..."></div>
+            <div class="row">
+              <div class="col form-group"><label class="form-label"><i class="fas fa-calendar-alt"></i>From</label><input type="month" value="${proj.start||''}" onchange="app.upItem('projects',${i},'start',this.value)"></div>
+              <div class="col form-group"><label class="form-label"><i class="fas fa-calendar-check"></i>To</label><input type="month" value="${proj.end||''}" onchange="app.upItem('projects',${i},'end',this.value)"></div>
+            </div>
+            <div class="form-group"><label class="form-label"><i class="fas fa-wrench"></i>Technologies / Tools Used</label><input type="text" value="${proj.tech||''}" oninput="app.upItem('projects',${i},'tech',this.value)" placeholder="e.g. Python, AutoCAD, Wellview"></div>
+            <div class="form-group"><label class="form-label"><i class="fas fa-align-left"></i>Description</label><textarea rows="3" oninput="app.upItem('projects',${i},'description',this.value)" placeholder="Describe the project, your contributions, and outcomes...">${proj.description||''}</textarea></div>
           </div>`;
         });
         html+=navBtns();
@@ -1117,7 +1384,7 @@ const app = {
 
       // ── REVIEW ────────────────────
       case 'review':
-        const wc = cv.work.length, cc = cv.certs.length, ec = (cv.education||[]).length, rc = (cv.references||[]).length;
+        const wc = cv.work.length, cc = cv.certs.length, ec = (cv.education||[]).length, rc = (cv.references||[]).length, pc = (cv.projects||[]).length;
         html=`<div class="form-title"><i class="fas fa-check-circle" style="color:var(--success);margin-right:8px"></i>Review & Generate</div>
         <div class="form-subtitle">Check everything looks good, then generate your CV</div>
         <div style="background:#f8fafc;border:1.5px solid var(--border);border-radius:12px;padding:18px;margin-bottom:20px">
@@ -1131,6 +1398,7 @@ const app = {
             <div class="review-row"><i class="fas fa-certificate" style="color:var(--accent)"></i> ${cc} cert${cc!==1?'s':''}</div>
             <div class="review-row"><i class="fas fa-graduation-cap" style="color:var(--accent)"></i> ${ec} edu. record${ec!==1?'s':''}</div>
             <div class="review-row"><i class="fas fa-users" style="color:var(--accent)"></i> ${rc} reference${rc!==1?'s':''}</div>
+            <div class="review-row"><i class="fas fa-diagram-project" style="color:var(--accent)"></i> ${pc} project${pc!==1?'s':''}</div>
           </div>
         </div>
         <button class="btn btn-success btn-full" style="padding:16px;font-size:16px" onclick="app.reviewAndGenerate()">
@@ -1164,6 +1432,7 @@ const app = {
   addEdu(){if(!this.state.cv.education)this.state.cv.education=[];this.state.cv.education.push({degree:'',institution:'',institutionLogo:'',start:'',end:'',details:''});this.renderEditor()},
   addRef(){if(!this.state.cv.references)this.state.cv.references=[];this.state.cv.references.push({name:'',position:'',company:'',companyLogo:'',phone:'',email:''});this.renderEditor()},
   addLang(){this.state.cv.languages.push({name:'',level:'Intermediate'});this.renderEditor()},
+  addProject(){if(!this.state.cv.projects)this.state.cv.projects=[];this.state.cv.projects.push({title:'',role:'',url:'',start:'',end:'',description:'',tech:''});this.renderEditor()},
   addSkill(){
     const inp = document.getElementById('skill-input');
     const val = inp.value.trim();
@@ -1250,6 +1519,11 @@ const app = {
     const companyLogoHtml = (logo)=> logo ? `<img src="${logo}" class="cv-company-logo">` : '';
     const certLogoHtml = (logo)=> logo ? `<img src="${logo}" class="cv-cert-logo">` : '';
 
+    const projectsHtml = (titleStyle='', itemStyle='', techStyle='', urlStyle='')=>{
+      if(!(cv.projects||[]).length) return '';
+      return cv.projects.map(p=>`<div style="${itemStyle}margin-bottom:14px"><div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px"><strong style="font-size:13px">${p.title}</strong>${p.start?`<span style="font-size:10px;color:#888;white-space:nowrap">${fd(p.start)}${p.end?' – '+fd(p.end):' – Present'}</span>`:''}</div>${p.role?`<div style="font-size:11px;font-style:italic;color:#666;margin:1px 0">${p.role}</div>`:''} ${p.tech?`<div style="${techStyle}font-size:10px;margin:3px 0">${p.tech}</div>`:''} ${p.description?`<div style="font-size:12px;line-height:1.5;margin-top:4px">${p.description}</div>`:''} ${p.url?`<a href="${p.url}" style="${urlStyle}font-size:10px;color:#2563eb">${p.url}</a>`:''}</div>`).join('');
+    };
+
     let h = '';
 
     if(theme==='t-executive'){
@@ -1270,6 +1544,7 @@ const app = {
       </div>
       ${(cv.education||[]).length?`<div class="cv-section"><div class="sec-title">Education</div>${cv.education.map(e=>`<div style="font-size:12px;margin-bottom:6px">${companyLogoHtml(e.institutionLogo)}<strong>${e.degree}</strong> — ${e.institution}${e.end?` · ${fd(e.end)}`:''}</div>`).join('')}</div>`:''}
       ${cv.skills.length?`<div class="cv-section"><div class="sec-title">Skills</div><div style="display:flex;flex-wrap:wrap;gap:6px">${cv.skills.map(s=>`<span style="background:#f1f1f1;padding:3px 8px;font-size:11px;font-family:'Plus Jakarta Sans',sans-serif">${s}</span>`).join('')}</div></div>`:''}
+      ${(cv.projects||[]).length?`<div class="cv-section"><div class="sec-title">Projects</div>${projectsHtml('','','color:#555;','color:#1a1a1a;')}</div>`:''}
       ${(cv.references||[]).length?`<div class="cv-section"><div class="sec-title">References</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">${cv.references.map(r=>`<div style="font-size:11px;border:1px solid #eee;padding:8px">${companyLogoHtml(r.companyLogo)}<strong>${r.name}</strong><br>${r.position}, ${r.company}<br>${r.phone}</div>`).join('')}</div></div>`:''}`;
     }
     else if(theme==='t-offshore'){
@@ -1290,6 +1565,7 @@ const app = {
         <h2><i class="fas fa-certificate" style="margin-right:6px"></i>Certifications</h2>
         <div style="display:flex;flex-wrap:wrap;gap:6px">${cv.certs.map(c=>`<span style="background:#e8f0fb;color:#003366;padding:4px 8px;font-size:11px;border-radius:4px;display:flex;align-items:center;gap:4px">${certLogoHtml(c.issuerLogo)}${c.name}</span>`).join('')}</div>
         ${(cv.education||[]).length?`<h2><i class="fas fa-graduation-cap" style="margin-right:6px"></i>Education</h2>${cv.education.map(e=>`<div style="font-size:12px;margin-bottom:6px">${companyLogoHtml(e.institutionLogo)}<strong>${e.degree}</strong> — ${e.institution}</div>`).join('')}`:''}
+        ${(cv.projects||[]).length?`<h2><i class="fas fa-diagram-project" style="margin-right:6px"></i>Projects</h2>${projectsHtml('','','color:#7dd3fc;','')}`:''}
         ${(cv.references||[]).length?`<h2><i class="fas fa-users" style="margin-right:6px"></i>References</h2><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${cv.references.map(r=>`<div style="font-size:11px;background:#f8fafc;padding:8px;border-radius:4px">${companyLogoHtml(r.companyLogo)}<strong>${r.name}</strong><br>${r.position}<br>${r.company}</div>`).join('')}</div>`:''}
       </div>`;
     }
@@ -1481,6 +1757,313 @@ const app = {
         ${(cv.references||[]).length?`<h3><i class="fas fa-users" style="margin-right:6px"></i>References</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${cv.references.map(r=>`<div style="font-size:11px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);padding:10px;border-radius:8px">${companyLogoHtml(r.companyLogo)}<strong>${r.name}</strong><br><span style="color:#64748b">${r.position}</span></div>`).join('')}</div>`:''}
       </div>`;
     }
+    else if(theme==='t-slate'){
+      const contactIcons = [
+        cv.personal.email?`<span class="ci"><i class="fas fa-envelope"></i>${cv.personal.email}</span>`:'',
+        cv.personal.phone?`<span class="ci"><i class="fas fa-phone"></i>${cv.personal.phone}</span>`:'',
+        cv.personal.address?`<span class="ci"><i class="fas fa-location-dot"></i>${cv.personal.address}</span>`:'',
+        cv.personal.nationality?`<span class="ci"><i class="fas fa-passport"></i>${cv.personal.nationality}</span>`:'',
+      ].filter(Boolean).join('');
+      h=`<div class="header-stripe">
+        ${photoHtml(88,'flex-shrink:0;border:3px solid rgba(255,255,255,.25)')}
+        <div>
+          <h1>${cv.personal.name}</h1>
+          <div class="title">${cv.personal.title}</div>
+          <div class="contact-strip">${contactIcons}</div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="main">
+          ${cv.personal.summary?`<h2><i class="fas fa-user" style="margin-right:6px"></i>Executive Profile</h2><p style="font-size:13px;line-height:1.7;color:#475569">${cv.personal.summary}</p>`:''}
+          <h2><i class="fas fa-briefcase" style="margin-right:6px"></i>Professional Experience</h2>
+          ${cv.work.map(j=>`<div class="job-block"><div style="display:flex;justify-content:space-between;align-items:baseline"><div style="display:flex;align-items:center;gap:6px">${companyLogoHtml(j.companyLogo)}<strong style="font-size:14px;color:#1e293b">${j.title}</strong></div><span style="font-size:10px;color:#94a3b8;white-space:nowrap">${fd(j.start)} – ${fd(j.end)}</span></div><div style="color:#334155;font-size:12px;font-weight:600;margin:2px 0">${j.company}${j.location?' · <span style="font-weight:400">'+j.location+'</span>':''}</div><div style="font-size:12px;line-height:1.5;color:#64748b;margin-top:5px;white-space:pre-line">${j.duties}</div></div>`).join('')}
+          ${(cv.projects||[]).length?`<h2><i class="fas fa-diagram-project" style="margin-right:6px"></i>Key Projects</h2>${projectsHtml('','','color:#64748b;','color:#334155;')}`:''}
+          ${(cv.education||[]).length?`<h2><i class="fas fa-graduation-cap" style="margin-right:6px"></i>Education</h2>${cv.education.map(e=>`<div style="margin-bottom:10px;font-size:12px">${companyLogoHtml(e.institutionLogo)}<strong>${e.degree}</strong><div style="color:#64748b">${e.institution}${e.end?' · '+fd(e.end):''}</div></div>`).join('')}`:''}
+        </div>
+        <div class="aside">
+          ${(cv.social||{}).linkedin||(cv.social||{}).github||(cv.social||{}).website?`<h2>Online Profiles</h2><div style="font-size:11px;display:flex;flex-direction:column;gap:6px">${socialIcons()}</div>`:''}
+          <h2>Certifications</h2>
+          ${cv.certs.map(c=>`<div style="margin-bottom:10px;font-size:11px;display:flex;align-items:flex-start;gap:6px"><i class="fas fa-badge-check" style="color:#334155;margin-top:1px;flex-shrink:0"></i><div>${certLogoHtml(c.issuerLogo)}<strong>${c.name}</strong><div style="color:#94a3b8">${c.issuer}${c.expiry?' · Exp: '+fd(c.expiry):''}</div></div></div>`).join('')}
+          ${cv.skills.length?`<h2>Core Skills</h2><div>${cv.skills.map(s=>`<div style="font-size:11px;padding:4px 0;border-bottom:1px solid #e2e8f0;color:#475569;display:flex;align-items:center;gap:6px"><i class="fas fa-circle-dot" style="color:#334155;font-size:8px"></i>${s}</div>`).join('')}</div>`:''}
+          ${cv.languages.length?`<h2>Languages</h2>${cv.languages.map(l=>`<div style="font-size:11px;display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #e2e8f0"><span>${l.name}</span><span style="color:#94a3b8">${l.level}</span></div>`).join('')}`:''}
+          ${(cv.references||[]).length?`<h2>References</h2>${cv.references.map(r=>`<div style="font-size:10px;margin-bottom:8px">${companyLogoHtml(r.companyLogo)}<strong>${r.name}</strong><div style="color:#94a3b8">${r.position}, ${r.company}</div><div style="color:#334155">${r.phone}</div></div>`).join('')}`:''}
+        </div>
+      </div>`;
+    }
+    else if(theme==='t-edge'){
+      h=`<div class="name-block">
+        <h1>${cv.personal.name}</h1>
+        <div class="tagline">${cv.personal.title}</div>
+        <div class="meta-row">
+          ${cv.personal.email?`<span class="meta-item"><i class="fas fa-envelope"></i>${cv.personal.email}</span>`:''}
+          ${cv.personal.phone?`<span class="meta-item"><i class="fas fa-phone"></i>${cv.personal.phone}</span>`:''}
+          ${cv.personal.address?`<span class="meta-item"><i class="fas fa-location-dot"></i>${cv.personal.address}</span>`:''}
+          ${(cv.social||{}).linkedin?`<span class="meta-item"><i class="fab fa-linkedin"></i>LinkedIn</span>`:''}
+        </div>
+      </div>
+      ${cv.personal.summary?`<h3>Profile</h3><p style="font-size:13px;line-height:1.7;color:#3f3f46;margin-bottom:4px;font-style:italic">${cv.personal.summary}</p>`:''}
+      ${cv.work.length?`<h3>Experience</h3>${cv.work.map(j=>`<div class="entry"><div class="entry-date">${fd(j.start)}<br><span style="color:#d4d4d8">↓</span><br>${fd(j.end)}</div><div class="entry-content"><strong>${j.title}</strong><div class="sub">${j.company}${j.location?' — '+j.location:''}</div>${companyLogoHtml(j.companyLogo)}<div class="body">${j.duties}</div></div></div>`).join('')}`:''}
+      ${(cv.projects||[]).length?`<h3>Selected Projects</h3>${cv.projects.map(p=>`<div class="entry"><div class="entry-date">${p.start?fd(p.start):''}</div><div class="entry-content"><strong>${p.title}</strong><div class="sub">${p.role||''}</div>${p.tech?`<div style="font-size:11px;color:#a1a1aa;font-family:'DM Sans',sans-serif">${p.tech}</div>`:''}<div class="body">${p.description}</div></div></div>`).join('')}`:''}
+      ${(cv.education||[]).length?`<h3>Education</h3>${cv.education.map(e=>`<div class="entry"><div class="entry-date">${e.end?fd(e.end):''}</div><div class="entry-content"><strong>${e.degree}</strong><div class="sub">${e.institution}</div></div></div>`).join('')}`:''}
+      ${cv.certs.length?`<h3>Certifications</h3><div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">${cv.certs.map(c=>`<span style="font-size:11px;border-bottom:1px solid #18181b;padding-bottom:2px;margin-right:8px;font-family:'DM Sans',sans-serif">${c.name}</span>`).join('')}</div>`:''}
+      ${cv.skills.length?`<h3>Skills</h3><div class="skills-wrap">${cv.skills.map(s=>`<span class="sk">${s}</span>`).join('')}</div>`:''}
+      ${cv.languages.length?`<h3>Languages</h3><div class="meta-row">${cv.languages.map(l=>`<span class="meta-item">${l.name} <span style="color:#a1a1aa">— ${l.level}</span></span>`).join('')}</div>`:''}`;
+    }
+    else if(theme==='t-finance'){
+      h=`<div class="header">
+        ${photoHtml(90,'flex-shrink:0;border:3px solid rgba(240,192,64,.5)')}
+        <div>
+          <h1>${cv.personal.name}</h1>
+          <div class="title-tag">${cv.personal.title}</div>
+          <div class="cv-icon-row" style="margin-top:10px;font-size:11px;color:#cbd5e1">${socialIcons()}</div>
+        </div>
+      </div>
+      <div class="gold-bar"></div>
+      <div class="body">
+        <div class="main">
+          ${cv.personal.summary?`<h2>Executive Summary</h2><p style="font-size:13px;line-height:1.7;color:#374151">${cv.personal.summary}</p>`:''}
+          <h2>Professional Experience</h2>
+          ${cv.work.map(j=>`<div class="job-entry"><div style="display:flex;justify-content:space-between;align-items:baseline"><div style="display:flex;align-items:center;gap:6px">${companyLogoHtml(j.companyLogo)}<strong style="font-size:14px">${j.title}</strong></div><span style="font-size:10px;color:#c9922a;white-space:nowrap">${fd(j.start)} – ${fd(j.end)}</span></div><div style="font-style:italic;color:#8b6914;font-size:12px;margin:2px 0">${j.company}${j.location?' · '+j.location:''}</div><div style="font-size:12px;line-height:1.5;color:#4b5563;margin-top:5px;white-space:pre-line">${j.duties}</div></div>`).join('')}
+          ${(cv.projects||[]).length?`<h2>Notable Projects</h2>${projectsHtml('','','color:#8b6914;','color:#c9922a;')}`:''}
+          ${(cv.education||[]).length?`<h2>Education</h2>${cv.education.map(e=>`<div style="margin-bottom:10px;font-size:12px">${companyLogoHtml(e.institutionLogo)}<strong>${e.degree}</strong><div style="font-style:italic;color:#8b6914">${e.institution}${e.end?' · '+fd(e.end):''}</div></div>`).join('')}`:''}
+        </div>
+        <div class="aside">
+          <h2>Contact</h2>
+          <div style="font-size:11px;display:flex;flex-direction:column;gap:7px;margin-bottom:4px">
+            ${cv.personal.email?`<span style="display:flex;align-items:center;gap:6px;color:#4b5563"><i class="fas fa-envelope" style="color:#c9922a;width:14px"></i>${cv.personal.email}</span>`:''}
+            ${cv.personal.phone?`<span style="display:flex;align-items:center;gap:6px;color:#4b5563"><i class="fas fa-phone" style="color:#c9922a;width:14px"></i>${cv.personal.phone}</span>`:''}
+            ${cv.personal.address?`<span style="display:flex;align-items:center;gap:6px;color:#4b5563"><i class="fas fa-location-dot" style="color:#c9922a;width:14px"></i>${cv.personal.address}</span>`:''}
+          </div>
+          <h2>Qualifications</h2>
+          <div>${cv.certs.map(c=>`<div class="cert-gold">${certLogoHtml(c.issuerLogo)}${c.name}</div>`).join('')}</div>
+          ${cv.skills.length?`<h2>Competencies</h2>${cv.skills.map(s=>`<div style="font-size:11px;padding:4px 0;border-bottom:1px solid #e5d9c6;color:#374151;display:flex;align-items:center;gap:6px"><i class="fas fa-chevron-right" style="color:#c9922a;font-size:8px"></i>${s}</div>`).join('')}`:''}
+          ${cv.languages.length?`<h2>Languages</h2>${cv.languages.map(l=>`<div style="font-size:11px;display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #e5d9c6"><span>${l.name}</span><span style="color:#8b6914;font-style:italic">${l.level}</span></div>`).join('')}`:''}
+          ${(cv.references||[]).length?`<h2>References</h2>${cv.references.map(r=>`<div style="font-size:10px;margin-bottom:8px">${companyLogoHtml(r.companyLogo)}<strong>${r.name}</strong><div style="font-style:italic;color:#8b6914">${r.position}</div><div style="color:#6b7280">${r.company}</div><div style="color:#c9922a">${r.phone}</div></div>`).join('')}`:''}
+        </div>
+      </div>`;
+    }
+    else if(theme==='t-sage'){
+      h=`<div class="header">
+        ${photoHtml(90,'flex-shrink:0;border:3px solid #c5d9b0;border-radius:50%')}
+        <div>
+          <h1>${cv.personal.name}</h1>
+          <div class="title">${cv.personal.title}</div>
+          <div class="contact-row">
+            ${cv.personal.email?`<span><i class="fas fa-envelope"></i>${cv.personal.email}</span>`:''}
+            ${cv.personal.phone?`<span><i class="fas fa-phone"></i>${cv.personal.phone}</span>`:''}
+            ${cv.personal.address?`<span><i class="fas fa-location-dot"></i>${cv.personal.address}</span>`:''}
+          </div>
+        </div>
+      </div>
+      <div class="body">
+        ${cv.personal.summary?`<h2><i class="fas fa-seedling"></i>About Me</h2><p style="font-size:13px;line-height:1.7;color:#4a5a3a;margin-bottom:8px">${cv.personal.summary}</p>`:''}
+        <h2><i class="fas fa-briefcase"></i>Experience</h2>
+        ${cv.work.map(j=>`<div class="job-item"><div style="display:flex;justify-content:space-between;align-items:baseline"><div style="display:flex;align-items:center;gap:6px">${companyLogoHtml(j.companyLogo)}<strong style="font-size:13px;color:#2d4a22">${j.title}</strong></div><span style="font-size:10px;color:#8aab7a">${fd(j.start)} – ${fd(j.end)}</span></div><div style="font-size:12px;color:#5a7a4a;font-weight:600">${j.company}${j.location?' · '+j.location:''}</div><div style="font-size:12px;line-height:1.6;color:#4a5a3a;margin-top:4px">${j.duties}</div></div>`).join('')}
+        ${(cv.projects||[]).length?`<h2><i class="fas fa-star"></i>Projects</h2>${projectsHtml('','','color:#5a7a4a;','color:#2d4a22;')}`:''}
+        ${(cv.education||[]).length?`<h2><i class="fas fa-graduation-cap"></i>Education</h2>${cv.education.map(e=>`<div class="job-item"><div style="display:flex;align-items:center;gap:6px">${companyLogoHtml(e.institutionLogo)}<strong style="font-size:13px;color:#2d4a22">${e.degree}</strong></div><div style="color:#5a7a4a;font-size:12px">${e.institution}</div></div>`).join('')}`:''}
+        ${cv.certs.length?`<h2><i class="fas fa-certificate"></i>Certifications</h2><div style="display:flex;flex-wrap:wrap;gap:4px">${cv.certs.map(c=>`<span class="skill-leaf">${certLogoHtml(c.issuerLogo)}${c.name}</span>`).join('')}</div>`:''}
+        ${cv.skills.length?`<h2><i class="fas fa-tools"></i>Skills</h2><div>${cv.skills.map(s=>`<span class="skill-leaf">${s}</span>`).join('')}</div>`:''}
+        ${cv.languages.length?`<h2><i class="fas fa-language"></i>Languages</h2><div style="display:flex;flex-wrap:wrap;gap:8px">${cv.languages.map(l=>`<span style="font-size:12px;color:#2d4a22"><strong>${l.name}</strong> <span style="color:#5a7a4a">— ${l.level}</span></span>`).join('')}</div>`:''}
+      </div>`;
+    }
+    else if(theme==='t-rose'){
+      h=`<div class="header">
+        ${photoHtml(100,'display:block;margin:0 auto 16px;border:3px solid rgba(212,165,116,.5);border-radius:50%')}
+        <h1>${cv.personal.name}</h1>
+        <div class="title">${cv.personal.title}</div>
+        <div class="divider"></div>
+        <div class="contact-row">${socialIcons()}</div>
+      </div>
+      <div class="body">
+        <div class="main">
+          ${cv.personal.summary?`<h2>Profile</h2><p style="font-size:13px;line-height:1.7;color:#4a3a30;font-style:italic">${cv.personal.summary}</p>`:''}
+          <h2>Experience</h2>
+          ${cv.work.map(j=>`<div class="job-entry"><div style="display:flex;justify-content:space-between;align-items:baseline">${companyLogoHtml(j.companyLogo)}<strong style="font-size:14px;color:#2c1810">${j.title}</strong><span style="font-size:10px;color:#d4a574">${fd(j.start)} – ${fd(j.end)}</span></div><div style="font-style:italic;color:#8b5020;font-size:12px;margin:2px 0">${j.company}${j.location?' · '+j.location:''}</div><div style="font-size:12px;line-height:1.5;color:#5a4040;margin-top:4px">${j.duties}</div></div>`).join('')}
+          ${(cv.projects||[]).length?`<h2>Portfolio & Projects</h2>${projectsHtml('','','color:#8b5020;','color:#d4a574;')}`:''}
+          ${(cv.education||[]).length?`<h2>Education</h2>${cv.education.map(e=>`<div style="margin-bottom:10px;font-size:12px">${companyLogoHtml(e.institutionLogo)}<strong>${e.degree}</strong><div style="color:#8b5020;font-style:italic">${e.institution}</div></div>`).join('')}`:''}
+        </div>
+        <div class="aside">
+          <h2>Contact</h2>
+          <div style="font-size:11px;display:flex;flex-direction:column;gap:6px">${[cv.personal.email,cv.personal.phone,cv.personal.address].filter(Boolean).map((v,i)=>`<span style="color:#5a4040"><i class="fas fa-${['envelope','phone','location-dot'][i]}" style="color:#d4a574;width:14px;margin-right:4px"></i>${v}</span>`).join('')}</div>
+          <h2>Qualifications</h2>
+          <div>${cv.certs.map(c=>`<div class="cert-pill">${certLogoHtml(c.issuerLogo)}${c.name}</div>`).join('')}</div>
+          ${cv.skills.length?`<h2>Skills</h2><div>${cv.skills.map(s=>`<div style="font-size:11px;padding:4px 0;border-bottom:1px solid #f3e8e0;color:#4a3a30">${s}</div>`).join('')}</div>`:''}
+          ${cv.languages.length?`<h2>Languages</h2>${cv.languages.map(l=>`<div style="font-size:11px;display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #f3e8e0"><span>${l.name}</span><span style="color:#d4a574;font-style:italic">${l.level}</span></div>`).join('')}`:''}
+        </div>
+      </div>`;
+    }
+    else if(theme==='t-mist'){
+      h=`<div style="position:relative;min-height:297mm">
+        <div class="accent-col"></div>
+        <div class="wrap">
+          <div class="name-row">
+            <div>
+              ${photoHtml(72,'margin-bottom:10px;border:2px solid #c8dce8')}
+              <h1>${cv.personal.name}</h1>
+              <div class="title-tag">${cv.personal.title}</div>
+            </div>
+            <div class="contact-block">
+              ${cv.personal.email?`<span><i class="fas fa-envelope" style="color:#4f7a9e;margin-right:4px"></i>${cv.personal.email}</span>`:''}
+              ${cv.personal.phone?`<span><i class="fas fa-phone" style="color:#4f7a9e;margin-right:4px"></i>${cv.personal.phone}</span>`:''}
+              ${cv.personal.address?`<span><i class="fas fa-location-dot" style="color:#4f7a9e;margin-right:4px"></i>${cv.personal.address}</span>`:''}
+              ${cv.personal.nationality?`<span><i class="fas fa-passport" style="color:#4f7a9e;margin-right:4px"></i>${cv.personal.nationality}</span>`:''}
+            </div>
+          </div>
+          <div class="content-grid">
+            <div>
+              ${cv.personal.summary?`<h3>Profile</h3><p style="font-size:13px;line-height:1.7;color:#334155">${cv.personal.summary}</p>`:''}
+              <h3>Experience</h3>
+              ${cv.work.map(j=>`<div class="job-row"><div style="display:flex;justify-content:space-between"><div style="display:flex;align-items:center;gap:6px">${companyLogoHtml(j.companyLogo)}<strong style="font-size:13px;color:#1a2e3d">${j.title}</strong></div><span style="font-size:10px;color:#8eb4c8">${fd(j.start)}–${fd(j.end)}</span></div><div style="color:#4f7a9e;font-size:12px;font-weight:600">${j.company}${j.location?' · '+j.location:''}</div><div style="font-size:12px;line-height:1.5;color:#475569;margin-top:4px">${j.duties}</div></div>`).join('')}
+              ${(cv.projects||[]).length?`<h3>Projects</h3>${projectsHtml('','','color:#4f7a9e;','color:#0369a1;')}`:''}
+              ${(cv.education||[]).length?`<h3>Education</h3>${cv.education.map(e=>`<div style="margin-bottom:10px;font-size:12px">${companyLogoHtml(e.institutionLogo)}<strong>${e.degree}</strong><div style="color:#4f7a9e">${e.institution}</div></div>`).join('')}`:''}
+            </div>
+            <div>
+              <h3>Certifications</h3>
+              ${cv.certs.map(c=>`<div style="margin-bottom:8px;font-size:11px;background:#f0f5f9;border-left:2px solid #4f7a9e;padding:6px 8px">${certLogoHtml(c.issuerLogo)}<strong>${c.name}</strong><div style="color:#8eb4c8">${c.issuer}</div></div>`).join('')}
+              ${cv.skills.length?`<h3>Skills</h3><div>${cv.skills.map(s=>`<span class="skill-dot"><i class="fas fa-circle" style="font-size:5px"></i>${s}</span>`).join('')}</div>`:''}
+              ${cv.languages.length?`<h3>Languages</h3>${cv.languages.map(l=>`<div style="font-size:11px;display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #e8eef3"><span>${l.name}</span><span style="color:#8eb4c8">${l.level}</span></div>`).join('')}`:''}
+              ${(cv.references||[]).length?`<h3>References</h3>${cv.references.map(r=>`<div style="font-size:10px;margin-bottom:8px">${companyLogoHtml(r.companyLogo)}<strong>${r.name}</strong><div style="color:#8eb4c8">${r.position}</div></div>`).join('')}`:''}
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }
+    else if(theme==='t-terra'){
+      h=`<div class="header">
+        ${photoHtml(88,'flex-shrink:0;border:3px solid rgba(255,255,255,.3)')}
+        <div>
+          <h1>${cv.personal.name}</h1>
+          <div class="title">${cv.personal.title}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;font-size:11px;color:rgba(255,255,255,.75)">${[cv.personal.email,cv.personal.phone,cv.personal.address].filter(Boolean).map((v,i)=>`<span><i class="fas fa-${['envelope','phone','location-dot'][i]}" style="margin-right:4px"></i>${v}</span>`).join('')}</div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="main">
+          ${cv.personal.summary?`<h2>About</h2><p style="font-size:13px;line-height:1.7;color:#3a2a1a">${cv.personal.summary}</p>`:''}
+          <h2>Experience</h2>
+          ${cv.work.map(j=>`<div style="margin-bottom:18px"><div class="job-bar">${companyLogoHtml(j.companyLogo)}<span class="job-dot"></span><strong style="font-size:13px;color:#2d1a0e">${j.title}</strong><span style="font-size:10px;color:#c4714a;margin-left:auto">${fd(j.start)} – ${fd(j.end)}</span></div><div style="font-size:12px;color:#c4714a;font-weight:600;margin-left:16px">${j.company}${j.location?' · '+j.location:''}</div><div style="font-size:12px;line-height:1.5;color:#4a3020;margin-top:4px;margin-left:16px">${j.duties}</div></div>`).join('')}
+          ${(cv.projects||[]).length?`<h2>Projects</h2>${projectsHtml('','','color:#c4714a;','')}`:''}
+          ${(cv.education||[]).length?`<h2>Education</h2>${cv.education.map(e=>`<div style="margin-bottom:12px"><div class="job-bar">${companyLogoHtml(e.institutionLogo)}<span class="job-dot"></span><strong style="font-size:13px">${e.degree}</strong></div><div style="font-size:12px;color:#c4714a;margin-left:16px">${e.institution}</div></div>`).join('')}`:''}
+        </div>
+        <div class="aside">
+          <h2>Certifications</h2>
+          ${cv.certs.map(c=>`<div style="margin-bottom:8px;font-size:11px">${certLogoHtml(c.issuerLogo)}<strong style="color:#2d1a0e">${c.name}</strong><div style="color:#c4714a">${c.issuer}</div></div>`).join('')}
+          ${cv.skills.length?`<h2>Skills</h2><div>${cv.skills.map(s=>`<span class="skill-chip">${s}</span>`).join('')}</div>`:''}
+          ${cv.languages.length?`<h2>Languages</h2>${cv.languages.map(l=>`<div style="font-size:11px;margin-bottom:6px"><strong style="color:#2d1a0e">${l.name}</strong> <span style="color:#c4714a">— ${l.level}</span></div>`).join('')}`:''}
+          ${(cv.references||[]).length?`<h2>References</h2>${cv.references.map(r=>`<div style="font-size:10px;margin-bottom:8px">${companyLogoHtml(r.companyLogo)}<strong>${r.name}</strong><div style="color:#c4714a">${r.position}</div></div>`).join('')}`:''}
+        </div>
+      </div>`;
+    }
+    else if(theme==='t-arctic'){
+      h=`<div class="top-bar"></div>
+      <div class="header">
+        <div style="display:flex;align-items:center;gap:18px">
+          ${photoHtml(72,'border:2px solid #e0f2fe')}
+          <div>
+            <h1>${cv.personal.name}</h1>
+            <div class="title">${cv.personal.title}</div>
+          </div>
+        </div>
+        <div class="contact-col">
+          ${cv.personal.email?`<span><i class="fas fa-envelope" style="color:#0369a1;margin-right:5px"></i>${cv.personal.email}</span>`:''}
+          ${cv.personal.phone?`<span><i class="fas fa-phone" style="color:#0369a1;margin-right:5px"></i>${cv.personal.phone}</span>`:''}
+          ${cv.personal.address?`<span><i class="fas fa-location-dot" style="color:#0369a1;margin-right:5px"></i>${cv.personal.address}</span>`:''}
+          ${cv.personal.nationality?`<span><i class="fas fa-passport" style="color:#0369a1;margin-right:5px"></i>${cv.personal.nationality}</span>`:''}
+        </div>
+      </div>
+      <div class="body">
+        <div class="main">
+          ${cv.personal.summary?`<h2>Operational Profile</h2><p style="font-size:13px;line-height:1.6;color:#334155">${cv.personal.summary}</p>`:''}
+          <h2>Work History</h2>
+          ${cv.work.map(j=>`<div class="job-block"><div style="display:flex;justify-content:space-between;align-items:baseline">${companyLogoHtml(j.companyLogo)}<strong style="font-size:13px;color:#0c4a6e">${j.title}</strong><span style="font-size:10px;color:#7dd3fc">${fd(j.start)}–${fd(j.end)}</span></div><div style="color:#0369a1;font-size:12px;font-weight:600">${j.company}${j.location?' · '+j.location:''}</div><div style="font-size:12px;line-height:1.5;color:#475569;margin-top:3px">${j.duties}</div></div>`).join('')}
+          ${(cv.projects||[]).length?`<h2>Projects</h2>${projectsHtml('','','color:#0369a1;','color:#0c4a6e;')}`:''}
+          ${(cv.education||[]).length?`<h2>Education</h2>${cv.education.map(e=>`<div style="font-size:12px;margin-bottom:8px">${companyLogoHtml(e.institutionLogo)}<strong>${e.degree}</strong><div style="color:#0369a1">${e.institution}</div></div>`).join('')}`:''}
+        </div>
+        <div class="aside">
+          <h2>Certifications</h2>
+          ${cv.certs.map(c=>`<div class="cert-chip">${certLogoHtml(c.issuerLogo)}${c.name}</div>`).join('')}
+          ${cv.skills.length?`<h2>Competencies</h2>${cv.skills.map(s=>`<div style="font-size:11px;padding:4px 0;border-bottom:1px solid #e0f2fe;color:#334155;display:flex;align-items:center;gap:6px"><i class="fas fa-check" style="color:#0369a1;font-size:8px"></i>${s}</div>`).join('')}`:''}
+          ${cv.languages.length?`<h2>Languages</h2>${cv.languages.map(l=>`<div style="font-size:11px;display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #e0f2fe"><span>${l.name}</span><span style="color:#7dd3fc">${l.level}</span></div>`).join('')}`:''}
+          ${(cv.references||[]).length?`<h2>References</h2>${cv.references.map(r=>`<div style="font-size:10px;margin-bottom:8px">${companyLogoHtml(r.companyLogo)}<strong>${r.name}</strong><div style="color:#0369a1">${r.position}</div><div style="color:#94a3b8">${r.company}</div></div>`).join('')}`:''}
+          <div style="margin-top:auto;padding-top:16px;font-size:10px;color:#7dd3fc;display:flex;flex-wrap:wrap;gap:6px">${socialIcons()}</div>
+        </div>
+      </div>`;
+    }
+    else if(theme==='t-parch'){
+      h=`<h1>${cv.personal.name}</h1>
+      <div class="title-line">${cv.personal.title}</div>
+      <div class="rule-ornament">❧ ✦ ❧</div>
+      <div class="contact-row">
+        ${[cv.personal.email,cv.personal.phone,cv.personal.address,cv.personal.nationality].filter(Boolean).join(' · ')}
+      </div>
+      ${cv.personal.summary?`<h3>Professional Statement</h3><p style="font-size:13px;line-height:1.7;font-style:italic;color:#4a3a20;margin-bottom:8px">${cv.personal.summary}</p>`:''}
+      <h3>Professional Experience</h3>
+      ${cv.work.map(j=>`<div class="job-item"><div style="display:flex;justify-content:space-between">${companyLogoHtml(j.companyLogo)}<strong>${j.title} — ${j.company}</strong><span style="font-size:11px;color:#7a6240">${fd(j.start)} – ${fd(j.end)}</span></div>${j.location?`<div style="font-size:11px;font-style:italic;color:#7a6240">${j.location}</div>`:''}<div style="font-size:13px;line-height:1.6;margin-top:4px;color:#3a2c1a">${j.duties}</div></div>`).join('')}
+      ${(cv.projects||[]).length?`<h3>Notable Works & Projects</h3>${projectsHtml('','','','')}`:''}
+      ${(cv.education||[]).length?`<h3>Academic Qualifications</h3>${cv.education.map(e=>`<div class="job-item"><div style="display:flex;align-items:center;gap:6px">${companyLogoHtml(e.institutionLogo)}<strong>${e.degree}</strong></div><div style="font-style:italic;color:#7a6240;font-size:12px">${e.institution}${e.end?' — '+fd(e.end):''}</div></div>`).join('')}`:''}
+      <h3>Certifications & Licences</h3>
+      ${cv.certs.map(c=>`<div class="cert-item">${certLogoHtml(c.issuerLogo)}<i class="fas fa-seal" style="color:#c9b99a"></i><span>${c.name} — ${c.issuer}${c.expiry?' (Exp: '+fd(c.expiry)+')':''}</span></div>`).join('')}
+      ${cv.skills.length?`<h3>Competencies</h3><p style="font-size:13px;line-height:1.8;color:#3a2c1a">${cv.skills.join(' · ')}</p>`:''}
+      ${cv.languages.length?`<h3>Languages</h3><p style="font-size:13px">${cv.languages.map(l=>`${l.name} (${l.level})`).join(' · ')}</p>`:''}
+      ${(cv.references||[]).length?`<h3>Referees</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">${cv.references.map(r=>`<div style="font-size:12px;border:1px solid #c9b99a;padding:10px">${companyLogoHtml(r.companyLogo)}<strong>${r.name}</strong><div style="font-style:italic;color:#7a6240">${r.position}, ${r.company}</div><div>${r.phone}</div></div>`).join('')}</div>`:''}`;
+    }
+    else if(theme==='t-obsidian'){
+      h=`<div class="header">
+        <div class="prompt">$ whoami</div>
+        <div style="display:flex;align-items:center;gap:20px">
+          ${photoHtml(80,'flex-shrink:0;border:2px solid rgba(0,212,170,.3)')}
+          <div>
+            <h1>${cv.personal.name}</h1>
+            <div class="title">${cv.personal.title}</div>
+            <div class="meta">
+              ${cv.personal.email?`<span><i class="fas fa-at" style="color:#00d4aa;margin-right:4px"></i>${cv.personal.email}</span>`:''}
+              ${cv.personal.phone?`<span><i class="fas fa-phone" style="color:#00d4aa;margin-right:4px"></i>${cv.personal.phone}</span>`:''}
+              ${cv.personal.address?`<span><i class="fas fa-location-dot" style="color:#00d4aa;margin-right:4px"></i>${cv.personal.address}</span>`:''}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="body">
+        ${cv.personal.summary?`<h2>About</h2><p style="font-size:12px;line-height:1.7;color:#94a3b8">${cv.personal.summary}</p>`:''}
+        <h2>Experience</h2>
+        ${cv.work.map(j=>`<div class="job-card">${companyLogoHtml(j.companyLogo)}<div style="display:flex;justify-content:space-between"><strong style="color:#e8f4ff">${j.title}</strong><span style="font-size:10px;color:#00d4aa">${fd(j.start)}–${fd(j.end)}</span></div><div style="color:#4f7a8a;font-size:11px;margin:2px 0">${j.company}${j.location?' @ '+j.location:''}</div><div style="font-size:11px;color:#94a3b8;line-height:1.5;margin-top:4px">${j.duties}</div></div>`).join('')}
+        ${(cv.projects||[]).length?`<h2>Projects</h2>${cv.projects.map(p=>`<div class="job-card"><div style="display:flex;justify-content:space-between"><strong style="color:#e8f4ff">${p.title}</strong>${p.start?`<span style="font-size:10px;color:#00d4aa">${fd(p.start)}</span>`:''}</div>${p.role?`<div style="color:#4f7a8a;font-size:11px">${p.role}</div>`:''} ${p.tech?`<div style="font-size:10px;color:#00d4aa;margin:3px 0">${p.tech}</div>`:''} <div style="font-size:11px;color:#94a3b8;line-height:1.5;margin-top:4px">${p.description}</div></div>`).join('')}`:''}
+        ${cv.skills.length?`<h2>Stack & Skills</h2><div style="margin-bottom:16px">${cv.skills.map(s=>`<span class="tag">${s}</span>`).join('')}</div>`:''}
+        <h2>Certifications</h2>
+        ${cv.certs.map(c=>`<div style="display:flex;align-items:center;gap:8px;font-size:11px;margin-bottom:6px">${certLogoHtml(c.issuerLogo)}<i class="fas fa-shield-halved" style="color:#00d4aa"></i><span style="color:#c8d8e8">${c.name}</span><span style="color:#4f7a8a">— ${c.issuer}</span></div>`).join('')}
+        ${cv.languages.length?`<h2>Languages</h2><div style="display:flex;gap:10px;flex-wrap:wrap">${cv.languages.map(l=>`<span class="tag">${l.name} · ${l.level}</span>`).join('')}</div>`:''}
+        ${(cv.education||[]).length?`<h2>Education</h2>${cv.education.map(e=>`<div style="font-size:11px;margin-bottom:6px;color:#94a3b8">${companyLogoHtml(e.institutionLogo)}<strong style="color:#e8f4ff">${e.degree}</strong><span style="color:#4f7a8a"> · ${e.institution}</span></div>`).join('')}`:''}
+      </div>`;
+    }
+    else if(theme==='t-linen'){
+      h=`<div class="header">
+        ${photoHtml(80,'float:right;margin:0 0 10px 20px;border:1px solid #ddd')}
+        <h1>${cv.personal.name}</h1>
+        <div class="title">${cv.personal.title}</div>
+        <div class="meta-row">
+          ${cv.personal.email?`<span>${cv.personal.email}</span>`:''}
+          ${cv.personal.phone?`<span>${cv.personal.phone}</span>`:''}
+          ${cv.personal.address?`<span>${cv.personal.address}</span>`:''}
+        </div>
+      </div>
+      <div class="body">
+        <div class="main">
+          ${cv.personal.summary?`<h3>About</h3><p style="font-size:14px;line-height:1.8;color:#444;font-style:italic;margin-bottom:8px">${cv.personal.summary}</p>`:''}
+          ${cv.work.length?`<h3>Experience</h3>${cv.work.map(j=>`<div class="job-item">${companyLogoHtml(j.companyLogo)}<div style="display:flex;justify-content:space-between;align-items:baseline"><strong style="font-size:15px;font-weight:600;color:#1a1a1a">${j.title}</strong><span style="font-size:11px;color:#aaa;font-family:'Plus Jakarta Sans',sans-serif">${fd(j.start)} – ${fd(j.end)}</span></div><div style="font-size:12px;color:#888;font-family:'Plus Jakarta Sans',sans-serif;margin:2px 0">${j.company}${j.location?' · '+j.location:''}</div><div style="font-size:13px;line-height:1.6;color:#444;margin-top:6px">${j.duties}</div></div>`).join('')}`:''}
+          ${(cv.projects||[]).length?`<h3>Selected Work</h3>${cv.projects.map(p=>`<div class="job-item">${companyLogoHtml(p.companyLogo||'')}<div style="display:flex;justify-content:space-between;align-items:baseline"><strong style="font-size:15px;color:#1a1a1a">${p.title}</strong>${p.start?`<span style="font-size:11px;color:#aaa;font-family:'Plus Jakarta Sans',sans-serif">${fd(p.start)}</span>`:''}</div>${p.role?`<div style="font-size:12px;color:#888;font-family:'Plus Jakarta Sans',sans-serif">${p.role}</div>`:''}<div style="font-size:13px;line-height:1.6;color:#444;margin-top:6px">${p.description}</div></div>`).join('')}`:''}
+          ${(cv.education||[]).length?`<h3>Education</h3>${cv.education.map(e=>`<div class="job-item">${companyLogoHtml(e.institutionLogo)}<strong style="font-size:14px;color:#1a1a1a">${e.degree}</strong><div style="font-size:12px;color:#888;font-family:'Plus Jakarta Sans',sans-serif">${e.institution}${e.end?' · '+fd(e.end):''}</div>${e.details?`<div style="font-size:12px;color:#555;margin-top:4px">${e.details}</div>`:''}</div>`).join('')}`:''}
+        </div>
+        <div class="aside">
+          <h3>Certifications</h3>
+          ${cv.certs.map(c=>`<div style="margin-bottom:10px">${certLogoHtml(c.issuerLogo)}<strong style="font-size:12px;color:#1a1a1a">${c.name}</strong><div style="font-size:11px;color:#888;font-family:'Plus Jakarta Sans',sans-serif">${c.issuer}</div></div>`).join('')}
+          ${cv.skills.length?`<h3>Skills</h3>${cv.skills.map(s=>`<div class="skill-line">${s}</div>`).join('')}`:''}
+          ${cv.languages.length?`<h3>Languages</h3>${cv.languages.map(l=>`<div class="skill-line" style="display:flex;justify-content:space-between"><span>${l.name}</span><span style="color:#aaa">${l.level}</span></div>`).join('')}`:''}
+          ${(cv.references||[]).length?`<h3>References</h3>${cv.references.map(r=>`<div style="margin-bottom:10px;font-size:11px">${companyLogoHtml(r.companyLogo)}<strong style="color:#1a1a1a">${r.name}</strong><div style="color:#888;font-family:'Plus Jakarta Sans',sans-serif">${r.position}</div><div style="color:#aaa">${r.company}</div></div>`).join('')}`:''}
+          <h3>Profiles</h3>
+          <div style="font-size:11px;color:#666;font-family:'Plus Jakarta Sans',sans-serif;display:flex;flex-direction:column;gap:5px">${socialIcons()}</div>
+        </div>
+      </div>`;
+    }
 
     c.innerHTML = h;
   },
@@ -1509,6 +2092,7 @@ const app = {
       if(!this.state.cv.social) this.state.cv.social={};
       if(!this.state.cv.education) this.state.cv.education=[];
       if(!this.state.cv.references) this.state.cv.references=[];
+      if(!this.state.cv.projects) this.state.cv.projects=[];
     }catch(e){console.error(e)}
   },
   deleteCV(id){
@@ -1557,8 +2141,8 @@ function showScreen(screen){
     document.getElementById('preview-screen').classList.add('open');
     app.renderPreview('cv-paper-preview');
     document.getElementById('cv-paper-preview').className = app.state.template;
-    // slight delay so element has layout
     setTimeout(()=>{
+      setViewMode(_viewMode || 'fit');
       scalePreviewScreen();
       initPinchZoom();
     }, 60);
@@ -1569,51 +2153,86 @@ function showScreen(screen){
   }
 }
 
-// ── preview zoom state ────────────
+// ── preview zoom/view state ────────────
 let _previewZoom = 1.0;
+let _viewMode = 'fit'; // 'fit' | 'scroll'
+
+function setViewMode(mode){
+  _viewMode = mode;
+  const body = document.getElementById('preview-screen-body');
+  const zoomRow = document.getElementById('zoom-row');
+  document.getElementById('vpill-fit').classList.toggle('active', mode==='fit');
+  document.getElementById('vpill-scroll').classList.toggle('active', mode==='scroll');
+  body.classList.toggle('mode-scroll', mode==='scroll');
+  body.classList.toggle('mode-fit', mode==='fit');
+  if(zoomRow) zoomRow.style.display = mode==='fit' ? 'flex' : 'none';
+  if(mode==='fit'){
+    scalePreviewScreen();
+  } else {
+    // scroll mode: remove transform, let it be native width
+    const p = document.getElementById('cv-paper-preview');
+    if(p){ p.style.transform='none'; p.style.marginBottom='0'; }
+    const pct = document.getElementById('zoom-pct');
+    if(pct) pct.textContent = '100%';
+  }
+}
 
 function adjustZoom(delta){
+  if(_viewMode==='scroll') return;
   _previewZoom = Math.min(2.0, Math.max(0.3, _previewZoom + delta));
   applyPreviewZoom();
 }
 
 function applyPreviewZoom(){
+  if(_viewMode==='scroll') return;
   const p = document.getElementById('cv-paper-preview');
   if(!p) return;
+  // Remove transform first to get true natural height
+  p.style.transform = 'none';
+  const naturalH = p.offsetHeight;
+  const naturalW = p.offsetWidth;
+  // Now apply scale
   p.style.transform = `scale(${_previewZoom})`;
   p.style.transformOrigin = 'top center';
-  // adjust bottom margin so container knows the scaled height
-  const naturalH = p.scrollHeight;
-  const scaledH = naturalH * _previewZoom;
-  const diff = scaledH - naturalH;
-  p.style.marginBottom = diff > 0 ? diff+'px' : '0';
+  // Push container so scaled content doesn't overlap footer
+  p.style.marginBottom = (naturalH * _previewZoom - naturalH) + 'px';
+  p.style.marginRight = ((naturalW * _previewZoom - naturalW) / 2) + 'px';
+  p.style.marginLeft = ((naturalW * _previewZoom - naturalW) / 2) + 'px';
   const pctEl = document.getElementById('zoom-pct');
   if(pctEl) pctEl.textContent = Math.round(_previewZoom*100)+'%';
 }
 
 function scalePreviewScreen(){
+  if(_viewMode==='scroll') return;
   const wrap = document.getElementById('preview-screen-body');
   if(!wrap) return;
-  const w = wrap.clientWidth - 32;
-  const pw = 794; // 210mm in px
-  // Set initial zoom so CV fits the screen width
-  _previewZoom = w < pw ? parseFloat((w/pw).toFixed(2)) : 1.0;
+  const w = wrap.clientWidth - 40;
+  const pw = 794; // 210mm at 96dpi
+  _previewZoom = parseFloat(Math.min(1.0, w / pw).toFixed(3));
   applyPreviewZoom();
 }
 
-function applyPreviewScale(){
-  // Desktop inline preview — cv-paper is natural size inside scroll area
-  // No transform needed; the scroll area handles overflow
+// Also scale the inline desktop preview panel
+function scaleInlinePreview(){
+  const wrap = document.getElementById('preview-scroll-area');
+  const paper = document.getElementById('cv-paper');
+  if(!wrap || !paper) return;
+  paper.style.transform = 'none';
+  paper.style.marginBottom = '0';
 }
 
-// Pinch-to-zoom on the preview body
+function applyPreviewScale(){
+  scaleInlinePreview();
+}
+
+// Pinch-to-zoom on the preview body (fit mode only)
 function initPinchZoom(){
   const body = document.getElementById('preview-screen-body');
   if(!body) return;
   let startDist = 0;
   let startZoom = 1;
   body.addEventListener('touchstart', e=>{
-    if(e.touches.length===2){
+    if(e.touches.length===2 && _viewMode==='fit'){
       startDist = Math.hypot(
         e.touches[0].clientX - e.touches[1].clientX,
         e.touches[0].clientY - e.touches[1].clientY
@@ -1622,7 +2241,7 @@ function initPinchZoom(){
     }
   },{passive:true});
   body.addEventListener('touchmove', e=>{
-    if(e.touches.length===2){
+    if(e.touches.length===2 && _viewMode==='fit'){
       const dist = Math.hypot(
         e.touches[0].clientX - e.touches[1].clientX,
         e.touches[0].clientY - e.touches[1].clientY
@@ -1680,7 +2299,7 @@ function showArchiveModal(){
   list.innerHTML = saved.map(cv=>{
     const tpl = TEMPLATES.find(t=>t.id===cv._template)||TEMPLATES[0];
     return `<div class="archive-card" onclick="previewArchiveCV(${cv.id})" style="cursor:pointer">
-      <div class="archive-thumb" style="background:${tpl.color};font-size:22px">${tpl.icon}</div>
+      <div class="archive-thumb" style="background:${tpl.color}">${tpl.icon}</div>
       <div class="archive-info" style="pointer-events:none">
         <div class="archive-name">${cv.personal?.name||'Unnamed CV'}</div>
         <div class="archive-meta">${cv.personal?.title||''} · ${tpl.name} · ${new Date(cv.id).toLocaleDateString()}</div>
@@ -1711,6 +2330,7 @@ function previewArchiveCV(id){
   if(!app.state.cv.social) app.state.cv.social={};
   if(!app.state.cv.education) app.state.cv.education=[];
   if(!app.state.cv.references) app.state.cv.references=[];
+  if(!app.state.cv.projects) app.state.cv.projects=[];
   document.getElementById('archive-modal-wrap').style.display='none';
   showScreen('preview');
 }
@@ -1723,7 +2343,7 @@ function showChangeTplModal(){
   const list = document.getElementById('change-tpl-list');
   list.innerHTML = `<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
     ${TEMPLATES.map(t=>`<div onclick="changeTemplate('${t.id}')" style="border:2px solid ${app.state.template===t.id?'var(--accent)':'var(--border)'};border-radius:10px;overflow:hidden;cursor:pointer;transition:.2s">
-      <div style="height:70px;background:${t.thumb};display:flex;align-items:center;justify-content:center;font-size:26px;position:relative">
+      <div style="height:70px;background:${t.thumb};display:flex;align-items:center;justify-content:center;position:relative">
         ${t.icon}
         <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:${t.color}"></div>
       </div>
@@ -1813,12 +2433,86 @@ function showToast(msg, type=''){
 }
 
 // ═══════════════════════════════════════════════════
-// INIT
+// PWA SETUP
 // ═══════════════════════════════════════════════════
+var _pwaPrompt = null;
+var _pwaInstalled = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+window.addEventListener('beforeinstallprompt', function(e){
+  e.preventDefault();
+  _pwaPrompt = e;
+  // Show install button in nav
+  var btn = document.getElementById('pwa-install-btn');
+  if(btn) btn.style.display = 'flex';
+  // Show bottom banner on mobile
+  if(window.innerWidth < 768){
+    var banner = document.getElementById('pwa-banner');
+    if(banner && !localStorage.getItem('pwa-dismissed')) banner.style.display = 'flex';
+  }
+});
+
+window.addEventListener('appinstalled', function(){
+  _pwaInstalled = true;
+  var btn = document.getElementById('pwa-install-btn');
+  if(btn) btn.style.display = 'none';
+  var banner = document.getElementById('pwa-banner');
+  if(banner) banner.style.display = 'none';
+  showToast('App installed successfully!', 'success');
+});
+
+function installPWA(){
+  if(_pwaPrompt){
+    _pwaPrompt.prompt();
+    _pwaPrompt.userChoice.then(function(r){
+      if(r.outcome === 'accepted'){
+        document.getElementById('pwa-banner') && (document.getElementById('pwa-banner').style.display='none');
+      }
+      _pwaPrompt = null;
+    });
+  } else {
+    // Fallback: show instructions toast
+    var ua = navigator.userAgent;
+    var msg = 'To install: ';
+    if(/iPhone|iPad/.test(ua)) msg += 'Tap Share → Add to Home Screen';
+    else if(/Android/.test(ua)) msg += 'Tap ⋮ menu → Add to Home Screen';
+    else msg += 'Click ⊕ icon in browser address bar, or use Chrome/Edge browser';
+    showToast(msg, '');
+  }
+}
+
+(function setupPWA(){
+  if(_pwaInstalled) return; // already running as app
+  var manifest = {
+    name:"OffshorePro CV Builder",
+    short_name:"CV Builder",
+    description:"Professional Resume Generator",
+    start_url:"./",display:"standalone",
+    background_color:"#0a2540",theme_color:"#0a2540",
+    icons:[
+      {src:"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH6AEJCiUlZ3dLUQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAABjklEQVR42u3BMQEAAADCoPVP7WsIoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeAMBuAABHgAAAABJRU5ErkJggg==",
+      sizes:"192x192",type:"image/png"}
+    ]
+  };
+  try {
+    var mb = new Blob([JSON.stringify(manifest)],{type:'application/json'});
+    var mel = document.getElementById('pwa-manifest');
+    if(mel) mel.href = URL.createObjectURL(mb);
+  } catch(e){}
+  if('serviceWorker' in navigator){
+    try {
+      var sw = "var C='cvbuilder-v4';" +
+        "self.addEventListener('install',function(e){e.waitUntil(caches.open(C).then(function(c){return c.addAll(['./']);}));self.skipWaiting();});" +
+        "self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(ks){return Promise.all(ks.filter(function(k){return k!==C;}).map(function(k){return caches.delete(k);}));}));self.clients.claim();});" +
+        "self.addEventListener('fetch',function(e){e.respondWith(caches.match(e.request).then(function(r){return r||fetch(e.request).catch(function(){return caches.match('./');});}));});";
+      navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'text/javascript'}))).catch(function(){});
+    } catch(e){}
+  }
+})();
+
 app.init();
-document.getElementById('pill-create').addEventListener('click',()=>showScreen('create'));
-document.getElementById('pill-preview').addEventListener('click',()=>showScreen('preview'));
-document.getElementById('pill-archive').addEventListener('click',()=>showScreen('archive'));
+document.getElementById('pill-create').addEventListener('click',function(){showScreen('create');});
+document.getElementById('pill-preview').addEventListener('click',function(){showScreen('preview');});
+document.getElementById('pill-archive').addEventListener('click',function(){showScreen('archive');});
 </script>
 </body>
 </html>
