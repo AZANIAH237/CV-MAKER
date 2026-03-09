@@ -1017,180 +1017,153 @@ const TEMPLATES = [
 const SIDEBAR_TEMPLATE_IDS = ['t-offshore','t-modern','t-slate','t-finance','t-rose','t-arctic','t-terra','t-linen','t-mist'];
 
 // ═══════════════════════════════════════════════════
-// SIDEBAR PATTERNS
-// Each pattern defines CSS for .cv-sidebar-pattern overlay inside the sidebar/aside
+// SIDEBAR PATTERNS — color-aware, per-template
 // ═══════════════════════════════════════════════════
+
+// Best default pattern per sidebar template
+const SIDEBAR_PATTERN_DEFAULTS = {
+  't-offshore': 'bubbles',
+  't-modern':   'circuit',
+  't-slate':    'crosshatch',
+  't-finance':  'topography',
+  't-rose':     'bokeh',
+  't-arctic':   'dots',
+  't-terra':    'triangles',
+  't-linen':    'noise',
+  't-mist':     'diagonal',
+};
+
+// Sidebar background info per template: dark=use white overlays, else use accent color
+const SIDEBAR_COLORS = {
+  't-offshore': {dark:true,  r:125, g:211, b:252},  // sky-blue glow on deep navy
+  't-modern':   {dark:false, r:13,  g:148, b:136},  // teal on pale teal bg
+  't-slate':    {dark:false, r:71,  g:92,  b:115},  // slate-blue on light bg
+  't-finance':  {dark:false, r:180, g:130, b:30},   // gold on cream
+  't-rose':     {dark:false, r:180, g:90,  b:60},   // rose-copper on pale rose
+  't-arctic':   {dark:false, r:3,   g:105, b:161},  // ocean blue on sky white
+  't-terra':    {dark:false, r:196, g:113, b:74},   // terracotta on warm cream
+  't-linen':    {dark:false, r:140, g:110, b:70},   // sepia on linen
+  't-mist':     {dark:false, r:79,  g:122, b:158},  // mist-blue on white
+};
+
+// Build tinted pattern CSS for a given template
+function buildPatternCss(pid, tid){
+  const col = SIDEBAR_COLORS[tid] || {dark:true, r:255, g:255, b:255};
+  const c = (a) => col.dark
+    ? `rgba(255,255,255,${a})`
+    : `rgba(${col.r},${col.g},${col.b},${a})`;
+  const map = {
+    'none': '',
+    'bubbles':
+      `background-image:radial-gradient(circle at 15% 18%,${c(.22)} 0%,transparent 32%),` +
+      `radial-gradient(circle at 82% 48%,${c(.16)} 0%,transparent 26%),` +
+      `radial-gradient(circle at 42% 78%,${c(.18)} 0%,transparent 30%),` +
+      `radial-gradient(circle at 68% 12%,${c(.13)} 0%,transparent 22%),` +
+      `radial-gradient(circle at 22% 60%,${c(.10)} 0%,transparent 24%),` +
+      `radial-gradient(circle at 90% 88%,${c(.16)} 0%,transparent 28%);`,
+    'dots':
+      `background-image:radial-gradient(circle,${c(.35)} 1.2px,transparent 1.2px);` +
+      `background-size:16px 16px;`,
+    'lines':
+      `background-image:repeating-linear-gradient(0deg,transparent,transparent 20px,${c(.12)} 20px,${c(.12)} 21px);`,
+    'diagonal':
+      `background-image:repeating-linear-gradient(45deg,transparent,transparent 12px,${c(.12)} 12px,${c(.12)} 13px);`,
+    'crosshatch':
+      `background-image:` +
+      `repeating-linear-gradient(0deg,transparent,transparent 14px,${c(.10)} 14px,${c(.10)} 15px),` +
+      `repeating-linear-gradient(90deg,transparent,transparent 14px,${c(.10)} 14px,${c(.10)} 15px);`,
+    'waves':
+      `background-image:repeating-linear-gradient(-45deg,transparent 0px,transparent 7px,${c(.09)} 7px,${c(.09)} 8px,transparent 8px,transparent 15px,${c(.09)} 15px,${c(.09)} 16px);`,
+    'triangles':
+      `background-image:` +
+      `linear-gradient(120deg,${c(.10)} 25%,transparent 25%),` +
+      `linear-gradient(240deg,${c(.10)} 25%,transparent 25%),` +
+      `linear-gradient(0deg,${c(.10)} 25%,transparent 25%),` +
+      `linear-gradient(300deg,${c(.10)} 25%,transparent 25%);` +
+      `background-size:28px 48px;`,
+    'hexagons':
+      `background-image:` +
+      `radial-gradient(circle at 50% 0%,${c(.12)} 0%,transparent 60%),` +
+      `repeating-linear-gradient(60deg,transparent,transparent 22px,${c(.09)} 22px,${c(.09)} 23px),` +
+      `repeating-linear-gradient(-60deg,transparent,transparent 22px,${c(.09)} 22px,${c(.09)} 23px),` +
+      `repeating-linear-gradient(0deg,transparent,transparent 22px,${c(.06)} 22px,${c(.06)} 23px);` +
+      `background-size:26px 45px;`,
+    'circuit':
+      `background-image:` +
+      `linear-gradient(${c(.10)} 1px,transparent 1px),` +
+      `linear-gradient(90deg,${c(.10)} 1px,transparent 1px),` +
+      `radial-gradient(circle at 10px 10px,${c(.20)} 1.5px,transparent 2px);` +
+      `background-size:20px 20px,20px 20px,20px 20px;`,
+    'topography':
+      `background-image:` +
+      `radial-gradient(ellipse at 30% 30%,${c(.12)} 0%,transparent 50%),` +
+      `radial-gradient(ellipse at 70% 70%,${c(.09)} 0%,transparent 45%),` +
+      `repeating-radial-gradient(circle at 40% 40%,transparent 0px,transparent 16px,${c(.08)} 16px,${c(.08)} 17px,transparent 17px,transparent 32px);`,
+    'confetti':
+      `background-image:` +
+      `radial-gradient(circle at 10% 15%,${c(.22)} 2px,transparent 2px),` +
+      `radial-gradient(circle at 30% 42%,${c(.15)} 1.5px,transparent 1.5px),` +
+      `radial-gradient(circle at 56% 20%,${c(.24)} 2px,transparent 2px),` +
+      `radial-gradient(circle at 76% 56%,${c(.17)} 1.5px,transparent 1.5px),` +
+      `radial-gradient(circle at 20% 72%,${c(.20)} 2px,transparent 2px),` +
+      `radial-gradient(circle at 86% 26%,${c(.15)} 1.5px,transparent 1.5px),` +
+      `radial-gradient(circle at 46% 82%,${c(.22)} 2px,transparent 2px),` +
+      `radial-gradient(circle at 92% 72%,${c(.18)} 2px,transparent 2px);`,
+    'mosaic':
+      `background-image:` +
+      `linear-gradient(${c(.10)} 1px,transparent 1px),` +
+      `linear-gradient(90deg,${c(.10)} 1px,transparent 1px),` +
+      `linear-gradient(${c(.05)} 1px,transparent 1px),` +
+      `linear-gradient(90deg,${c(.05)} 1px,transparent 1px);` +
+      `background-size:38px 38px,38px 38px,8px 8px,8px 8px;`,
+    'bokeh':
+      `background-image:` +
+      `radial-gradient(circle at 20% 25%,${c(.20)} 0%,${c(.06)} 16%,transparent 26%),` +
+      `radial-gradient(circle at 75% 15%,${c(.15)} 0%,${c(.05)} 19%,transparent 29%),` +
+      `radial-gradient(circle at 50% 62%,${c(.22)} 0%,${c(.06)} 21%,transparent 31%),` +
+      `radial-gradient(circle at 10% 76%,${c(.17)} 0%,${c(.05)} 15%,transparent 25%),` +
+      `radial-gradient(circle at 85% 82%,${c(.15)} 0%,${c(.05)} 17%,transparent 27%);`,
+    'starfield':
+      `background-image:` +
+      `radial-gradient(circle at  5% 10%,${c(.85)} 0.6px,transparent 0.6px),` +
+      `radial-gradient(circle at 26% 32%,${c(.60)} 0.5px,transparent 0.5px),` +
+      `radial-gradient(circle at 45%  5%,${c(.95)} 0.7px,transparent 0.7px),` +
+      `radial-gradient(circle at 65% 47%,${c(.60)} 0.5px,transparent 0.5px),` +
+      `radial-gradient(circle at 85% 16%,${c(.80)} 0.6px,transparent 0.6px),` +
+      `radial-gradient(circle at 15% 58%,${c(.70)} 0.5px,transparent 0.5px),` +
+      `radial-gradient(circle at 36% 73%,${c(.95)} 0.7px,transparent 0.7px),` +
+      `radial-gradient(circle at 56% 87%,${c(.60)} 0.5px,transparent 0.5px),` +
+      `radial-gradient(circle at 76% 67%,${c(.80)} 0.6px,transparent 0.6px),` +
+      `radial-gradient(circle at 92% 92%,${c(.70)} 0.5px,transparent 0.5px);`,
+    'noise':
+      `background-image:` +
+      `repeating-linear-gradient(0deg,transparent,transparent 3px,${c(.03)} 3px,${c(.03)} 4px),` +
+      `repeating-linear-gradient(90deg,transparent,transparent 7px,${c(.04)} 7px,${c(.04)} 8px),` +
+      `repeating-linear-gradient(45deg,transparent,transparent 10px,${c(.025)} 10px,${c(.025)} 11px);`,
+  };
+  return map[pid] || '';
+}
+
+// Pattern metadata (no css here — css built dynamically via buildPatternCss)
 const SIDEBAR_PATTERNS = [
-  {
-    id: 'none',
-    name: 'Clean',
-    icon: '✕',
-    css: ''
-  },
-  {
-    id: 'bubbles',
-    name: 'Bubbles',
-    icon: '⬤',
-    css: `background-image:
-      radial-gradient(circle at 15% 20%, rgba(255,255,255,0.18) 0%, transparent 30%),
-      radial-gradient(circle at 80% 50%, rgba(255,255,255,0.12) 0%, transparent 25%),
-      radial-gradient(circle at 40% 75%, rgba(255,255,255,0.15) 0%, transparent 28%),
-      radial-gradient(circle at 70% 10%, rgba(255,255,255,0.10) 0%, transparent 20%),
-      radial-gradient(circle at 25% 55%, rgba(255,255,255,0.08) 0%, transparent 22%),
-      radial-gradient(circle at 90% 85%, rgba(255,255,255,0.14) 0%, transparent 26%);`
-  },
-  {
-    id: 'dots',
-    name: 'Dot Grid',
-    icon: '⁙',
-    css: `background-image: radial-gradient(circle, rgba(255,255,255,0.25) 1px, transparent 1px);
-      background-size: 18px 18px;`
-  },
-  {
-    id: 'lines',
-    name: 'Fine Lines',
-    icon: '≡',
-    css: `background-image: repeating-linear-gradient(
-        0deg, transparent, transparent 22px,
-        rgba(255,255,255,0.07) 22px, rgba(255,255,255,0.07) 23px
-      );`
-  },
-  {
-    id: 'diagonal',
-    name: 'Diagonal',
-    icon: '╱',
-    css: `background-image: repeating-linear-gradient(
-        45deg, transparent, transparent 14px,
-        rgba(255,255,255,0.07) 14px, rgba(255,255,255,0.07) 15px
-      );`
-  },
-  {
-    id: 'crosshatch',
-    name: 'Crosshatch',
-    icon: '⊞',
-    css: `background-image:
-      repeating-linear-gradient(0deg, transparent, transparent 16px, rgba(255,255,255,0.06) 16px, rgba(255,255,255,0.06) 17px),
-      repeating-linear-gradient(90deg, transparent, transparent 16px, rgba(255,255,255,0.06) 16px, rgba(255,255,255,0.06) 17px);`
-  },
-  {
-    id: 'waves',
-    name: 'Waves',
-    icon: '〜',
-    css: `background-image: repeating-linear-gradient(
-        -45deg,
-        transparent 0px, transparent 8px,
-        rgba(255,255,255,0.05) 8px, rgba(255,255,255,0.05) 9px,
-        transparent 9px, transparent 17px,
-        rgba(255,255,255,0.05) 17px, rgba(255,255,255,0.05) 18px
-      );`
-  },
-  {
-    id: 'triangles',
-    name: 'Triangles',
-    icon: '△',
-    css: `background-image:
-      linear-gradient(120deg, rgba(255,255,255,0.07) 25%, transparent 25%),
-      linear-gradient(240deg, rgba(255,255,255,0.07) 25%, transparent 25%),
-      linear-gradient(0deg, rgba(255,255,255,0.07) 25%, transparent 25%),
-      linear-gradient(300deg, rgba(255,255,255,0.07) 25%, transparent 25%);
-      background-size: 30px 52px;`
-  },
-  {
-    id: 'hexagons',
-    name: 'Hexagons',
-    icon: '⬡',
-    css: `background-image:
-      radial-gradient(circle at 50% 0%, rgba(255,255,255,0.08) 0%, transparent 60%),
-      repeating-linear-gradient(60deg, transparent 0px, transparent 24px, rgba(255,255,255,0.06) 24px, rgba(255,255,255,0.06) 25px),
-      repeating-linear-gradient(-60deg, transparent 0px, transparent 24px, rgba(255,255,255,0.06) 24px, rgba(255,255,255,0.06) 25px),
-      repeating-linear-gradient(0deg, transparent 0px, transparent 24px, rgba(255,255,255,0.04) 24px, rgba(255,255,255,0.04) 25px);
-      background-size: 29px 50px;`
-  },
-  {
-    id: 'circuit',
-    name: 'Circuit',
-    icon: '⏣',
-    css: `background-image:
-      linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px),
-      radial-gradient(circle at 10px 10px, rgba(255,255,255,0.12) 1.5px, transparent 2px);
-      background-size: 20px 20px, 20px 20px, 20px 20px;`
-  },
-  {
-    id: 'topography',
-    name: 'Topography',
-    icon: '◎',
-    css: `background-image:
-      radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.08) 0%, transparent 50%),
-      radial-gradient(ellipse at 70% 70%, rgba(255,255,255,0.06) 0%, transparent 45%),
-      radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.04) 0%, transparent 70%),
-      repeating-radial-gradient(circle at 40% 40%, transparent 0px, transparent 18px, rgba(255,255,255,0.04) 18px, rgba(255,255,255,0.04) 19px, transparent 19px, transparent 36px);`
-  },
-  {
-    id: 'confetti',
-    name: 'Confetti',
-    icon: '✦',
-    css: `background-image:
-      radial-gradient(circle at 10% 15%, rgba(255,255,255,0.15) 2px, transparent 2px),
-      radial-gradient(circle at 30% 40%, rgba(255,255,255,0.10) 1.5px, transparent 1.5px),
-      radial-gradient(circle at 55% 20%, rgba(255,255,255,0.18) 2px, transparent 2px),
-      radial-gradient(circle at 75% 55%, rgba(255,255,255,0.12) 1.5px, transparent 1.5px),
-      radial-gradient(circle at 20% 70%, rgba(255,255,255,0.14) 2px, transparent 2px),
-      radial-gradient(circle at 85% 25%, rgba(255,255,255,0.10) 1.5px, transparent 1.5px),
-      radial-gradient(circle at 45% 80%, rgba(255,255,255,0.16) 2px, transparent 2px),
-      radial-gradient(circle at 65% 90%, rgba(255,255,255,0.12) 1.5px, transparent 1.5px),
-      radial-gradient(circle at 90% 70%, rgba(255,255,255,0.14) 2px, transparent 2px);`
-  },
-  {
-    id: 'mosaic',
-    name: 'Mosaic',
-    icon: '▦',
-    css: `background-image:
-      linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px),
-      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size: 40px 40px, 40px 40px, 8px 8px, 8px 8px;`
-  },
-  {
-    id: 'bokeh',
-    name: 'Bokeh',
-    icon: '◌',
-    css: `background-image:
-      radial-gradient(circle at 20% 25%, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.05) 15%, transparent 25%),
-      radial-gradient(circle at 75% 15%, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 18%, transparent 28%),
-      radial-gradient(circle at 50% 60%, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.04) 20%, transparent 30%),
-      radial-gradient(circle at 10% 75%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 14%, transparent 24%),
-      radial-gradient(circle at 85% 80%, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 16%, transparent 26%);`
-  },
-  {
-    id: 'starfield',
-    name: 'Starfield',
-    icon: '✩',
-    css: `background-image:
-      radial-gradient(circle at 5% 10%, rgba(255,255,255,0.7) 0.5px, transparent 0.5px),
-      radial-gradient(circle at 25% 30%, rgba(255,255,255,0.5) 0.5px, transparent 0.5px),
-      radial-gradient(circle at 45% 5%, rgba(255,255,255,0.8) 0.7px, transparent 0.7px),
-      radial-gradient(circle at 65% 45%, rgba(255,255,255,0.5) 0.5px, transparent 0.5px),
-      radial-gradient(circle at 85% 15%, rgba(255,255,255,0.7) 0.6px, transparent 0.6px),
-      radial-gradient(circle at 15% 55%, rgba(255,255,255,0.6) 0.5px, transparent 0.5px),
-      radial-gradient(circle at 35% 70%, rgba(255,255,255,0.8) 0.7px, transparent 0.7px),
-      radial-gradient(circle at 55% 85%, rgba(255,255,255,0.5) 0.5px, transparent 0.5px),
-      radial-gradient(circle at 75% 65%, rgba(255,255,255,0.7) 0.6px, transparent 0.6px),
-      radial-gradient(circle at 90% 90%, rgba(255,255,255,0.6) 0.5px, transparent 0.5px),
-      radial-gradient(circle at 8% 85%, rgba(255,255,255,0.5) 0.5px, transparent 0.5px),
-      radial-gradient(circle at 50% 40%, rgba(255,255,255,0.8) 0.7px, transparent 0.7px);`
-  },
-  {
-    id: 'noise',
-    name: 'Soft Noise',
-    icon: '≈',
-    css: `background-image:
-      repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.015) 3px, rgba(255,255,255,0.015) 4px),
-      repeating-linear-gradient(90deg, transparent, transparent 7px, rgba(255,255,255,0.02) 7px, rgba(255,255,255,0.02) 8px),
-      repeating-linear-gradient(45deg, transparent, transparent 11px, rgba(255,255,255,0.015) 11px, rgba(255,255,255,0.015) 12px);`
-  }
+  {id:'none',       name:'Clean',      icon:'✕'},
+  {id:'bubbles',    name:'Bubbles',    icon:'⬤'},
+  {id:'dots',       name:'Dot Grid',   icon:'⁙'},
+  {id:'lines',      name:'Fine Lines', icon:'≡'},
+  {id:'diagonal',   name:'Diagonal',  icon:'╱'},
+  {id:'crosshatch', name:'Crosshatch', icon:'⊞'},
+  {id:'waves',      name:'Waves',      icon:'〜'},
+  {id:'triangles',  name:'Triangles',  icon:'△'},
+  {id:'hexagons',   name:'Hexagons',   icon:'⬡'},
+  {id:'circuit',    name:'Circuit',    icon:'⏣'},
+  {id:'topography', name:'Topography', icon:'◎'},
+  {id:'confetti',   name:'Confetti',   icon:'✦'},
+  {id:'mosaic',     name:'Mosaic',     icon:'▦'},
+  {id:'bokeh',      name:'Bokeh',      icon:'◌'},
+  {id:'starfield',  name:'Starfield',  icon:'✩'},
+  {id:'noise',      name:'Soft Noise', icon:'≈'},
 ];
+const STEPS = ['templates','personal','social','photo','work','projects','certs','education','references','skills','languages','review'];
 const STEP_NAMES = {
   templates:'Choose Template',personal:'Personal Info',social:'Social Links',photo:'Profile Photo',
   work:'Work Experience',projects:'Projects',certs:'Certifications',education:'Education',references:'References',
@@ -1334,33 +1307,39 @@ const app = {
         });
         html+=`</div>`;
 
-        // Sidebar pattern picker — only shown for sidebar templates
+        // Sidebar pattern picker — inline card, desktop only, shown for sidebar templates
         const hasSidebar = SIDEBAR_TEMPLATE_IDS.includes(this.state.template);
-        html += `<div id="sidebar-pattern-section" style="display:${hasSidebar?'block':'none'};margin-top:24px">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-            <div style="background:linear-gradient(135deg,var(--accent),#818cf8);width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-              <i class="fas fa-wand-magic-sparkles" style="color:#fff;font-size:14px"></i>
+        if(hasSidebar){
+          const activePat = this.state.sidebarPattern || 'none';
+          html += `<div id="sidebar-pattern-section" style="margin-top:20px;background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06)">
+            <div style="background:linear-gradient(135deg,#0a2540,#1e3a5f);padding:14px 18px;display:flex;align-items:center;gap:12px">
+              <div style="width:32px;height:32px;background:linear-gradient(135deg,#7c3aed,#2563eb);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <i class="fas fa-wand-magic-sparkles" style="color:#fff;font-size:14px"></i>
+              </div>
+              <div>
+                <div style="color:#fff;font-weight:700;font-size:14px">Sidebar Background Pattern</div>
+                <div style="color:rgba(255,255,255,.55);font-size:11px">Decorative effect for your sidebar — changes live</div>
+              </div>
             </div>
-            <div>
-              <div style="font-weight:700;font-size:14px;color:var(--text)">Sidebar Background Pattern</div>
-              <div style="font-size:11px;color:var(--muted)">Decorative effects for your sidebar panel</div>
+            <div style="padding:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+              ${SIDEBAR_PATTERNS.map(p=>{
+                const active = activePat===p.id;
+                const pCss = buildPatternCss(p.id, this.state.template);
+                return `<div class="pattern-swatch ${active?'active':''}"
+                  data-pattern="${p.id}"
+                  onclick="app.setSidebarPattern('${p.id}')"
+                  style="border:${active?'2px solid #7c3aed':'2px solid #e2e8f0'};border-radius:10px;padding:8px 6px 7px;cursor:pointer;text-align:center;background:${active?'#f5f3ff':'#f8fafc'};transition:.15s;position:relative">
+                  ${active?'<div style="position:absolute;top:4px;right:4px;width:14px;height:14px;background:#7c3aed;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:2"><i class="fas fa-check" style="font-size:7px;color:#fff"></i></div>':''}
+                  <div style="width:100%;height:40px;border-radius:6px;background:#334155;margin-bottom:5px;position:relative;overflow:hidden">
+                    <div style="position:absolute;inset:0;${pCss}"></div>
+                    ${!pCss?`<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:16px;color:#94a3b8">${p.icon}</div>`:''}
+                  </div>
+                  <div style="font-size:9px;font-weight:700;color:${active?'#7c3aed':'#64748b'};text-transform:uppercase;letter-spacing:.5px;line-height:1.2">${p.name}</div>
+                </div>`;
+              }).join('')}
             </div>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
-            ${SIDEBAR_PATTERNS.map(p=>`
-              <div class="pattern-swatch ${this.state.sidebarPattern===p.id?'active':''}"
-                data-pattern="${p.id}"
-                onclick="app.setSidebarPattern('${p.id}')"
-                style="border:2px solid ${this.state.sidebarPattern===p.id?'var(--accent)':'var(--border)'};border-radius:10px;padding:8px 4px;cursor:pointer;text-align:center;background:${this.state.sidebarPattern===p.id?'#eff6ff':'#f8fafc'};transition:.2s;position:relative;overflow:hidden">
-                <div style="width:100%;height:44px;border-radius:6px;background:#334155;margin-bottom:5px;position:relative;overflow:hidden">
-                  <div style="position:absolute;inset:0;${p.css}opacity:1"></div>
-                  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px;color:rgba(255,255,255,0.8)">${p.icon}</div>
-                </div>
-                <div style="font-size:9px;font-weight:700;color:${this.state.sidebarPattern===p.id?'var(--accent)':'var(--muted)'};text-transform:uppercase;letter-spacing:.5px">${p.name}</div>
-                ${this.state.sidebarPattern===p.id?'<div style="position:absolute;top:4px;right:4px;width:14px;height:14px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center"><i class="fas fa-check" style="font-size:7px;color:#fff"></i></div>':''}
-              </div>`).join('')}
-          </div>
-        </div>`;
+          </div>`;
+        }
 
         if(this.state.template){
           html+=`<div class="next-step-bar" style="margin-top:16px">
@@ -1717,13 +1696,22 @@ const app = {
 
   selectTemplate(id){
     this.state.template = id;
+    // Auto-apply best default pattern when switching to a sidebar template
+    if(SIDEBAR_TEMPLATE_IDS.includes(id)){
+      const def = SIDEBAR_PATTERN_DEFAULTS[id] || 'bubbles';
+      // Only set default if currently none (don't override user's explicit choice for same template)
+      if(!this.state.sidebarPattern || this.state.sidebarPattern === 'none' || !SIDEBAR_TEMPLATE_IDS.includes(this.state.template)){
+        this.state.sidebarPattern = def;
+      }
+    } else {
+      this.state.sidebarPattern = 'none';
+    }
     document.getElementById('cv-paper').className = id;
     this.renderPreview('cv-paper');
     this.renderEditor();
     if(document.getElementById('cv-paper-preview'))
       document.getElementById('cv-paper-preview').className = id;
     showToast('Template selected: '+TEMPLATES.find(t=>t.id===id)?.name,'success');
-    // Show/hide pattern picker in editor based on whether template has sidebar
     this.updatePatternPickerVisibility();
   },
 
@@ -1748,25 +1736,30 @@ const app = {
   },
 
   applySidebarPatternToEl(containerId){
-    const pattern = SIDEBAR_PATTERNS.find(p=>p.id===this.state.sidebarPattern);
-    if(!pattern || !pattern.css) return;
+    const pid = this.state.sidebarPattern;
+    const tid = this.state.template;
+    if(!pid || pid === 'none') return;
+    const css = buildPatternCss(pid, tid);
+    if(!css) return;
     const container = document.getElementById(containerId);
     if(!container) return;
-    // Find sidebar/aside element
+    // Find sidebar element — covers .sidebar, .aside, and .accent-col (t-mist)
     const sideEl = container.querySelector('.sidebar, .aside');
     if(!sideEl) return;
-    // Inject a pattern overlay div
+    sideEl.style.position = 'relative';
     let overlay = sideEl.querySelector('.sidebar-pattern-overlay');
     if(!overlay){
       overlay = document.createElement('div');
       overlay.className = 'sidebar-pattern-overlay';
-      sideEl.style.position = 'relative';
       sideEl.insertBefore(overlay, sideEl.firstChild);
     }
-    overlay.style.cssText = `position:absolute;inset:0;pointer-events:none;z-index:0;${pattern.css}`;
-    // Make sure sidebar children are above overlay
+    overlay.setAttribute('style', 'position:absolute;inset:0;pointer-events:none;z-index:0;' + css);
+    // Ensure sidebar children render above pattern
     Array.from(sideEl.children).forEach(child=>{
-      if(!child.classList.contains('sidebar-pattern-overlay')) child.style.position='relative';
+      if(!child.classList.contains('sidebar-pattern-overlay')){
+        child.style.position = 'relative';
+        if(!child.style.zIndex) child.style.zIndex = '1';
+      }
     });
   },
 
@@ -2575,7 +2568,7 @@ function openTplModal(id){
   document.getElementById('tpl-modal-select-btn').onclick = ()=>{
     app.selectTemplate(id);
     closeTplModal();
-    app.nextStep();
+    setTimeout(()=>app.nextStep(), 60);
   };
   document.getElementById('tpl-preview-modal').classList.add('open');
 }
@@ -2851,12 +2844,20 @@ function updatePatternPanel(){
 function renderPatternGrid(){
   const grid = document.getElementById('pattern-panel-grid');
   if(!grid) return;
+  const tid = app.state.template;
+  // Use the actual sidebar color for previews so user sees real result
+  const col = SIDEBAR_COLORS[tid] || {dark:true, r:125, g:211, b:252};
+  // Build a representative sidebar bg color for the preview swatch
+  const previewBg = col.dark
+    ? '#1e3a5f'
+    : `rgb(${Math.max(0,255-col.r*0.6|0)},${Math.max(0,255-col.g*0.6|0)},${Math.max(0,255-col.b*0.6|0)})`;
+
   grid.innerHTML = SIDEBAR_PATTERNS.map(p=>{
     const cur = app.state.sidebarPattern || 'none';
     const active = p.id === cur;
-    // Build inline style for the pattern preview box
-    const previewStyle = p.css
-      ? `width:100%;height:52px;border-radius:7px;background:#334155;position:relative;overflow:hidden;margin-bottom:7px;${p.css}`
+    const patCss = buildPatternCss(p.id, tid);
+    const previewStyle = patCss
+      ? `width:100%;height:52px;border-radius:7px;background:${previewBg};position:relative;overflow:hidden;margin-bottom:7px;${patCss}`
       : `width:100%;height:52px;border-radius:7px;background:#e2e8f0;position:relative;overflow:hidden;margin-bottom:7px;display:flex;align-items:center;justify-content:center`;
     return `<div class="pp-swatch" data-id="${p.id}"
       onclick="app.setSidebarPattern('${p.id}');updatePatternPanel();"
@@ -2865,7 +2866,7 @@ function renderPatternGrid(){
         <i class="fas fa-check" style="font-size:8px;color:#fff"></i>
       </div>
       <div style="${previewStyle}">
-        ${p.css?'':'<span style="font-size:20px;color:#aaa">'+p.icon+'</span>'}
+        ${patCss?'':'<span style="font-size:20px;color:#aaa">'+p.icon+'</span>'}
       </div>
       <div style="font-size:10px;font-weight:700;color:${active?'#7c3aed':'#64748b'};text-transform:uppercase;letter-spacing:.5px;font-family:'Plus Jakarta Sans',sans-serif;line-height:1.2">${p.name}</div>
     </div>`;
